@@ -9,40 +9,40 @@ const PHOTO_CHECKLIST=[{id:1,shot:"Wide Establishing Shot",desc:"Whole room from
 const CONTENT_CALENDAR=[{day:"Monday",type:"Scripture Graphic",platform:"IG + FB",who:"Designer",color:"#7C3AED"},{day:"Tuesday",type:"Behind the Scenes",platform:"IG Stories",who:"Joel",color:"#EA580C"},{day:"Wednesday",type:"Sermon Clip / Reel",platform:"IG + YT Shorts",who:"Joel + Isaac",color:"#DC2626"},{day:"Thursday",type:"Team Appreciation",platform:"IG Stories",who:"Isaac",color:"#059669"},{day:"Friday",type:"Hype Reel",platform:"IG + TikTok",who:"Joel + Isaac",color:"#2563EB"},{day:"Saturday",type:"Sunday Reminder",platform:"IG Stories",who:"Isaac",color:"#7C3AED"},{day:"Sunday",type:"Live / Best Photo",platform:"All",who:"Isaac + Rutex",color:"#EA580C"}];
 const PRAYER_FOCUS=[{day:"Mon",focus:"Pray for each team member by name",icon:"👥"},{day:"Tue",focus:"Pray for unity among the teams",icon:"🤝"},{day:"Wed",focus:"Wednesday prayer (Samson leads)",icon:"📞"},{day:"Thu",focus:"Pray for church growth & new youth",icon:"🌱"},{day:"Fri",focus:"Pray for wisdom & anointing",icon:"👑"},{day:"Sat",focus:"Pray for Sunday's service",icon:"\u26EA"},{day:"Sun",focus:"Pray for the harvest",icon:"🌾"}];
 
-const SK={attendance:"fgclc-att",photoChecks:"fgclc-pho",prayerLog:"fgclc-pra",contentDone:"fgclc-con",tasks:"fgclc-tsk",notes:"fgclc-not",weekProgress:"fgclc-wp",activities:"fgclc-act",user:"fgclc-user",users:"fgclc-users",bbbs:"fgclc-bbbs",customWeeks:"fgclc-cw",customTeams:"fgclc-ct",teens:"fgclc-teens",followups:"fgclc-fu",pubWeeks:"fgclc-pub",teamData:"fgclc-td",practice:"fgclc-prc",messages:"fgclc-msg",customPlan:"fgclc-cp",chat:"fgclc-chat"};
+const SK={attendance:"fgclc-att",photoChecks:"fgclc-pho",prayerLog:"fgclc-pra",contentDone:"fgclc-con",tasks:"fgclc-tsk",notes:"fgclc-not",weekProgress:"fgclc-wp",activities:"fgclc-act",user:"fgclc-user",users:"fgclc-users",bbbs:"fgclc-bbbs",customWeeks:"fgclc-cw",customTeams:"fgclc-ct",teens:"fgclc-teens",followups:"fgclc-fu",pubWeeks:"fgclc-pub",teamData:"fgclc-td",practice:"fgclc-prc",messages:"fgclc-msg",customPlan:"fgclc-cp",chat:"fgclc-chat",weeklyRhythm:"fgclc-wr",savedSongs:"fgclc-songs"};
 
 var VERSES=[
-  {ref:"Psalm 23:1",text:"The Lord is my shepherd; I shall not want."},
-  {ref:"Jeremiah 29:11",text:"For I know the plans I have for you, declares the Lord, plans to prosper you and not to harm you."},
-  {ref:"Philippians 4:13",text:"I can do all things through Christ who strengthens me."},
-  {ref:"Romans 8:28",text:"And we know that in all things God works for the good of those who love Him."},
-  {ref:"Isaiah 41:10",text:"Fear not, for I am with you; be not dismayed, for I am your God."},
-  {ref:"Proverbs 3:5-6",text:"Trust in the Lord with all your heart and lean not on your own understanding."},
-  {ref:"Matthew 11:28",text:"Come to me, all you who are weary and burdened, and I will give you rest."},
-  {ref:"Psalm 46:10",text:"Be still, and know that I am God."},
-  {ref:"Joshua 1:9",text:"Be strong and courageous. Do not be afraid; do not be discouraged."},
-  {ref:"Ephesians 2:10",text:"For we are God's handiwork, created in Christ Jesus to do good works."},
-  {ref:"1 Peter 4:10",text:"Each of you should use whatever gift you have received to serve others."},
-  {ref:"Colossians 3:23",text:"Whatever you do, work at it with all your heart, as working for the Lord."},
-  {ref:"Psalm 127:1",text:"Unless the Lord builds the house, the builders labor in vain."},
-  {ref:"Hebrews 10:25",text:"Let us not give up meeting together, but let us encourage one another."},
-  {ref:"2 Timothy 1:7",text:"For God has not given us a spirit of fear, but of power and of love and of a sound mind."},
-  {ref:"Psalm 119:105",text:"Your word is a lamp to my feet and a light to my path."},
-  {ref:"Romans 12:2",text:"Be transformed by the renewing of your mind, that you may prove what is the good and perfect will of God."},
-  {ref:"Galatians 6:9",text:"Let us not become weary in doing good, for at the proper time we will reap a harvest."},
-  {ref:"Psalm 37:4",text:"Delight yourself in the Lord, and He will give you the desires of your heart."},
-  {ref:"Isaiah 40:31",text:"Those who hope in the Lord will renew their strength. They will soar on wings like eagles."},
-  {ref:"John 3:16",text:"For God so loved the world that He gave His one and only Son, that whoever believes in Him shall not perish."},
-  {ref:"Psalm 91:1-2",text:"Whoever dwells in the shelter of the Most High will rest in the shadow of the Almighty."},
-  {ref:"Matthew 6:33",text:"Seek first His kingdom and His righteousness, and all these things will be given to you."},
-  {ref:"Lamentations 3:22-23",text:"His mercies are new every morning; great is Your faithfulness."},
-  {ref:"Psalm 34:8",text:"Taste and see that the Lord is good; blessed is the one who takes refuge in Him."},
-  {ref:"2 Corinthians 12:9",text:"My grace is sufficient for you, for my power is made perfect in weakness."},
-  {ref:"Deuteronomy 31:6",text:"Be strong and courageous. The Lord your God goes with you; He will never leave you nor forsake you."},
-  {ref:"Psalm 100:4",text:"Enter His gates with thanksgiving and His courts with praise; give thanks to Him and praise His name."},
-  {ref:"Romans 15:13",text:"May the God of hope fill you with all joy and peace as you trust in Him."},
-  {ref:"Psalm 27:1",text:"The Lord is my light and my salvation - whom shall I fear?"},
-  {ref:"Micah 6:8",text:"Act justly, love mercy, and walk humbly with your God."}
+  {ref:"Psalm 23:1",text:"The Lord is my shepherd; I shall not want.",reflection:"When life feels uncertain, remember that your Shepherd walks ahead of you. He knows your college stress, your career worries, and your family struggles. Rest in His provision today."},
+  {ref:"Jeremiah 29:11",text:"For I know the plans I have for you, declares the Lord, plans to prosper you and not to harm you.",reflection:"God's plans for your life are bigger than your current situation. That exam result, that job rejection, that broken friendship - none of it has derailed His purpose for you."},
+  {ref:"Philippians 4:13",text:"I can do all things through Christ who strengthens me.",reflection:"This isn't about superhuman ability - it's about supernatural dependence. Whether you're leading worship or facing a tough Monday, His strength is made perfect in your weakness."},
+  {ref:"Romans 8:28",text:"And we know that in all things God works for the good of those who love Him.",reflection:"Even the difficult seasons have purpose. God is weaving every experience into something beautiful. Trust the process and keep serving faithfully."},
+  {ref:"Isaiah 41:10",text:"Fear not, for I am with you; be not dismayed, for I am your God.",reflection:"Fear is real, but God's presence is more real. He is with you in that crowded bus, in that lonely hostel room, in that intimidating meeting. You are never alone."},
+  {ref:"Proverbs 3:5-6",text:"Trust in the Lord with all your heart and lean not on your own understanding.",reflection:"Sometimes the smartest thing you can do is surrender your logic to God's wisdom. He sees the full picture. Let Him direct your steps today."},
+  {ref:"Matthew 11:28",text:"Come to me, all you who are weary and burdened, and I will give you rest.",reflection:"You don't need to carry everything alone. Bring your burdens to Jesus today - the pressure of expectations, the weight of responsibilities. He offers real rest."},
+  {ref:"Psalm 46:10",text:"Be still, and know that I am God.",reflection:"In a world of constant notifications and deadlines, stillness is an act of faith. Take a moment today to simply be present with God. He is still on the throne."},
+  {ref:"Joshua 1:9",text:"Be strong and courageous. Do not be afraid; do not be discouraged.",reflection:"Courage isn't the absence of fear - it's trusting God in spite of it. Step boldly into what He's called you to do today, whether big or small."},
+  {ref:"Ephesians 2:10",text:"For we are God's handiwork, created in Christ Jesus to do good works.",reflection:"You are not an accident. God crafted you with specific gifts for specific purposes. Your role in church, your talents, your personality - all intentionally designed."},
+  {ref:"1 Peter 4:10",text:"Each of you should use whatever gift you have received to serve others.",reflection:"Your gift of singing, photography, encouragement, or hospitality isn't just for you. It's meant to build up the body of Christ. How can you serve someone today?"},
+  {ref:"Colossians 3:23",text:"Whatever you do, work at it with all your heart, as working for the Lord.",reflection:"Whether you're studying, working, or serving in church - do it excellently. Your effort is an offering to God, not just a task to complete."},
+  {ref:"Psalm 127:1",text:"Unless the Lord builds the house, the builders labor in vain.",reflection:"All our ministry plans and strategies mean nothing without God's blessing. Before we work for Him, let's make sure we're working with Him."},
+  {ref:"Hebrews 10:25",text:"Let us not give up meeting together, but let us encourage one another.",reflection:"Church isn't optional - it's essential. Your presence on Sunday, at prayer meetings, at practice - it matters more than you know. Show up and encourage someone today."},
+  {ref:"2 Timothy 1:7",text:"For God has not given us a spirit of fear, but of power and of love and of a sound mind.",reflection:"That anxiety you feel? It's not from God. He gave you power to overcome, love to share, and a sound mind to make wise decisions. Walk in that identity today."},
+  {ref:"Psalm 119:105",text:"Your word is a lamp to my feet and a light to my path.",reflection:"When you're confused about the next step, open the Word. God's guidance comes through Scripture. Make time for it daily, even just 10 minutes."},
+  {ref:"Romans 12:2",text:"Be transformed by the renewing of your mind, that you may prove what is the good and perfect will of God.",reflection:"What you feed your mind shapes who you become. Choose worship over worry, Scripture over scrolling, prayer over panic. Transformation starts in your thought life."},
+  {ref:"Galatians 6:9",text:"Let us not become weary in doing good, for at the proper time we will reap a harvest.",reflection:"Ministry can feel thankless sometimes. Keep serving, keep showing up, keep loving. The harvest is coming - you just can't see it yet."},
+  {ref:"Psalm 37:4",text:"Delight yourself in the Lord, and He will give you the desires of your heart.",reflection:"This isn't a vending machine promise. When you truly delight in God, your desires begin to align with His. And those desires? He loves to fulfill them."},
+  {ref:"Isaiah 40:31",text:"Those who hope in the Lord will renew their strength. They will soar on wings like eagles.",reflection:"Feeling drained from the week? Hope in God isn't wishful thinking - it's active waiting. Let Him renew your strength today so you can soar again tomorrow."},
+  {ref:"John 3:16",text:"For God so loved the world that He gave His one and only Son, that whoever believes in Him shall not perish.",reflection:"This verse never gets old because His love never gets old. You are deeply, personally, and eternally loved. Let that truth anchor you today."},
+  {ref:"Psalm 91:1-2",text:"Whoever dwells in the shelter of the Most High will rest in the shadow of the Almighty.",reflection:"God's protection isn't a distant promise - it's a present reality. Dwell close to Him today. In His shadow, you find safety and peace."},
+  {ref:"Matthew 6:33",text:"Seek first His kingdom and His righteousness, and all these things will be given to you.",reflection:"Priorities matter. When God comes first - before career ambitions, before relationships, before comfort - everything else falls into its rightful place."},
+  {ref:"Lamentations 3:22-23",text:"His mercies are new every morning; great is Your faithfulness.",reflection:"Yesterday's failures don't define today. God's mercy has a fresh supply waiting for you every single morning. Start today with a clean slate and a grateful heart."},
+  {ref:"Psalm 34:8",text:"Taste and see that the Lord is good; blessed is the one who takes refuge in Him.",reflection:"Knowing about God and knowing God are different things. Experience His goodness personally today - in worship, in prayer, in the beauty around you."},
+  {ref:"2 Corinthians 12:9",text:"My grace is sufficient for you, for my power is made perfect in weakness.",reflection:"You don't need to pretend to have it all together. Your weakness is actually where God does His best work. Be honest about your struggles and watch Him move."},
+  {ref:"Deuteronomy 31:6",text:"Be strong and courageous. The Lord your God goes with you; He will never leave you nor forsake you.",reflection:"Whether you're stepping into a new role in church or facing an uncertain future, God goes before you, beside you, and behind you. You're completely surrounded."},
+  {ref:"Psalm 100:4",text:"Enter His gates with thanksgiving and His courts with praise; give thanks to Him and praise His name.",reflection:"Start your day with gratitude, not complaints. Thank God for your health, your church family, your purpose. Worship changes your perspective on everything."},
+  {ref:"Romans 15:13",text:"May the God of hope fill you with all joy and peace as you trust in Him.",reflection:"Joy and peace aren't circumstances - they're gifts from the God of hope. Trust Him today, even when things look uncertain. He is faithful."},
+  {ref:"Psalm 27:1",text:"The Lord is my light and my salvation - whom shall I fear?",reflection:"When God is your light, no darkness can overwhelm you. When God is your salvation, no enemy can defeat you. Walk boldly today - you belong to the King."},
+  {ref:"Micah 6:8",text:"Act justly, love mercy, and walk humbly with your God.",reflection:"Three simple instructions for today: be fair in your dealings, be kind in your interactions, and be humble in your walk with God. That's the Christian life in one verse."}
 ];
 function getTodayVerse(){var dayOfYear=Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/(1000*60*60*24));return VERSES[dayOfYear%VERSES.length]}
 const PASTOR_PHONE="0000000000";
@@ -165,13 +165,13 @@ var S={
 function App(){
   const [user,setUser]=useState(null);
   const [pg,setPg]=useState("home");
-  const [d,setD]=useState({attendance:{},photoChecks:{},prayerLog:[],contentDone:{},tasks:[],notes:"",weekProgress:{},activities:[],users:[],bbbs:[],customWeeks:{},customTeams:null,teens:[],followups:[],pubWeeks:{},teamData:{},practice:{},messages:[],customPlan:null,chat:[]});
+  const [d,setD]=useState({attendance:{},photoChecks:{},prayerLog:[],contentDone:{},tasks:[],notes:"",weekProgress:{},activities:[],users:[],bbbs:[],customWeeks:{},customTeams:null,teens:[],followups:[],pubWeeks:{},teamData:{},practice:{},messages:[],customPlan:null,chat:[],weeklyRhythm:null,savedSongs:[]});
   const [ok,setOk]=useState(false);
   const [wk,setWk]=useState(1);
 
   useEffect(()=>{(async()=>{
-    const[a,p,pr,c,t,n,w,act,u,us,bb,cw,ct,tn,fu,pw,td,prc,msg,cp,ch]=await Promise.all([ld(SK.attendance,{}),ld(SK.photoChecks,{}),ld(SK.prayerLog,[]),ld(SK.contentDone,{}),ld(SK.tasks,[]),ld(SK.notes,""),ld(SK.weekProgress,{}),ld(SK.activities,[]),ld(SK.user,null),ld(SK.users,[]),ld(SK.bbbs,[]),ld(SK.customWeeks,{}),ld(SK.customTeams,null),ld(SK.teens,[]),ld(SK.followups,[]),ld(SK.pubWeeks,{}),ld(SK.teamData,{}),ld(SK.practice,{}),ld(SK.messages,[]),ld(SK.customPlan,null),ld(SK.chat,[])]);
-    setD({attendance:a,photoChecks:p,prayerLog:pr,contentDone:c,tasks:t,notes:n,weekProgress:w,activities:act,users:us,bbbs:bb,customWeeks:cw,customTeams:ct,teens:tn,followups:fu,pubWeeks:pw,teamData:td,practice:prc,messages:msg,customPlan:cp,chat:ch});
+    const[a,p,pr,c,t,n,w,act,u,us,bb,cw,ct,tn,fu,pw,td,prc,msg,cp,ch,wr,ss]=await Promise.all([ld(SK.attendance,{}),ld(SK.photoChecks,{}),ld(SK.prayerLog,[]),ld(SK.contentDone,{}),ld(SK.tasks,[]),ld(SK.notes,""),ld(SK.weekProgress,{}),ld(SK.activities,[]),ld(SK.user,null),ld(SK.users,[]),ld(SK.bbbs,[]),ld(SK.customWeeks,{}),ld(SK.customTeams,null),ld(SK.teens,[]),ld(SK.followups,[]),ld(SK.pubWeeks,{}),ld(SK.teamData,{}),ld(SK.practice,{}),ld(SK.messages,[]),ld(SK.customPlan,null),ld(SK.chat,[]),ld(SK.weeklyRhythm,null),ld(SK.savedSongs,[])]);
+    setD({attendance:a,photoChecks:p,prayerLog:pr,contentDone:c,tasks:t,notes:n,weekProgress:w,activities:act,users:us,bbbs:bb,customWeeks:cw,customTeams:ct,teens:tn,followups:fu,pubWeeks:pw,teamData:td,practice:prc,messages:msg,customPlan:cp,chat:ch,weeklyRhythm:wr,savedSongs:ss});
     // Only restore session if user has phone (new login format). Clear old sessions.
     if(u && u.phone) setUser(u); else sv(SK.user,null);
     setOk(true);
@@ -215,11 +215,11 @@ function App(){
   if(!user)return <Login login={login} users={d.users||[]} up={up}/>;
 
   const ip=user.role==="pastor";
-  const pPages={home:<PHome d={d} go={setPg} wk={wk} setWk={setWk} up={up}/>,teams:<Tms d={d} up={up} isPastor={true}/>,schedule:<Sched d={d} up={up} wk={wk} setWk={setWk}/>,photo:<Pho d={d} up={up}/>,content:<Cnt d={d} up={up}/>,prayer:<Pray d={d} up={up} wk={wk}/>,attend:<Att d={d} up={up} isPastor={true}/>,notes:<Nts d={d} up={up}/>,activities:<Acts d={d} up={up}/>,bbbs:<BBBS d={d} up={up} isPastor={true}/>,practice:<PracticePage d={d} up={up} isPastor={true}/>,messages:<MsgPage d={d} up={up}/>,chat:<ChatPage d={d} up={up} user={user}/>};
-  const mPages={home:<MHome d={d} go={setPg} wk={wk} user={user} onOpenMsg={openPopup}/>,myTasks:<MyTasks d={d} up={up} user={user}/>,prayer:<Pray d={d} up={up} wk={wk}/>,teams:<Tms d={d} up={up} isPastor={false}/>,photo:<Pho d={d} up={up}/>,content:<Cnt d={d} up={up}/>,bbbs:<BBBS d={d} up={up} isPastor={false} user={user}/>,practice:<PracticePage d={d} up={up} isPastor={false} user={user}/>,chat:<ChatPage d={d} up={up} user={user}/>};
+  const pPages={home:<PHome d={d} go={setPg} wk={wk} setWk={setWk} up={up}/>,teams:<Tms d={d} up={up} isPastor={true}/>,schedule:<Sched d={d} up={up} wk={wk} setWk={setWk}/>,photo:<Pho d={d} up={up}/>,content:<Cnt d={d} up={up}/>,prayer:<Pray d={d} up={up} wk={wk}/>,attend:<Att d={d} up={up} isPastor={true}/>,notes:<Nts d={d} up={up}/>,activities:<Acts d={d} up={up}/>,bbbs:<BBBS d={d} up={up} isPastor={true}/>,practice:<PracticePage d={d} up={up} isPastor={true}/>,messages:<MsgPage d={d} up={up}/>,chat:<ChatPage d={d} up={up} user={user}/>,music:<MusicPage d={d} up={up}/>};
+  const mPages={home:<MHome d={d} go={setPg} wk={wk} user={user} onOpenMsg={openPopup}/>,myTasks:<MyTasks d={d} up={up} user={user}/>,prayer:<Pray d={d} up={up} wk={wk}/>,teams:<Tms d={d} up={up} isPastor={false}/>,photo:<Pho d={d} up={up}/>,content:<Cnt d={d} up={up}/>,bbbs:<BBBS d={d} up={up} isPastor={false} user={user}/>,practice:<PracticePage d={d} up={up} isPastor={false} user={user}/>,chat:<ChatPage d={d} up={up} user={user}/>,music:<MusicPage d={d} up={up}/>};
   const pages=ip?pPages:mPages;
-  const pNav=[{id:"home",em:"\uD83C\uDFE0",l:"Home"},{id:"chat",em:"\uD83D\uDCAC",l:"Chat"},{id:"activities",em:"\uD83D\uDCCB",l:"Activities"},{id:"practice",em:"\uD83C\uDFAF",l:"Practice"},{id:"messages",em:"\uD83D\uDCE9",l:"Messages"},{id:"attend",em:"\uD83D\uDCDD",l:"Roll Call"},{id:"bbbs",em:"\uD83D\uDC6B",l:"Bro/Sis"},{id:"teams",em:"\uD83D\uDC65",l:"Teams"},{id:"notes",em:"\u270D\uFE0F",l:"Notes"}];
-  const mNav=[{id:"home",em:"\uD83C\uDFE0",l:"Home"},{id:"chat",em:"\uD83D\uDCAC",l:"Chat"},{id:"myTasks",em:"\u2705",l:"Tasks"},{id:"practice",em:"\uD83C\uDFAF",l:"Practice"},{id:"bbbs",em:"\uD83D\uDC6B",l:"Bro/Sis"},{id:"prayer",em:"\uD83D\uDE4F",l:"Prayer"},{id:"teams",em:"\uD83D\uDC65",l:"Teams"}];
+  const pNav=[{id:"home",em:"\uD83C\uDFE0",l:"Home"},{id:"chat",em:"\uD83D\uDCAC",l:"Chat"},{id:"music",em:"\uD83C\uDFB5",l:"Music"},{id:"activities",em:"\uD83D\uDCCB",l:"Activities"},{id:"practice",em:"\uD83C\uDFAF",l:"Practice"},{id:"messages",em:"\uD83D\uDCE9",l:"Messages"},{id:"attend",em:"\uD83D\uDCDD",l:"Roll Call"},{id:"bbbs",em:"\uD83D\uDC6B",l:"Bro/Sis"},{id:"teams",em:"\uD83D\uDC65",l:"Teams"},{id:"notes",em:"\u270D\uFE0F",l:"Notes"}];
+  const mNav=[{id:"home",em:"\uD83C\uDFE0",l:"Home"},{id:"chat",em:"\uD83D\uDCAC",l:"Chat"},{id:"music",em:"\uD83C\uDFB5",l:"Music"},{id:"myTasks",em:"\u2705",l:"Tasks"},{id:"practice",em:"\uD83C\uDFAF",l:"Practice"},{id:"bbbs",em:"\uD83D\uDC6B",l:"Bro/Sis"},{id:"prayer",em:"\uD83D\uDE4F",l:"Prayer"},{id:"teams",em:"\uD83D\uDC65",l:"Teams"}];
   const nav=ip?pNav:mNav;
 
   // DESKTOP LAYOUT
@@ -1057,12 +1057,12 @@ function Sched({d,up,wk,setWk}){
   const generateFullPlan=async()=>{
     if(!aiDesc.trim())return;setAiLoading(true);
     try{
-      const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:2000,messages:[{role:"user",content:"You are a youth ministry planning assistant for FGCLC English Church. The pastor wants a 12-week (3-month) plan. Their description: \""+aiDesc.trim()+"\"\n\nGenerate a JSON array of 3 months. Each month: {\"month\":1, \"weeks\":[{\"wk\":1,\"theme\":\"...\",\"events\":[\"item1\",\"item2\",...]},...]}. Each week has 4-5 events. Month 1 = weeks 1-4, Month 2 = weeks 5-8, Month 3 = weeks 9-12. Themes should be short (2-4 words). Events should be actionable tasks. Respond with ONLY the JSON array."}]})});
+      const res=await fetch(SUPA_URL+"/functions/v1/ai-proxy",{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+SUPA_KEY},body:JSON.stringify({prompt:"You are a youth ministry planning assistant for FGCLC English Church. The pastor wants a 12-week (3-month) plan. Their description: \""+aiDesc.trim()+"\"\n\nGenerate a JSON array of 3 months. Each month: {\"month\":1, \"weeks\":[{\"wk\":1,\"theme\":\"...\",\"events\":[\"item1\",\"item2\",...]},...]}. Each week has 4-5 events. Month 1 = weeks 1-4, Month 2 = weeks 5-8, Month 3 = weeks 9-12. Themes should be short (2-4 words). Events should be actionable tasks. Respond with ONLY the JSON array.",max_tokens:2000})});
       const data=await res.json();
-      const text=data.content?.map(c=>c.text||"").join("")||"";
+      var text=data.text||"";
       var cleanText=text;while(cleanText.indexOf(String.fromCharCode(96))>=0)cleanText=cleanText.replace(String.fromCharCode(96),"");cleanText=cleanText.replace(/^json\s*/,"").trim();const parsed=JSON.parse(cleanText);
       if(Array.isArray(parsed)&&parsed.length===3){up("customPlan",parsed);setShowAI(false);setAiDesc("")}
-    }catch(e){console.error(e)}
+    }catch(e){console.error("AI Plan error:",e)}
     setAiLoading(false);
   };
 
@@ -1159,95 +1159,349 @@ function Pray({d,up,wk}){const [txt,setTxt]=useState("");const [typ,setTyp]=useS
 
 // === ATTENDANCE ===
 function Att({d,up,isPastor}){
-  const [ev,setEv]=useState("sunday");const [dt]=useState(new Date().toLocaleDateString());const [view,setView]=useState("mark"); // mark, summary, followup
-  const key=ev+"-"+dt;const att=d.attendance[key]||{};
-  const tog=name=>{const a={...d.attendance};if(!a[key])a[key]={};a[key][name]=!a[key][name];up("attendance",a)};
-  const pr=Object.values(att).filter(Boolean).length;
-  const allNames=[...new Set([...ALL_MEMBERS.map(m=>m.name),...(d.users||[]).map(u=>u.name)])];
-  const absent=allNames.filter(n=>!att[n]);
-  const followups=d.followups||[];
+  var view=useState("mark");
+  var selEvent=useState(null);
+  var customName=useState("");
+  var customDate=useState(new Date().toISOString().split("T")[0]);
+  var search=useState("");
 
-  // Summary calculations
-  const allKeys=Object.keys(d.attendance);
-  const getMemberStats=(name)=>{
-    let total=0,present=0;
-    allKeys.forEach(k=>{if(d.attendance[k]){total++;if(d.attendance[k][name])present++}});
-    return{total,present,pct:total?Math.round((present/total)*100):0};
-  };
-  const getWeekKeys=()=>allKeys.filter(k=>{const parts=k.split("-");const ds=parts.slice(1).join("-");if(!ds)return false;try{const dd=new Date(ds);const now=new Date();const diff=(now-dd)/(1000*60*60*24);return diff<=7&&diff>=0}catch(e){return false}});
-  const getMonthKeys=()=>allKeys.filter(k=>{const parts=k.split("-");const ds=parts.slice(1).join("-");if(!ds)return false;try{const dd=new Date(ds);const now=new Date();return dd.getMonth()===now.getMonth()&&dd.getFullYear()===now.getFullYear()}catch(e){return false}});
+  var nameSet={};
+  ALL_MEMBERS.forEach(function(m){nameSet[m.name]=true});
+  (d.users||[]).forEach(function(u){nameSet[u.name]=true});
+  var allNames=Object.keys(nameSet);
 
-  const addFollowup=(name)=>{
-    const fu=[...followups,{id:Date.now(),name,date:new Date().toLocaleDateString(),status:"called",note:""}];
+  var followups=d.followups||[];
+  var attData=d.attendance||{};
+
+  // Build event list: common events + activities
+  var commonEvents=[
+    {id:"sunday",name:"Sunday Service",icon:"\u26EA",color:"#2563EB",recurring:true},
+    {id:"worship-night",name:"Worship Night",icon:"\uD83C\uDFB5",color:"#7C3AED",recurring:true},
+    {id:"wednesday-prayer",name:"Wednesday Prayer",icon:"\uD83D\uDE4F",color:"#059669",recurring:true}
+  ];
+  var activityEvents=(d.activities||[]).filter(function(a){return!a.done}).map(function(a){
+    return{id:"act-"+a.id,name:a.title,icon:"\uD83D\uDCCB",color:"#EA580C",recurring:false,activityId:a.id};
+  });
+  var allEvents=commonEvents.concat(activityEvents);
+
+  // Current event key for attendance
+  var evKey=selEvent[0]?(selEvent[0].id+"-"+customDate[0]):"";
+  var att=evKey?attData[evKey]||{}:{};
+  var pr=Object.values(att).filter(Boolean).length;
+
+  function tog(name){
+    if(!evKey)return;
+    var a=Object.assign({},attData);
+    if(!a[evKey])a[evKey]={};
+    a[evKey]=Object.assign({},a[evKey]);
+    a[evKey][name]=!a[evKey][name];
+    up("attendance",a);
+  }
+  function clearAtt(){
+    if(!evKey)return;
+    var a=Object.assign({},attData);
+    a[evKey]={};
+    up("attendance",a);
+  }
+  function addCustomEvent(){
+    if(!customName[0].trim())return;
+    selEvent[1]({id:"custom-"+Date.now(),name:customName[0].trim(),icon:"\uD83D\uDCCC",color:"#64748b",recurring:false});
+    customName[1]("");
+  }
+
+  var absent=allNames.filter(function(n){return!att[n]});
+
+  // Summary: get all attendance keys and parse event info
+  var allKeys=Object.keys(attData);
+  function getMemberStats(name){
+    var total=0,present=0;
+    allKeys.forEach(function(k){if(attData[k]){total++;if(attData[k][name])present++}});
+    return{total:total,present:present,pct:total?Math.round((present/total)*100):0};
+  }
+  function getEventStats(){
+    var stats={};
+    allKeys.forEach(function(k){
+      var parts=k.split("-");
+      var evId=parts[0];
+      if(parts[0]==="worship"||parts[0]==="wednesday"||parts[0]==="act"||parts[0]==="custom"){evId=parts[0]+"-"+parts[1]}
+      if(!stats[evId])stats[evId]={name:evId,count:0,totalPresent:0};
+      stats[evId].count++;
+      stats[evId].totalPresent+=Object.values(attData[k]||{}).filter(Boolean).length;
+    });
+    return Object.values(stats);
+  }
+
+  function addFollowup(name){
+    var fu=followups.concat([{id:Date.now(),name:name,date:new Date().toLocaleDateString(),event:selEvent[0]?selEvent[0].name:"",status:"called",note:""}]);
     up("followups",fu);
-  };
-  const updateFollowup=(id,field,val)=>{up("followups",followups.map(f=>f.id===id?{...f,[field]:val}:f))};
-  const removeFollowup=id=>up("followups",followups.filter(f=>f.id!==id));
+  }
+  function updateFollowup(id,field,val){up("followups",followups.map(function(f){return f.id===id?Object.assign({},f,{[field]:val}):f}))}
+  function removeFollowup(id){up("followups",followups.filter(function(f){return f.id!==id}))}
 
-  const tabSt=(active)=>({flex:1,padding:"8px 4px",background:active?"#2563EB":"transparent",border:"none",borderRadius:8,fontSize:11,fontWeight:700,color:active?"#fff":"#64748b",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"});
+  var tabSt=function(active){return{flex:1,padding:"8px 4px",background:active?"#2563EB":"transparent",border:"none",borderRadius:8,fontSize:11,fontWeight:700,color:active?"#fff":"#64748b",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}};
+
+  // Pre-compute quick date buttons for recurring events
+  var quickDates=[];
+  if(selEvent[0]&&selEvent[0].recurring){
+    var today=new Date();
+    for(var qi=0;qi<4;qi++){
+      var dd=new Date(today);
+      dd.setDate(dd.getDate()-qi*7);
+      if(selEvent[0].id==="sunday"){while(dd.getDay()!==0)dd.setDate(dd.getDate()-1)}
+      else if(selEvent[0].id==="wednesday-prayer"){while(dd.getDay()!==3)dd.setDate(dd.getDate()-1)}
+      var ds=dd.toISOString().split("T")[0];
+      var qlabel=dd.toLocaleDateString("en-IN",{day:"numeric",month:"short"});
+      var qhasData=!!attData[(selEvent[0]?selEvent[0].id:"")+"-"+ds];
+      quickDates.push({ds:ds,label:qlabel,hasData:qhasData,isSelected:ds===customDate[0]});
+    }
+  }
+
+  // Pre-compute past records for selected event
+  var pastRecords=[];
+  if(selEvent[0]){
+    var prefix=selEvent[0].id+"-";
+    pastRecords=allKeys.filter(function(k){return k.indexOf(prefix)===0&&k!==evKey}).sort().reverse().slice(0,5).map(function(k){
+      var dateStr=k.replace(prefix,"");
+      var rec=attData[k]||{};
+      var cnt=Object.values(rec).filter(Boolean).length;
+      var formatted="";
+      try{formatted=new Date(dateStr+"T00:00:00").toLocaleDateString("en-IN",{weekday:"short",day:"numeric",month:"short"})}catch(e){formatted=dateStr}
+      return{key:k,dateStr:dateStr,cnt:cnt,formatted:formatted};
+    });
+  }
 
   return(<div style={S.pg}>
     <h2 style={S.ti}>Attendance</h2>
     {isPastor&&<div style={{display:"flex",gap:4,marginBottom:12,background:"#f1f5f9",borderRadius:10,padding:3}}>
-      <button onClick={()=>setView("mark")} style={tabSt(view==="mark")}>Mark</button>
-      <button onClick={()=>setView("summary")} style={tabSt(view==="summary")}>Summary</button>
-      <button onClick={()=>setView("followup")} style={tabSt(view==="followup")}>Follow Up</button>
+      <button onClick={function(){view[1]("mark")}} style={tabSt(view[0]==="mark")}>Mark</button>
+      <button onClick={function(){view[1]("summary")}} style={tabSt(view[0]==="summary")}>Summary</button>
+      <button onClick={function(){view[1]("followup")}} style={tabSt(view[0]==="followup")}>Follow Up</button>
     </div>}
 
-    {view==="mark"&&<>
-      <div style={{display:"flex",gap:5,marginBottom:10,flexWrap:"wrap"}}>{["sunday","worship-night","wednesday-prayer","event"].map(e=>(<button key={e} onClick={()=>setEv(e)} style={S.pill(ev===e)}>{e.split("-").map(w=>w[0].toUpperCase()+w.slice(1)).join(" ")}</button>))}</div>
-      <div style={S.prog}><div style={S.pf((pr/allNames.length)*100,"#2563EB")}/></div>
-      <p style={{fontSize:11,color:"#64748b",marginBottom:8}}>{pr}/{allNames.length} present</p>
-      {allNames.map(name=>{const on=att[name];return(<button key={name} onClick={()=>tog(name)} style={{display:"flex",alignItems:"center",gap:10,padding:"7px 10px",borderRadius:8,border:"1px solid #e2e8f0",marginBottom:3,width:"100%",textAlign:"left",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",background:on?"#eff6ff":"#fff"}}><div style={S.cb(on,"#2563EB")}>{on&&<span style={{color:"#fff"}}>{Ic.check}</span>}</div><span style={{fontWeight:600,fontSize:12,color:"#0f172a"}}>{name}</span></button>)})}
-      <button onClick={()=>{const a={...d.attendance};a[key]={};up("attendance",a)}} style={S.rst}>Clear</button>
-    </>}
+    {view[0]==="mark"&&<>
+      {/* EVENT SELECTOR */}
+      {!selEvent[0]?<div>
+        <h3 style={S.sec}>Select Event</h3>
+        <div style={{display:"flex",flexDirection:"column",gap:6,marginBottom:12}}>
+          {allEvents.map(function(ev){return(
+            <button key={ev.id} className="kb-card" onClick={function(){selEvent[1](ev)}} style={{display:"flex",alignItems:"center",gap:12,padding:"12px 14px",background:"#fff",borderRadius:12,border:"1px solid #e2e8f0",borderLeft:"4px solid "+ev.color,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",textAlign:"left",width:"100%"}}>
+              <span style={{fontSize:20}}>{ev.icon}</span>
+              <div style={{flex:1}}>
+                <div style={{fontSize:13,fontWeight:700,color:"#0f172a"}}>{ev.name}</div>
+                <div style={{fontSize:10,color:"#94a3b8"}}>{ev.recurring?"Regular event":"From Activities"}</div>
+              </div>
+              {Ic.chev}
+            </button>
+          )})}
+        </div>
 
-    {view==="summary"&&isPastor&&<>
-      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8,marginBottom:14}}>
-        <div style={{...S.cd,textAlign:"center",padding:12}}><div style={{fontSize:20,fontWeight:700,color:"#2563EB"}}>{allKeys.length}</div><div style={{fontSize:10,color:"#64748b"}}>Total Records</div></div>
-        <div style={{...S.cd,textAlign:"center",padding:12}}><div style={{fontSize:20,fontWeight:700,color:"#059669"}}>{getWeekKeys().length}</div><div style={{fontSize:10,color:"#64748b"}}>This Week</div></div>
-        <div style={{...S.cd,textAlign:"center",padding:12}}><div style={{fontSize:20,fontWeight:700,color:"#7C3AED"}}>{getMonthKeys().length}</div><div style={{fontSize:10,color:"#64748b"}}>This Month</div></div>
+        {/* Custom event */}
+        <h3 style={S.sec}>Or Add Custom Event</h3>
+        <div style={{display:"flex",gap:6}}>
+          <input value={customName[0]} onChange={function(e){customName[1](e.target.value)}} placeholder="Event name (e.g. Youth Camp)" style={{...S.inp,fontSize:12}} onKeyDown={function(e){if(e.key==="Enter")addCustomEvent()}}/>
+          <button onClick={addCustomEvent} style={{...S.abtn,background:"#059669"}}>{Ic.plus}</button>
+        </div>
       </div>
-      <h3 style={S.sec}>Member Attendance</h3>
-      {allNames.map(name=>{const s=getMemberStats(name);return(
-        <div key={name} style={{display:"flex",alignItems:"center",gap:10,padding:"8px 12px",background:"#fff",borderRadius:10,border:"1px solid #e2e8f0",marginBottom:4}}>
-          <div style={{width:28,height:28,borderRadius:"50%",background:s.pct>=75?"#059669":s.pct>=50?"#d97706":"#dc2626",display:"flex",alignItems:"center",justifyContent:"center",color:"#fff",fontSize:11,fontWeight:700}}>{s.pct}%</div>
-          <div style={{flex:1}}><div style={{fontSize:12,fontWeight:700,color:"#0f172a"}}>{name}</div><div style={{fontSize:10,color:"#64748b"}}>{s.present}/{s.total} services attended</div></div>
-          <div style={{width:60}}>
-            <div style={{height:4,background:"#e2e8f0",borderRadius:2}}><div style={{height:4,background:s.pct>=75?"#059669":s.pct>=50?"#d97706":"#dc2626",borderRadius:2,width:s.pct+"%"}}/></div>
+
+      :<div>
+        {/* SELECTED EVENT - MARK ATTENDANCE */}
+        <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}>
+          <button onClick={function(){selEvent[1](null)}} style={{background:"#f1f5f9",border:"none",borderRadius:8,padding:"6px 10px",cursor:"pointer",fontSize:11,fontWeight:600,color:"#64748b",fontFamily:"'DM Sans',sans-serif"}}>{"< Back"}</button>
+          <div style={{flex:1}}>
+            <div style={{fontSize:14,fontWeight:700,color:"#0f172a"}}>{selEvent[0].icon} {selEvent[0].name}</div>
           </div>
         </div>
+
+        {/* DATE SELECTOR - prominent */}
+        <div style={{background:"#fff",borderRadius:12,border:"1px solid #e2e8f0",padding:12,marginBottom:12}}>
+          <label style={{fontSize:10,fontWeight:700,color:"#334155",display:"block",marginBottom:6,textTransform:"uppercase",letterSpacing:0.5}}>Attendance for</label>
+          <div style={{display:"flex",gap:6,alignItems:"center",flexWrap:"wrap"}}>
+            <input type="date" value={customDate[0]} onChange={function(e){customDate[1](e.target.value)}} style={{...S.inp,flex:"none",width:"auto",fontSize:13,fontWeight:700,padding:"10px 14px"}}/>
+            <span style={{fontSize:12,color:"#64748b"}}>{new Date(customDate[0]+"T00:00:00").toLocaleDateString("en-IN",{weekday:"long",day:"numeric",month:"short",year:"numeric"})}</span>
+          </div>
+          {/* Quick date buttons for recurring events */}
+          {selEvent[0].recurring&&quickDates.length>0&&<div style={{display:"flex",gap:4,marginTop:8,flexWrap:"wrap"}}>
+            {quickDates.map(function(b){return(
+              <button key={b.ds} onClick={function(){customDate[1](b.ds)}} style={{padding:"5px 10px",borderRadius:8,fontSize:10,fontWeight:600,border:b.isSelected?"2px solid #2563EB":"1px solid #e2e8f0",background:b.isSelected?"#eff6ff":b.hasData?"#f0fdf4":"#fff",color:b.isSelected?"#2563EB":b.hasData?"#059669":"#64748b",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",position:"relative"}}>
+                {b.label}
+                {b.hasData&&!b.isSelected&&<span style={{position:"absolute",top:-2,right:-2,width:6,height:6,borderRadius:"50%",background:"#059669"}}></span>}
+              </button>
+            )})}
+          </div>}
+        </div>
+
+        {/* Already marked indicator */}
+        {pr>0&&<div className="kb-fade" style={{padding:"8px 12px",background:"#eff6ff",border:"1px solid #bfdbfe",borderRadius:8,marginBottom:10,fontSize:11,color:"#2563EB",fontWeight:600}}>{pr}/{allNames.length} already marked for this date</div>}
+
+        <div style={S.prog}><div style={S.pf((pr/allNames.length)*100,"#2563EB")}/></div>
+        <p style={{fontSize:11,color:"#64748b",marginBottom:6}}>{pr}/{allNames.length} present</p>
+
+        {/* SEARCH BAR */}
+        <div style={{position:"relative",marginBottom:10}}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2" style={{position:"absolute",left:12,top:"50%",transform:"translateY(-50%)"}}><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input value={search[0]} onChange={function(e){search[1](e.target.value)}} placeholder="Search members..." style={{width:"100%",padding:"9px 14px 9px 34px",border:"1px solid #e2e8f0",borderRadius:10,fontSize:12,fontFamily:"'DM Sans',sans-serif",outline:"none",background:"#fff",boxSizing:"border-box"}}/>
+        </div>
+
+        {/* MEMBER LIST */}
+        {allNames.filter(function(name){
+          if(!search[0])return true;
+          return name.toLowerCase().indexOf(search[0].toLowerCase())>=0;
+        }).map(function(name){var on=att[name];return(
+          <button key={name} onClick={function(){tog(name)}} style={{display:"flex",alignItems:"center",gap:10,padding:"8px 12px",borderRadius:8,border:"1px solid "+(on?"#bfdbfe":"#e2e8f0"),marginBottom:4,width:"100%",textAlign:"left",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",background:on?"#eff6ff":"#fff"}}>
+            <div style={S.cb(on,"#2563EB")}>{on&&<span style={{color:"#fff"}}>{Ic.check}</span>}</div>
+            <span style={{fontWeight:600,fontSize:13,color:"#0f172a"}}>{name}</span>
+            {on&&<span style={{marginLeft:"auto",fontSize:10,color:"#2563EB",fontWeight:600}}>Present</span>}
+          </button>
+        )})}
+        <div style={{display:"flex",gap:6,marginTop:8}}>
+          <button onClick={function(){allNames.forEach(function(n){if(!att[n])tog(n)})}} style={{flex:1,padding:"8px",background:"#059669",color:"#fff",border:"none",borderRadius:8,fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Mark All Present</button>
+          <button onClick={clearAtt} style={{flex:1,padding:"8px",background:"#fff",color:"#dc2626",border:"1px solid #fecaca",borderRadius:8,fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Clear All</button>
+        </div>
+
+        {/* PAST RECORDS for this event */}
+        {pastRecords.length>0&&<div style={{marginTop:16}}>
+          <h3 style={S.sec}>Past Records - {selEvent[0].name}</h3>
+          {pastRecords.map(function(pr2){return(
+            <button key={pr2.key} onClick={function(){customDate[1](pr2.dateStr)}} style={{display:"flex",alignItems:"center",gap:10,padding:"8px 12px",background:"#fff",borderRadius:10,border:"1px solid #e2e8f0",marginBottom:4,width:"100%",textAlign:"left",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>
+              <div style={{fontSize:12,fontWeight:600,color:"#0f172a",flex:1}}>{pr2.formatted}</div>
+              <div style={{fontSize:11,color:"#2563EB",fontWeight:600}}>{pr2.cnt}/{allNames.length}</div>
+              <div style={{width:40}}><div style={{height:4,background:"#e2e8f0",borderRadius:2}}><div style={{height:4,background:"#2563EB",borderRadius:2,width:Math.round((pr2.cnt/allNames.length)*100)+"%"}}/></div></div>
+            </button>
+          )})}
+        </div>}
+      </div>}
+    </>}
+
+    {view[0]==="summary"&&isPastor&&<>
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:14}}>
+        <div style={{...S.cd,textAlign:"center",padding:12}}><div style={{fontSize:20,fontWeight:700,color:"#2563EB"}}>{allKeys.length}</div><div style={{fontSize:10,color:"#64748b"}}>Total Records</div></div>
+        <div style={{...S.cd,textAlign:"center",padding:12}}><div style={{fontSize:20,fontWeight:700,color:"#059669"}}>{allNames.length}</div><div style={{fontSize:10,color:"#64748b"}}>Total Members</div></div>
+      </div>
+
+      <h3 style={S.sec}>By Event</h3>
+      {getEventStats().map(function(es){return(
+        <div key={es.name} style={{display:"flex",alignItems:"center",gap:10,padding:"8px 12px",background:"#fff",borderRadius:10,border:"1px solid #e2e8f0",marginBottom:4}}>
+          <div style={{flex:1}}><div style={{fontSize:12,fontWeight:700,color:"#0f172a"}}>{es.name}</div><div style={{fontSize:10,color:"#64748b"}}>{es.count} sessions, avg {es.count?Math.round(es.totalPresent/es.count):0} present</div></div>
+        </div>
+      )})}
+
+      <h3 style={S.sec}>By Member</h3>
+      {allNames.map(function(name){var s=getMemberStats(name);return(
+        <div key={name} style={{display:"flex",alignItems:"center",gap:10,padding:"8px 12px",background:"#fff",borderRadius:10,border:"1px solid #e2e8f0",marginBottom:4}}>
+          <div style={{width:28,height:28,borderRadius:"50%",background:s.pct>=75?"#059669":s.pct>=50?"#d97706":"#dc2626",display:"flex",alignItems:"center",justifyContent:"center",color:"#fff",fontSize:11,fontWeight:700}}>{s.pct}%</div>
+          <div style={{flex:1}}><div style={{fontSize:12,fontWeight:700,color:"#0f172a"}}>{name}</div><div style={{fontSize:10,color:"#64748b"}}>{s.present}/{s.total} attended</div></div>
+          <div style={{width:60}}><div style={{height:4,background:"#e2e8f0",borderRadius:2}}><div style={{height:4,background:s.pct>=75?"#059669":s.pct>=50?"#d97706":"#dc2626",borderRadius:2,width:s.pct+"%"}}/></div></div>
+        </div>
       )})}
     </>}
 
-    {view==="followup"&&isPastor&&<>
-      <h3 style={S.sec}>Absent Today ({absent.length})</h3>
-      {absent.length===0&&<p style={{fontSize:12,color:"#059669",padding:12,textAlign:"center"}}>Everyone is present! {"🎉"}</p>}
-      {absent.map(name=>{const alreadyCalled=followups.find(f=>f.name===name&&f.date===dt);return(
-        <div key={name} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 12px",background:"#fff",borderRadius:10,border:"1px solid #e2e8f0",marginBottom:4,borderLeft:alreadyCalled?"3px solid #059669":"3px solid #dc2626"}}>
-          <div style={{flex:1}}><div style={{fontSize:12,fontWeight:700,color:"#0f172a"}}>{name}</div>{alreadyCalled&&<div style={{fontSize:10,color:"#059669",fontWeight:600}}>{"✅"} Called {alreadyCalled.status==="responded"?"- Responded":alreadyCalled.status==="no-answer"?"- No answer":"- Followed up"}</div>}</div>
-          {!alreadyCalled&&<button onClick={()=>addFollowup(name)} style={{padding:"5px 12px",background:"#2563EB",color:"#fff",border:"none",borderRadius:8,fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Call</button>}
-        </div>
-      )})}
+    {view[0]==="followup"&&isPastor&&<>
+      {selEvent[0]&&evKey?<>
+        <h3 style={S.sec}>Absent - {selEvent[0].name} ({absent.length})</h3>
+        {absent.length===0&&<p style={{fontSize:12,color:"#059669",padding:12,textAlign:"center"}}>Everyone is present! {"\uD83C\uDF89"}</p>}
+        {absent.map(function(name){var alreadyCalled=followups.find(function(f){return f.name===name&&f.event===selEvent[0].name});return(
+          <div key={name} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 12px",background:"#fff",borderRadius:10,border:"1px solid #e2e8f0",marginBottom:4,borderLeft:alreadyCalled?"3px solid #059669":"3px solid #dc2626"}}>
+            <div style={{flex:1}}><div style={{fontSize:12,fontWeight:700,color:"#0f172a"}}>{name}</div>{alreadyCalled&&<div style={{fontSize:10,color:"#059669",fontWeight:600}}>{"\u2705"} {alreadyCalled.status==="responded"?"Responded":alreadyCalled.status==="no-answer"?"No answer":"Called"}</div>}</div>
+            {!alreadyCalled&&<button onClick={function(){addFollowup(name)}} style={{padding:"5px 12px",background:"#2563EB",color:"#fff",border:"none",borderRadius:8,fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Call</button>}
+          </div>
+        )})}
+      </>:<p style={{fontSize:12,color:"#94a3b8",textAlign:"center",padding:20}}>Select an event in the "Mark" tab first to see absent members.</p>}
 
       <h3 style={{...S.sec,marginTop:16}}>Follow-Up Log</h3>
       {followups.length===0&&<p style={{fontSize:12,color:"#94a3b8",textAlign:"center"}}>No follow-ups recorded yet.</p>}
-      {followups.slice().reverse().slice(0,20).map(f=>(<div key={f.id} style={{padding:"10px 12px",background:"#fff",borderRadius:10,border:"1px solid #e2e8f0",marginBottom:4,borderLeft:f.status==="responded"?"3px solid #059669":f.status==="no-answer"?"3px solid #d97706":"3px solid #2563EB"}}>
-        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-          <div><div style={{fontSize:12,fontWeight:700,color:"#0f172a"}}>{f.name}</div><div style={{fontSize:10,color:"#64748b"}}>{f.date}</div></div>
-          <div style={{display:"flex",gap:3}}>
-            {["called","responded","no-answer"].map(s=>(<button key={s} onClick={()=>updateFollowup(f.id,"status",s)} style={{padding:"2px 8px",borderRadius:6,fontSize:9,fontWeight:600,border:f.status===s?"1px solid #2563EB":"1px solid #e2e8f0",color:f.status===s?"#fff":"#64748b",background:f.status===s?(s==="responded"?"#059669":s==="no-answer"?"#d97706":"#2563EB"):"#f8fafc",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>{s==="no-answer"?"No Answer":s[0].toUpperCase()+s.slice(1)}</button>))}
-            <button onClick={()=>removeFollowup(f.id)} style={S.rm}>{Ic.x}</button>
+      {followups.slice().reverse().slice(0,20).map(function(f){return(
+        <div key={f.id} style={{padding:"10px 12px",background:"#fff",borderRadius:10,border:"1px solid #e2e8f0",marginBottom:4,borderLeft:f.status==="responded"?"3px solid #059669":f.status==="no-answer"?"3px solid #d97706":"3px solid #2563EB"}}>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+            <div><div style={{fontSize:12,fontWeight:700,color:"#0f172a"}}>{f.name}</div><div style={{fontSize:10,color:"#64748b"}}>{f.date}{f.event?" \u00b7 "+f.event:""}</div></div>
+            <div style={{display:"flex",gap:3}}>
+              {["called","responded","no-answer"].map(function(s){return(
+                <button key={s} onClick={function(){updateFollowup(f.id,"status",s)}} style={{padding:"2px 8px",borderRadius:6,fontSize:9,fontWeight:600,border:f.status===s?"1px solid #2563EB":"1px solid #e2e8f0",color:f.status===s?"#fff":"#64748b",background:f.status===s?(s==="responded"?"#059669":s==="no-answer"?"#d97706":"#2563EB"):"#f8fafc",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>{s==="no-answer"?"No Answer":s[0].toUpperCase()+s.slice(1)}</button>
+              )})}
+              <button onClick={function(){removeFollowup(f.id)}} style={S.rm}>{Ic.x}</button>
+            </div>
           </div>
+          <input value={f.note||""} onChange={function(e){updateFollowup(f.id,"note",e.target.value)}} placeholder="Add note..." style={{...S.inp,width:"100%",fontSize:11,marginTop:6,padding:"5px 10px",boxSizing:"border-box",flex:"none"}}/>
         </div>
-        <input value={f.note||""} onChange={e=>updateFollowup(f.id,"note",e.target.value)} placeholder="Add note..." style={{...S.inp,width:"100%",fontSize:11,marginTop:6,padding:"5px 10px",boxSizing:"border-box",flex:"none"}}/>
-      </div>))}
+      )})}
     </>}
   </div>);
 }
 
 // === NOTES ===
-function Nts({d,up}){const [tasks,setT]=useState(d.tasks||[]);const [nw,setNw]=useState("");const add=()=>{if(!nw.trim())return;const t=[...tasks,{text:nw.trim(),done:false,id:Date.now()}];setT(t);up("tasks",t);setNw("")};const tog=id=>{const t=tasks.map(x=>x.id===id?{...x,done:!x.done}:x);setT(t);up("tasks",t)};const rm=id=>{const t=tasks.filter(x=>x.id!==id);setT(t);up("tasks",t)};return(<div style={S.pg}><h2 style={S.ti}>Pastor's Notes</h2><h3 style={S.sec}>Tasks</h3><div style={{display:"flex",gap:6,marginBottom:10}}><input value={nw} onChange={e=>setNw(e.target.value)} placeholder="Add a task..." style={S.inp} onKeyDown={e=>e.key==="Enter"&&add()}/><button onClick={add} style={S.abtn}>{Ic.plus}</button></div>{tasks.map(t=>(<div key={t.id} style={{display:"flex",alignItems:"center",gap:8,padding:"5px 0",opacity:t.done?0.4:1}}><button onClick={()=>tog(t.id)} style={{...S.cb(t.done),cursor:"pointer"}}>{t.done&&<span style={{color:"#fff"}}>{Ic.check}</span>}</button><span style={{flex:1,fontSize:12,textDecoration:t.done?"line-through":"none",color:"#334155"}}>{t.text}</span><button onClick={()=>rm(t.id)} style={S.rm}>{Ic.x}</button></div>))}<h3 style={{...S.sec,marginTop:16}}>Journal</h3><textarea value={d.notes} onChange={e=>up("notes",e.target.value)} placeholder="Observations, ideas, follow-ups..." style={{width:"100%",minHeight:100,padding:12,border:"1px solid #e2e8f0",borderRadius:12,fontSize:12,fontFamily:"'DM Sans',sans-serif",resize:"vertical",outline:"none",boxSizing:"border-box",background:"#fff"}}/><h3 style={{...S.sec,marginTop:16}}>Weekly Rhythm</h3>{[{d:"Mon",t:"Review attendance. Check social posts."},{d:"Tue",t:"Plan Wed prayer with Samson."},{d:"Wed",t:"Join prayer. Check follow-ups."},{d:"Thu",t:"Worship rehearsal."},{d:"Fri",t:"Confirm slides, posts, equipment."},{d:"Sat",t:"Rest. Confirm Sunday roles."},{d:"Sun",t:"Pre-service prayer. Service. Lead check-in."}].map(r=>(<div key={r.d} style={{display:"flex",gap:8,padding:"6px 10px",background:"#fff",borderRadius:6,border:"1px solid #f1f5f9",marginBottom:3}}><span style={{fontWeight:700,fontSize:10,color:"#2563EB",minWidth:30}}>{r.d}</span><span style={{fontSize:10,color:"#475569"}}>{r.t}</span></div>))}</div>)}
+function Nts({d,up}){
+  var tasks=useState(d.tasks||[]);
+  var nw=useState("");
+  var DEFAULT_RHYTHM=[
+    {d:"Mon",t:"Review attendance. Check social posts."},
+    {d:"Tue",t:"Plan Wed prayer with Samson."},
+    {d:"Wed",t:"Join prayer. Check follow-ups."},
+    {d:"Thu",t:"Worship rehearsal."},
+    {d:"Fri",t:"Confirm slides, posts, equipment."},
+    {d:"Sat",t:"Rest. Confirm Sunday roles."},
+    {d:"Sun",t:"Pre-service prayer. Service. Lead check-in."}
+  ];
+  var rhythm=d.weeklyRhythm||DEFAULT_RHYTHM;
+  var editingDay=useState(null);
+  var editText=useState("");
+
+  function add(){if(!nw[0].trim())return;var t=tasks[0].concat([{text:nw[0].trim(),done:false,id:Date.now()}]);tasks[1](t);up("tasks",t);nw[1]("")}
+  function tog(id){var t=tasks[0].map(function(x){return x.id===id?Object.assign({},x,{done:!x.done}):x});tasks[1](t);up("tasks",t)}
+  function rm(id){var t=tasks[0].filter(function(x){return x.id!==id});tasks[1](t);up("tasks",t)}
+
+  function startEdit(day){editingDay[1](day);var found=rhythm.find(function(r){return r.d===day});editText[1](found?found.t:"")}
+  function saveEdit(){
+    if(!editingDay[0])return;
+    var updated=rhythm.map(function(r){return r.d===editingDay[0]?{d:r.d,t:editText[0].trim()||r.t}:r});
+    up("weeklyRhythm",updated);
+    editingDay[1](null);
+    editText[1]("");
+  }
+  function resetRhythm(){up("weeklyRhythm",null)}
+
+  return(<div style={S.pg}>
+    <h2 style={S.ti}>{"Pastor's Notes"}</h2>
+
+    <h3 style={S.sec}>Tasks</h3>
+    <div style={{display:"flex",gap:6,marginBottom:10}}>
+      <input value={nw[0]} onChange={function(e){nw[1](e.target.value)}} placeholder="Add a task..." style={S.inp} onKeyDown={function(e){if(e.key==="Enter")add()}}/>
+      <button onClick={add} style={S.abtn}>{Ic.plus}</button>
+    </div>
+    {tasks[0].map(function(t){return(
+      <div key={t.id} style={{display:"flex",alignItems:"center",gap:8,padding:"5px 0",opacity:t.done?0.4:1}}>
+        <button onClick={function(){tog(t.id)}} style={Object.assign({},S.cb(t.done),{cursor:"pointer"})}>{t.done&&<span style={{color:"#fff"}}>{Ic.check}</span>}</button>
+        <span style={{flex:1,fontSize:12,textDecoration:t.done?"line-through":"none",color:"#334155"}}>{t.text}</span>
+        <button onClick={function(){rm(t.id)}} style={S.rm}>{Ic.x}</button>
+      </div>
+    )})}
+
+    <h3 style={{...S.sec,marginTop:16}}>Journal</h3>
+    <textarea value={d.notes} onChange={function(e){up("notes",e.target.value)}} placeholder="Observations, ideas, follow-ups..." style={{width:"100%",minHeight:100,padding:12,border:"1px solid #e2e8f0",borderRadius:12,fontSize:12,fontFamily:"'DM Sans',sans-serif",resize:"vertical",outline:"none",boxSizing:"border-box",background:"#fff"}}/>
+
+    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginTop:16}}>
+      <h3 style={{...S.sec,margin:0}}>Weekly Rhythm</h3>
+      {d.weeklyRhythm&&<button onClick={resetRhythm} style={{fontSize:9,color:"#64748b",background:"#f1f5f9",border:"none",borderRadius:6,padding:"3px 8px",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Reset to Default</button>}
+    </div>
+    <p style={{fontSize:10,color:"#94a3b8",margin:"4px 0 8px"}}>Tap any day to edit</p>
+
+    {rhythm.map(function(r){
+      var isEditing=editingDay[0]===r.d;
+      return(
+        <div key={r.d} style={{display:"flex",gap:8,padding:"8px 10px",background:isEditing?"#eff6ff":"#fff",borderRadius:8,border:isEditing?"2px solid #2563EB":"1px solid #f1f5f9",marginBottom:4,alignItems:"flex-start"}}>
+          <span style={{fontWeight:700,fontSize:11,color:"#2563EB",minWidth:32,paddingTop:2}}>{r.d}</span>
+          {isEditing?
+            <div style={{flex:1,display:"flex",gap:4}}>
+              <input value={editText[0]} onChange={function(e){editText[1](e.target.value)}} onKeyDown={function(e){if(e.key==="Enter")saveEdit()}} style={{...S.inp,fontSize:11,padding:"5px 10px"}} autoFocus/>
+              <button onClick={saveEdit} style={{padding:"4px 10px",background:"#2563EB",color:"#fff",border:"none",borderRadius:6,fontSize:10,fontWeight:600,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",whiteSpace:"nowrap"}}>Save</button>
+              <button onClick={function(){editingDay[1](null)}} style={{padding:"4px 8px",background:"#f1f5f9",color:"#64748b",border:"none",borderRadius:6,fontSize:10,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>X</button>
+            </div>
+          :
+            <span onClick={function(){startEdit(r.d)}} style={{flex:1,fontSize:11,color:"#475569",cursor:"pointer",paddingTop:2}}>{r.t}</span>
+          }
+        </div>
+      );
+    })}
+  </div>);
+}
 
 // === BIG BROTHER / BIG SISTER ===
 const WEEKLY_CHECKLIST=[
@@ -1767,14 +2021,14 @@ function MsgPage({d,up}){
         <button onClick={async()=>{
           if(!aiPrompt.trim())return;setAiLoading(true);
           try{
-            const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,messages:[{role:"user",content:"You are the communications assistant for FGCLC English Church. Write a warm, inviting WhatsApp message for this event: \""+aiPrompt.trim()+"\"\n\nRules: Keep it warm and friendly but not too long (under 150 words). Include the event details, a short encouraging line, a relevant Bible verse, and end with \"FGCLC English Church\". Use appropriate emojis sparingly. Do NOT use markdown formatting - just plain text with line breaks. Respond with ONLY the message text, nothing else. Also on the very first line put a short subject/title for the message (max 5 words) followed by a newline, then the message body."}]})});
+            const res=await fetch(SUPA_URL+"/functions/v1/ai-proxy",{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+SUPA_KEY},body:JSON.stringify({prompt:"You are the communications assistant for FGCLC English Church. Write a warm, inviting WhatsApp message for this event: \""+aiPrompt.trim()+"\"\n\nRules: Keep it warm and friendly but not too long (under 150 words). Include the event details, a short encouraging line, a relevant Bible verse, and end with \"FGCLC English Church\". Use appropriate emojis sparingly. Do NOT use markdown formatting - just plain text with line breaks. Respond with ONLY the message text, nothing else. Also on the very first line put a short subject/title for the message (max 5 words) followed by a newline, then the message body.",max_tokens:1000})});
             const data=await res.json();
-            const text=data.content?.map(c=>c.text||"").join("")||"";
+            var text=data.text||"";
             const lines=text.trim().split("\n");
-            const subj=lines[0]?.trim()||"Event Invitation";
+            const subj=lines[0]?lines[0].trim():"Event Invitation";
             const body=lines.slice(1).join("\n").trim();
             setCustomSubj(subj);setCustomMsg(body||text);
-          }catch(e){console.error(e)}
+          }catch(e){console.error("AI Message error:",e)}
           setAiLoading(false);
         }} disabled={aiLoading||!aiPrompt.trim()} style={{width:"100%",padding:"10px",background:(aiLoading||!aiPrompt.trim())?"#cbd5e1":"linear-gradient(135deg,#7C3AED,#2563EB)",color:"#fff",border:"none",borderRadius:10,fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>
           {aiLoading?"Generating...":"Generate with AI"}
@@ -1826,7 +2080,50 @@ function MsgPage({d,up}){
 
 // === VERSE OF THE DAY ===
 function VerseOfDay(){
-  var v=getTodayVerse();
+  var verseState=useState(null);
+  var loading=useState(true);
+
+  useEffect(function(){
+    var todayKey="verse-"+new Date().toISOString().split("T")[0];
+
+    // Try to load cached verse for today
+    ld(todayKey,null).then(function(cached){
+      if(cached&&cached.ref&&cached.text&&cached.reflection){
+        verseState[1](cached);
+        loading[1](false);
+      } else {
+        // Fallback verse while AI loads
+        var fallback=getTodayVerse();
+        verseState[1]({ref:fallback.ref,text:fallback.text,reflection:""});
+        loading[1](false);
+
+        // Fetch AI-generated verse + reflection
+        fetch(SUPA_URL+"/functions/v1/ai-proxy",{
+          method:"POST",
+          headers:{"Content-Type":"application/json","Authorization":"Bearer "+SUPA_KEY},
+          body:JSON.stringify({
+            prompt:"You are a devotional assistant for FGCLC English Church youth ministry. Generate a verse of the day and a short reflection.\n\nToday is "+new Date().toLocaleDateString("en-IN",{weekday:"long",day:"numeric",month:"long",year:"numeric"})+".\n\nPick a meaningful Bible verse (not too common - surprise us with lesser-known gems sometimes). Then write a 2-3 sentence reflection that connects it to the daily life of young Christians in India - their studies, friendships, faith journey, and service.\n\nRespond ONLY in this exact JSON format, nothing else:\n{\"ref\":\"Book Chapter:Verse\",\"text\":\"The verse text\",\"reflection\":\"Your 2-3 sentence reflection\"}",
+            max_tokens:500
+          })
+        }).then(function(res){return res.json()}).then(function(data){
+          try{
+            var txt=data.text||"";
+            while(txt.indexOf(String.fromCharCode(96))>=0)txt=txt.replace(String.fromCharCode(96),"");
+            txt=txt.replace(/^json\s*/,"").trim();
+            var parsed=JSON.parse(txt);
+            if(parsed.ref&&parsed.text){
+              verseState[1](parsed);
+              sv(todayKey,parsed);
+            }
+          }catch(e){console.error("Verse parse error:",e)}
+        }).catch(function(e){console.error("Verse fetch error:",e)});
+      }
+    });
+  },[]);
+
+  var v=verseState[0];
+  if(!v)return null;
+
   var words=v.text.split(" ");
   return(
     <div className="kb-fade" style={{background:"linear-gradient(135deg,#1e1b4b,#312e81,#3730a3)",borderRadius:16,padding:20,marginBottom:14,position:"relative",overflow:"hidden"}}>
@@ -1842,6 +2139,7 @@ function VerseOfDay(){
         <span style={{fontSize:12,color:"#a5b4fc",fontWeight:600}}>{v.ref}</span>
         <div style={{height:1,flex:1,background:"rgba(165,180,252,0.2)"}}></div>
       </div>
+      {v.reflection&&<p className="kb-fade" style={{animationDelay:(words.length*60+400)+"ms",margin:"12px 0 0",fontSize:12,color:"#c7d2fe",lineHeight:1.6}}>{v.reflection}</p>}
     </div>
   );
 }
@@ -2103,6 +2401,137 @@ function ChatPage({d,up,user}){
       </div>}
     </div>
   );
+}
+
+// === MUSIC (Spotify Embeds) ===
+// === MUSIC (Spotify Embeds - No API Key) ===
+function MusicPage({d,up}){
+  var savedSongs=useState(d.savedSongs||[]);
+  var tab=useState("browse");
+  var nowPlaying=useState(null);
+  var searchQ=useState("");
+
+  var playlists=[
+    {name:"Top Worship Songs",id:"37i9dQZF1DXa2PvUpywmrr",desc:"Spotify's top worship picks"},
+    {name:"Worship Now",id:"37i9dQZF1DX0fBxFYjqSgT",desc:"Current worship hits"},
+    {name:"Christian Hits",id:"37i9dQZF1DX8UIplKmOuEu",desc:"Popular Christian music"},
+    {name:"Praise & Worship",id:"37i9dQZF1DWVnGJMKeQw7T",desc:"Classic praise songs"}
+  ];
+
+  var worshipSongs=[
+    {title:"Goodness of God",artist:"Bethel Music",spotifyId:"7BRE0KYRkJJZpXth3H6T9v"},
+    {title:"Way Maker",artist:"Sinach",spotifyId:"4AkLRijBxFnGJiQ1dMlFVj"},
+    {title:"Reckless Love",artist:"Cory Asbury",spotifyId:"2fFnSqMHkBmGaBn5HVhOcq"},
+    {title:"What A Beautiful Name",artist:"Hillsong Worship",spotifyId:"1yvMUkIOTeUNtNWlWRgANS"},
+    {title:"Holy Spirit",artist:"Francesca Battistelli",spotifyId:"0UACjEwHHVzrbKHnwxqO5K"},
+    {title:"Build My Life",artist:"Housefires",spotifyId:"5sSwLF4EbvGKAjJpWibVR6"},
+    {title:"Great Are You Lord",artist:"All Sons and Daughters",spotifyId:"1iZcjMGBwjE5z0sRQFRORN"},
+    {title:"King of Kings",artist:"Hillsong Worship",spotifyId:"5lEWjWQ9IIOO6iKuPOCFl1"},
+    {title:"Oceans",artist:"Hillsong United",spotifyId:"1WvIkhx8JOM9pVBJPFpLul"},
+    {title:"10,000 Reasons",artist:"Matt Redman",spotifyId:"5iFuekLbbxyRb1XdgxhVjR"},
+    {title:"Graves Into Gardens",artist:"Elevation Worship",spotifyId:"1VBz5JLFkiizIGM7kKhS6C"},
+    {title:"The Blessing",artist:"Kari Jobe",spotifyId:"41S1fYZMcELMPHTMlrWlbl"},
+    {title:"Raise A Hallelujah",artist:"Bethel Music",spotifyId:"2vn2n0l2iEPtCBIcFPCTlR"},
+    {title:"Lion and the Lamb",artist:"Bethel Music",spotifyId:"6C06K0A8cAFuI8e9h0Zb3I"},
+    {title:"Who You Say I Am",artist:"Hillsong Worship",spotifyId:"6GeBXOkIhHMEhCDIYm5JIh"},
+    {title:"Battle Belongs",artist:"Phil Wickham",spotifyId:"2OU4r3k3qsnRqiXSXjJyOB"},
+    {title:"Firm Foundation",artist:"Maverick City Music",spotifyId:"4ZBaOPKbfXraxW0W7PZh5h"},
+    {title:"Jireh",artist:"Maverick City Music",spotifyId:"1syGSfLMkkR37sJUKMXp9h"},
+    {title:"Living Hope",artist:"Phil Wickham",spotifyId:"0Jw1aSqLv4VCX3GFj3J7kK"},
+    {title:"O Come to the Altar",artist:"Elevation Worship",spotifyId:"3QW0Ll1PGqcNFd6IprRii1"},
+    {title:"How Great Is Our God",artist:"Chris Tomlin",spotifyId:"07AaIQFGWWDdUt7bO2xkbB"},
+    {title:"Amazing Grace (My Chains Are Gone)",artist:"Chris Tomlin",spotifyId:"2J2mPJBIqXMEkdYzjhpGNi"},
+    {title:"Here I Am to Worship",artist:"Tim Hughes",spotifyId:"41tJXI6d8MzFwWKmXbLvL6"},
+    {title:"Blessed Be Your Name",artist:"Matt Redman",spotifyId:"6G0GBz0j1EbPEoKBtI3Bwj"}
+  ];
+
+  var filtered=worshipSongs;
+  if(searchQ[0].trim()){
+    var q=searchQ[0].toLowerCase();
+    filtered=worshipSongs.filter(function(s){
+      return s.title.toLowerCase().indexOf(q)>=0||s.artist.toLowerCase().indexOf(q)>=0;
+    });
+  }
+
+  function saveSong(song){
+    if(savedSongs[0].find(function(s){return s.spotifyId===song.spotifyId}))return;
+    var updated=savedSongs[0].concat([song]);
+    savedSongs[1](updated);up("savedSongs",updated);
+  }
+  function removeSong(sid){
+    var updated=savedSongs[0].filter(function(s){return s.spotifyId!==sid});
+    savedSongs[1](updated);up("savedSongs",updated);
+  }
+
+  var tabSt=function(active){return{flex:1,padding:"8px 4px",background:active?"#1DB954":"transparent",border:"none",borderRadius:8,fontSize:11,fontWeight:700,color:active?"#fff":"#64748b",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}};
+
+  function SongRow(props){
+    var s=props.song;var isSaved=savedSongs[0].find(function(x){return x.spotifyId===s.spotifyId});var isPlaying=nowPlaying[0]===s.spotifyId;
+    return(
+      <div className="kb-card" style={{background:"#fff",borderRadius:12,border:isPlaying?"2px solid #1DB954":"1px solid #e2e8f0",marginBottom:6,overflow:"hidden"}}>
+        <div style={{display:"flex",alignItems:"center",gap:10,padding:"10px 12px"}}>
+          <button onClick={function(){nowPlaying[1](isPlaying?null:s.spotifyId)}} style={{width:36,height:36,borderRadius:"50%",background:isPlaying?"#1DB954":"#f1f5f9",border:"none",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,color:isPlaying?"#fff":"#1DB954"}}>
+            {isPlaying?<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+            :<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>}
+          </button>
+          <div style={{flex:1,minWidth:0}}>
+            <div style={{fontSize:13,fontWeight:700,color:"#0f172a",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{s.title}</div>
+            <div style={{fontSize:11,color:"#64748b"}}>{s.artist}</div>
+          </div>
+          {props.canSave&&!isSaved&&<button onClick={function(){saveSong(s)}} style={{padding:"4px 10px",background:"#f0fdf4",border:"1px solid #bbf7d0",borderRadius:6,fontSize:10,fontWeight:600,color:"#059669",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",whiteSpace:"nowrap"}}>+ Save</button>}
+          {isSaved&&!props.canRemove&&<span style={{fontSize:9,color:"#1DB954",fontWeight:600}}>Saved</span>}
+          {props.canRemove&&<button onClick={function(){removeSong(s.spotifyId)}} style={S.rm}>{Ic.x}</button>}
+        </div>
+        {isPlaying&&<div style={{padding:"0 12px 12px"}}>
+          <iframe src={"https://open.spotify.com/embed/track/"+s.spotifyId+"?utm_source=generator&theme=0"} width="100%" height="80" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" style={{borderRadius:8}}></iframe>
+        </div>}
+      </div>
+    );
+  }
+
+  return(<div style={S.pg}>
+    <h2 style={{...S.ti,display:"flex",alignItems:"center",gap:8}}><span style={{color:"#1DB954"}}>{"\uD83C\uDFB5"}</span> Music</h2>
+
+    <div style={{display:"flex",gap:4,marginBottom:12,background:"#f1f5f9",borderRadius:10,padding:3}}>
+      <button onClick={function(){tab[1]("browse")}} style={tabSt(tab[0]==="browse")}>Browse</button>
+      <button onClick={function(){tab[1]("saved")}} style={tabSt(tab[0]==="saved")}>Saved ({savedSongs[0].length})</button>
+      <button onClick={function(){tab[1]("playlists")}} style={tabSt(tab[0]==="playlists")}>Playlists</button>
+    </div>
+
+    {tab[0]==="browse"&&<div>
+      <div style={{position:"relative",marginBottom:12}}>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2" style={{position:"absolute",left:12,top:"50%",transform:"translateY(-50%)"}}><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input value={searchQ[0]} onChange={function(e){searchQ[1](e.target.value)}} placeholder="Search songs, artists..." style={{...S.inp,paddingLeft:34,width:"100%"}}/>
+      </div>
+      <div style={{display:"flex",gap:4,flexWrap:"wrap",marginBottom:12}}>
+        {["Hillsong","Bethel","Elevation","Maverick City","Chris Tomlin","Phil Wickham","Matt Redman","Kari Jobe"].map(function(q){return(
+          <button key={q} onClick={function(){searchQ[1](searchQ[0]===q?"":q)}} style={{padding:"4px 10px",background:searchQ[0]===q?"#1DB954":"#f8fafc",border:"1px solid "+(searchQ[0]===q?"#1DB954":"#e2e8f0"),borderRadius:20,fontSize:10,color:searchQ[0]===q?"#fff":"#64748b",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>{q}</button>
+        )})}
+      </div>
+      <p style={{fontSize:10,color:"#94a3b8",marginBottom:8}}>{filtered.length} songs{searchQ[0]?" matching \""+searchQ[0]+"\"":""}</p>
+      {filtered.map(function(s){return <SongRow key={s.spotifyId} song={s} canSave={true}/>})}
+      {filtered.length===0&&<p style={{fontSize:12,color:"#94a3b8",textAlign:"center",padding:20}}>No songs match. Try a different keyword.</p>}
+    </div>}
+
+    {tab[0]==="saved"&&<div>
+      {savedSongs[0].length===0&&<div style={{textAlign:"center",padding:40}}>
+        <span style={{fontSize:40}}>{"\uD83C\uDFB5"}</span>
+        <p style={{fontSize:13,color:"#94a3b8",marginTop:8}}>No saved songs yet. Browse and save your favourites!</p>
+      </div>}
+      {savedSongs[0].map(function(s){return <SongRow key={s.spotifyId} song={s} canRemove={true}/>})}
+    </div>}
+
+    {tab[0]==="playlists"&&<div>
+      <p style={{fontSize:11,color:"#64748b",marginBottom:10}}>Worship playlists from Spotify</p>
+      {playlists.map(function(pl){return(
+        <div key={pl.id} className="kb-card" style={{background:"#fff",borderRadius:12,border:"1px solid #e2e8f0",marginBottom:8,overflow:"hidden",padding:12}}>
+          <div style={{fontSize:13,fontWeight:700,color:"#0f172a"}}>{pl.name}</div>
+          <div style={{fontSize:11,color:"#64748b",marginBottom:8}}>{pl.desc}</div>
+          <iframe src={"https://open.spotify.com/embed/playlist/"+pl.id+"?utm_source=generator&theme=0"} width="100%" height="152" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" style={{borderRadius:8}}></iframe>
+        </div>
+      )})}
+    </div>}
+  </div>);
 }
 
 window.App = App;
