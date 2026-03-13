@@ -2403,73 +2403,71 @@ function ChatPage({d,up,user}){
   );
 }
 
-// === SPOTIFY EMBED COMPONENT ===
-function SpotifyEmbed(props){
-  var ref=useState(null);
-  var containerId="spotify-"+props.type+"-"+props.id;
 
-  useEffect(function(){
-    var container=document.getElementById(containerId);
-    if(!container)return;
-    container.innerHTML="";
-    var iframe=document.createElement("iframe");
-    iframe.src="https://open.spotify.com/embed/"+props.type+"/"+props.id+"?utm_source=generator&theme=0";
-    iframe.width="100%";
-    iframe.height=String(props.height||152);
-    iframe.frameBorder="0";
-    iframe.allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture";
-    iframe.loading="lazy";
-    iframe.style.borderRadius="12px";
-    iframe.style.border="none";
-    container.appendChild(iframe);
-  },[props.id,props.type]);
-
-  return <div id={containerId} style={{minHeight:props.height||152}}/>;
-}
-
-// === MUSIC (Spotify Embeds - No API Key) ===
+// === MUSIC (YouTube Audio Player) ===
 function MusicPage({d,up}){
   var savedSongs=useState(d.savedSongs||[]);
   var tab=useState("browse");
   var nowPlaying=useState(null);
   var searchQ=useState("");
+  var searchResults=useState([]);
+  var searching=useState(false);
 
-  var playlists=[
-    {name:"Top Worship Songs",id:"37i9dQZF1DXa2PvUpywmrr",desc:"Spotify's top worship picks"},
-    {name:"Worship Now",id:"37i9dQZF1DX0fBxFYjqSgT",desc:"Current worship hits"},
-    {name:"Christian Hits",id:"37i9dQZF1DX8UIplKmOuEu",desc:"Popular Christian music"},
-    {name:"Praise & Worship",id:"37i9dQZF1DWVnGJMKeQw7T",desc:"Classic praise songs"}
-  ];
-
+  // Worship songs with YouTube video IDs
   var worshipSongs=[
-    {title:"Goodness of God",artist:"Bethel Music",spotifyId:"1O6OPFAXdTdjHtT7Z2Hlt8"},
-    {title:"Way Maker",artist:"Sinach",spotifyId:"4eTgQdjd7bIet6d045GGUc"},
-    {title:"Reckless Love",artist:"Cory Asbury",spotifyId:"6GDAqimaFIlJCxZPOlWNKQ"},
-    {title:"What A Beautiful Name",artist:"Hillsong Worship",spotifyId:"1sMBVPGwMjPNTjxWCrplsA"},
-    {title:"Holy Spirit",artist:"Francesca Battistelli",spotifyId:"5OGRyJVbNfqEOuEANkxJNJ"},
-    {title:"Build My Life",artist:"Housefires",spotifyId:"2JOYbRDpflKmXYhP8U2KeN"},
-    {title:"Great Are You Lord",artist:"All Sons and Daughters",spotifyId:"1P5GOqMCQsBmXmHUoO3stx"},
-    {title:"King of Kings",artist:"Hillsong Worship",spotifyId:"0p1fRQPgKyGsMWBmPngjUu"},
-    {title:"Oceans",artist:"Hillsong United",spotifyId:"5Mw9bXG1dLNhbjofkVS2oR"},
-    {title:"10,000 Reasons",artist:"Matt Redman",spotifyId:"4KCGd1M4IO2T0vO0alF9o1"},
-    {title:"Graves Into Gardens",artist:"Elevation Worship",spotifyId:"6Y8cHsIG8V02D1YnghRZeR"},
-    {title:"The Blessing",artist:"Kari Jobe",spotifyId:"4WYApvD2fQCcEqMGsAzLeB"},
-    {title:"Raise A Hallelujah",artist:"Bethel Music",spotifyId:"5G2f9nyrKGuRzR1OYmbvHB"},
-    {title:"Lion and the Lamb",artist:"Bethel Music",spotifyId:"0HE3SH6fvxdRIUq54HjVq0"},
-    {title:"Who You Say I Am",artist:"Hillsong Worship",spotifyId:"6K4tnbH6ICQWrErVEeVXgN"},
-    {title:"Battle Belongs",artist:"Phil Wickham",spotifyId:"2o6fMMQReEWoEBGELUMEXM"},
-    {title:"Firm Foundation",artist:"Maverick City Music",spotifyId:"3LjLRmaFCmatEOVMYFeDzQ"},
-    {title:"Jireh",artist:"Maverick City Music",spotifyId:"7puRBNd0TNqZwR8uqFvE3P"},
-    {title:"Living Hope",artist:"Phil Wickham",spotifyId:"3MRX5fV6FVyGbFFWM0YESN"},
-    {title:"O Come to the Altar",artist:"Elevation Worship",spotifyId:"3LkkfOHDvAHBFbueP1ByaD"},
-    {title:"How Great Is Our God",artist:"Chris Tomlin",spotifyId:"3uH5q6QxkdMJCsE8665rBH"},
-    {title:"Amazing Grace (My Chains Are Gone)",artist:"Chris Tomlin",spotifyId:"1etiAXK4rSKTQnIOTnWJOR"},
-    {title:"Here I Am to Worship",artist:"Tim Hughes",spotifyId:"5lZSJrLMSTDMHe8SfvCK5B"},
-    {title:"Blessed Be Your Name",artist:"Matt Redman",spotifyId:"79eSJuL95y6BBQN6aAJb8c"}
+    {title:"Goodness of God",artist:"Bethel Music",ytId:"CqybaIesbuA"},
+    {title:"Way Maker",artist:"Sinach",ytId:"n4MNbiLCbiQ"},
+    {title:"Reckless Love",artist:"Cory Asbury",ytId:"Sc6SSHuZvDE"},
+    {title:"What A Beautiful Name",artist:"Hillsong Worship",ytId:"nQWFzMvCfLE"},
+    {title:"Holy Spirit",artist:"Jesus Culture",ytId:"sCSMQtnpDH0"},
+    {title:"Build My Life",artist:"Housefires",ytId:"Z3MhMu2BRWU"},
+    {title:"Great Are You Lord",artist:"All Sons & Daughters",ytId:"tbrBMjnDjWw"},
+    {title:"King of Kings",artist:"Hillsong Worship",ytId:"2z-gjM9UEQE"},
+    {title:"Oceans",artist:"Hillsong UNITED",ytId:"dy9nMRokFMU"},
+    {title:"10,000 Reasons",artist:"Matt Redman",ytId:"XtwIT8JjddM"},
+    {title:"Graves Into Gardens",artist:"Elevation Worship",ytId:"3dGREJaZ3FE"},
+    {title:"The Blessing",artist:"Kari Jobe",ytId:"Zp6aygmvzM4"},
+    {title:"Raise A Hallelujah",artist:"Bethel Music",ytId:"G2XBIkHW954"},
+    {title:"Who You Say I Am",artist:"Hillsong Worship",ytId:"IcC1Bp13n_4"},
+    {title:"Battle Belongs",artist:"Phil Wickham",ytId:"johgSkNj3-A"},
+    {title:"Jireh",artist:"Maverick City Music",ytId:"jjFbKOiUK-8"},
+    {title:"Living Hope",artist:"Phil Wickham",ytId:"9f2FXxDVO6A"},
+    {title:"O Come to the Altar",artist:"Elevation Worship",ytId:"rSGa3P0ghbo"},
+    {title:"How Great Is Our God",artist:"Chris Tomlin",ytId:"KBD18rsVJHk"},
+    {title:"Amazing Grace (My Chains Are Gone)",artist:"Chris Tomlin",ytId:"Jbe7OruLk8I"},
+    {title:"Blessed Be Your Name",artist:"Matt Redman",ytId:"mf0LCSc_GJw"},
+    {title:"No Longer Slaves",artist:"Bethel Music",ytId:"XGpHnOCaLvM"},
+    {title:"Here I Am to Worship",artist:"Tim Hughes",ytId:"u3FweY11Auo"},
+    {title:"Forever",artist:"Kari Jobe",ytId:"IWaU8S7nE2s"}
   ];
 
+  // Search YouTube via AI proxy
+  function searchYT(){
+    if(!searchQ[0].trim())return;
+    searching[1](true);
+    searchResults[1]([]);
+    fetch(SUPA_URL+"/functions/v1/ai-proxy",{
+      method:"POST",
+      headers:{"Content-Type":"application/json","Authorization":"Bearer "+SUPA_KEY},
+      body:JSON.stringify({
+        action:"youtube_search",
+        query:searchQ[0].trim()+" worship christian",
+        maxResults:10
+      })
+    }).then(function(r){return r.json()}).then(function(data){
+      if(data.results&&Array.isArray(data.results)){
+        searchResults[1](data.results.filter(function(r){return r.ytId}));
+      }
+      searching[1](false);
+    }).catch(function(e){
+      console.error("YT search error:",e);
+      searching[1](false);
+    });
+  }
+
+  // Filter browse list
   var filtered=worshipSongs;
-  if(searchQ[0].trim()){
+  if(searchQ[0].trim()&&tab[0]==="browse"){
     var q=searchQ[0].toLowerCase();
     filtered=worshipSongs.filter(function(s){
       return s.title.toLowerCase().indexOf(q)>=0||s.artist.toLowerCase().indexOf(q)>=0;
@@ -2477,23 +2475,25 @@ function MusicPage({d,up}){
   }
 
   function saveSong(song){
-    if(savedSongs[0].find(function(s){return s.spotifyId===song.spotifyId}))return;
-    var updated=savedSongs[0].concat([song]);
+    if(savedSongs[0].find(function(s){return s.ytId===song.ytId}))return;
+    var updated=savedSongs[0].concat([{title:song.title,artist:song.artist,ytId:song.ytId}]);
     savedSongs[1](updated);up("savedSongs",updated);
   }
-  function removeSong(sid){
-    var updated=savedSongs[0].filter(function(s){return s.spotifyId!==sid});
+  function removeSong(ytId){
+    var updated=savedSongs[0].filter(function(s){return s.ytId!==ytId});
     savedSongs[1](updated);up("savedSongs",updated);
   }
 
-  var tabSt=function(active){return{flex:1,padding:"8px 4px",background:active?"#1DB954":"transparent",border:"none",borderRadius:8,fontSize:11,fontWeight:700,color:active?"#fff":"#64748b",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}};
+  var tabSt=function(active){return{flex:1,padding:"8px 4px",background:active?"#dc2626":"transparent",border:"none",borderRadius:8,fontSize:11,fontWeight:700,color:active?"#fff":"#64748b",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}};
 
-  function SongRow(props){
-    var s=props.song;var isSaved=savedSongs[0].find(function(x){return x.spotifyId===s.spotifyId});var isPlaying=nowPlaying[0]===s.spotifyId;
+  function AudioPlayer(props){
+    var s=props.song;
+    var isPlaying=nowPlaying[0]&&nowPlaying[0].ytId===s.ytId;
+    var isSaved=savedSongs[0].find(function(x){return x.ytId===s.ytId});
     return(
-      <div className="kb-card" style={{background:"#fff",borderRadius:12,border:isPlaying?"2px solid #1DB954":"1px solid #e2e8f0",marginBottom:6,overflow:"hidden"}}>
+      <div className="kb-card" style={{background:"#fff",borderRadius:12,border:isPlaying?"2px solid #dc2626":"1px solid #e2e8f0",marginBottom:6,overflow:"hidden"}}>
         <div style={{display:"flex",alignItems:"center",gap:10,padding:"10px 12px"}}>
-          <button onClick={function(){nowPlaying[1](isPlaying?null:s.spotifyId)}} style={{width:36,height:36,borderRadius:"50%",background:isPlaying?"#1DB954":"#f1f5f9",border:"none",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,color:isPlaying?"#fff":"#1DB954"}}>
+          <button onClick={function(){nowPlaying[1](isPlaying?null:s)}} style={{width:38,height:38,borderRadius:"50%",background:isPlaying?"#dc2626":"#f1f5f9",border:"none",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,color:isPlaying?"#fff":"#dc2626"}}>
             {isPlaying?<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
             :<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>}
           </button>
@@ -2502,59 +2502,99 @@ function MusicPage({d,up}){
             <div style={{fontSize:11,color:"#64748b"}}>{s.artist}</div>
           </div>
           {props.canSave&&!isSaved&&<button onClick={function(){saveSong(s)}} style={{padding:"4px 10px",background:"#f0fdf4",border:"1px solid #bbf7d0",borderRadius:6,fontSize:10,fontWeight:600,color:"#059669",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",whiteSpace:"nowrap"}}>+ Save</button>}
-          {isSaved&&!props.canRemove&&<span style={{fontSize:9,color:"#1DB954",fontWeight:600}}>Saved</span>}
-          {props.canRemove&&<button onClick={function(){removeSong(s.spotifyId)}} style={S.rm}>{Ic.x}</button>}
+          {isSaved&&!props.canRemove&&<span style={{fontSize:9,color:"#dc2626",fontWeight:600}}>Saved</span>}
+          {props.canRemove&&<button onClick={function(){removeSong(s.ytId)}} style={S.rm}>{Ic.x}</button>}
         </div>
-        {isPlaying&&<div style={{padding:"0 12px 12px"}}>
-          <SpotifyEmbed type="track" id={s.spotifyId} height={80}/>
-        </div>}
       </div>
     );
   }
 
   return(<div style={S.pg}>
-    <h2 style={{...S.ti,display:"flex",alignItems:"center",gap:8}}><span style={{color:"#1DB954"}}>{"\uD83C\uDFB5"}</span> Music</h2>
+    <h2 style={{...S.ti,display:"flex",alignItems:"center",gap:8}}>
+      <span style={{color:"#dc2626"}}>{"\uD83C\uDFB5"}</span> Music
+    </h2>
 
     <div style={{display:"flex",gap:4,marginBottom:12,background:"#f1f5f9",borderRadius:10,padding:3}}>
       <button onClick={function(){tab[1]("browse")}} style={tabSt(tab[0]==="browse")}>Browse</button>
+      <button onClick={function(){tab[1]("search")}} style={tabSt(tab[0]==="search")}>Search</button>
       <button onClick={function(){tab[1]("saved")}} style={tabSt(tab[0]==="saved")}>Saved ({savedSongs[0].length})</button>
-      <button onClick={function(){tab[1]("playlists")}} style={tabSt(tab[0]==="playlists")}>Playlists</button>
     </div>
+
+    {/* NOW PLAYING - YouTube audio player (hidden video, visible controls) */}
+    {nowPlaying[0]&&<div style={{background:"linear-gradient(135deg,#1a1a2e,#16213e)",borderRadius:14,padding:14,marginBottom:12}}>
+      <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}>
+        <div style={{width:10,height:10,borderRadius:"50%",background:"#dc2626",animation:"popIn 1s ease infinite alternate"}}></div>
+        <div style={{flex:1}}>
+          <div style={{fontSize:13,fontWeight:700,color:"#fff"}}>{nowPlaying[0].title}</div>
+          <div style={{fontSize:11,color:"#94a3b8"}}>{nowPlaying[0].artist}</div>
+        </div>
+        <button onClick={function(){nowPlaying[1](null)}} style={{background:"rgba(255,255,255,0.1)",border:"none",borderRadius:8,padding:"4px 10px",color:"#fff",cursor:"pointer",fontSize:10,fontFamily:"'DM Sans',sans-serif"}}>Stop</button>
+      </div>
+      <YTAudioPlayer videoId={nowPlaying[0].ytId}/>
+    </div>}
 
     {tab[0]==="browse"&&<div>
       <div style={{position:"relative",marginBottom:12}}>
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2" style={{position:"absolute",left:12,top:"50%",transform:"translateY(-50%)"}}><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input value={searchQ[0]} onChange={function(e){searchQ[1](e.target.value)}} placeholder="Search songs, artists..." style={{...S.inp,paddingLeft:34,width:"100%"}}/>
+        <input value={searchQ[0]} onChange={function(e){searchQ[1](e.target.value)}} placeholder="Filter songs, artists..." style={{...S.inp,paddingLeft:34,width:"100%"}}/>
       </div>
       <div style={{display:"flex",gap:4,flexWrap:"wrap",marginBottom:12}}>
-        {["Hillsong","Bethel","Elevation","Maverick City","Chris Tomlin","Phil Wickham","Matt Redman","Kari Jobe"].map(function(q){return(
-          <button key={q} onClick={function(){searchQ[1](searchQ[0]===q?"":q)}} style={{padding:"4px 10px",background:searchQ[0]===q?"#1DB954":"#f8fafc",border:"1px solid "+(searchQ[0]===q?"#1DB954":"#e2e8f0"),borderRadius:20,fontSize:10,color:searchQ[0]===q?"#fff":"#64748b",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>{q}</button>
+        {["Hillsong","Bethel","Elevation","Maverick City","Chris Tomlin","Phil Wickham"].map(function(q){return(
+          <button key={q} onClick={function(){searchQ[1](searchQ[0]===q?"":q)}} style={{padding:"4px 10px",background:searchQ[0]===q?"#dc2626":"#f8fafc",border:"1px solid "+(searchQ[0]===q?"#dc2626":"#e2e8f0"),borderRadius:20,fontSize:10,color:searchQ[0]===q?"#fff":"#64748b",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>{q}</button>
         )})}
       </div>
-      <p style={{fontSize:10,color:"#94a3b8",marginBottom:8}}>{filtered.length} songs{searchQ[0]?" matching \""+searchQ[0]+"\"":""}</p>
-      {filtered.map(function(s){return <SongRow key={s.spotifyId} song={s} canSave={true}/>})}
-      {filtered.length===0&&<p style={{fontSize:12,color:"#94a3b8",textAlign:"center",padding:20}}>No songs match. Try a different keyword.</p>}
+      <p style={{fontSize:10,color:"#94a3b8",marginBottom:8}}>{filtered.length} songs</p>
+      {filtered.map(function(s){return <AudioPlayer key={s.ytId} song={s} canSave={true}/>})}
+    </div>}
+
+    {tab[0]==="search"&&<div>
+      <div style={{display:"flex",gap:6,marginBottom:12}}>
+        <div style={{position:"relative",flex:1}}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2" style={{position:"absolute",left:12,top:"50%",transform:"translateY(-50%)"}}><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input value={searchQ[0]} onChange={function(e){searchQ[1](e.target.value)}} onKeyDown={function(e){if(e.key==="Enter")searchYT()}} placeholder="Search any worship song..." style={{...S.inp,paddingLeft:34,width:"100%"}}/>
+        </div>
+        <button onClick={searchYT} disabled={searching[0]} style={{padding:"0 16px",background:searching[0]?"#cbd5e1":"#dc2626",color:"#fff",border:"none",borderRadius:10,fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>{searching[0]?"...":"Search"}</button>
+      </div>
+      <p style={{fontSize:10,color:"#94a3b8",marginBottom:8}}>AI-powered search finds any worship song on YouTube</p>
+      {searching[0]&&<p style={{fontSize:12,color:"#94a3b8",textAlign:"center",padding:20}}>Searching...</p>}
+      {searchResults[0].map(function(s){return <AudioPlayer key={s.ytId} song={s} canSave={true}/>})}
+      {searchResults[0].length===0&&!searching[0]&&<div style={{display:"flex",gap:4,flexWrap:"wrap"}}>
+        {["Tamil worship songs","Hindi praise","Hillsong best","Elevation Worship live","Telugu Christian","Malayalam worship"].map(function(q){return(
+          <button key={q} onClick={function(){searchQ[1](q);searchYT()}} style={{padding:"6px 12px",background:"#fff",border:"1px solid #e2e8f0",borderRadius:8,fontSize:11,color:"#64748b",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>{q}</button>
+        )})}
+      </div>}
     </div>}
 
     {tab[0]==="saved"&&<div>
       {savedSongs[0].length===0&&<div style={{textAlign:"center",padding:40}}>
         <span style={{fontSize:40}}>{"\uD83C\uDFB5"}</span>
-        <p style={{fontSize:13,color:"#94a3b8",marginTop:8}}>No saved songs yet. Browse and save your favourites!</p>
+        <p style={{fontSize:13,color:"#94a3b8",marginTop:8}}>No saved songs yet.</p>
       </div>}
-      {savedSongs[0].map(function(s){return <SongRow key={s.spotifyId} song={s} canRemove={true}/>})}
-    </div>}
-
-    {tab[0]==="playlists"&&<div>
-      <p style={{fontSize:11,color:"#64748b",marginBottom:10}}>Worship playlists from Spotify</p>
-      {playlists.map(function(pl){return(
-        <div key={pl.id} className="kb-card" style={{background:"#fff",borderRadius:12,border:"1px solid #e2e8f0",marginBottom:8,overflow:"hidden",padding:12}}>
-          <div style={{fontSize:13,fontWeight:700,color:"#0f172a"}}>{pl.name}</div>
-          <div style={{fontSize:11,color:"#64748b",marginBottom:8}}>{pl.desc}</div>
-          <SpotifyEmbed type="playlist" id={pl.id} height={152}/>
-        </div>
-      )})}
+      {savedSongs[0].map(function(s){return <AudioPlayer key={s.ytId} song={s} canRemove={true}/>})}
     </div>}
   </div>);
+}
+
+// YouTube Audio Player - hidden video, visible controls
+function YTAudioPlayer(props){
+  var containerId="yt-audio-"+props.videoId;
+  useEffect(function(){
+    var container=document.getElementById(containerId);
+    if(!container)return;
+    container.innerHTML="";
+    var iframe=document.createElement("iframe");
+    iframe.src="https://www.youtube.com/embed/"+props.videoId+"?autoplay=1&enablejsapi=1";
+    iframe.width="100%";
+    iframe.height="60";
+    iframe.frameBorder="0";
+    iframe.allow="autoplay; encrypted-media";
+    iframe.style.borderRadius="8px";
+    iframe.style.opacity="1";
+    container.appendChild(iframe);
+    return function(){container.innerHTML=""};
+  },[props.videoId]);
+
+  return <div id={containerId} style={{borderRadius:8,overflow:"hidden"}}/>;
 }
 
 window.App = App;
