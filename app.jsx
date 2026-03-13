@@ -1,0 +1,1750 @@
+var useState = React.useState;
+var useEffect = React.useEffect;
+var useCallback = React.useCallback;
+
+const TEAMS=[{id:"worship",name:"Worship Team",color:"#2563EB",icon:"🎵",lead:"Joel",members:["Joel","Sneha","Jasper","Likitha","Johnson"]},{id:"media",name:"Media Team",color:"#7C3AED",icon:"📷",lead:"Joshua",members:["Joshua","Rutex","Small Pavithra","Pavithra Big"]},{id:"social",name:"Social Media",color:"#EA580C",icon:"📱",lead:"Isaac",members:["Isaac","Joel","Rutex","Pavithra Big"]},{id:"outreach",name:"Outreach & Welcome",color:"#DC2626",icon:"🤝",lead:"Arpana",members:["Arpana","Sony","Pavithra Big"]},{id:"prayer",name:"Prayer Team",color:"#059669",icon:"🙏",lead:"Samson",members:["Samson","Johnson"]}];
+const ALL_MEMBERS=[{name:"Rutex",role:"Lead Photographer",teams:["media","social"]},{name:"Sneha",role:"Vocalist / Backup Worship Leader",teams:["worship"]},{name:"Small Pavithra",role:"Lyrics & Slides Operator",teams:["media"]},{name:"Likitha",role:"Piano Trainee",teams:["worship"]},{name:"Arpana",role:"Welcome & Follow-Up Coordinator",teams:["outreach"]},{name:"Sony",role:"Attendance & Call-Back Lead",teams:["outreach"]},{name:"Isaac",role:"Social Media Lead + Kids Ministry",teams:["social"]},{name:"Joshua",role:"Camera & Technical Support",teams:["media"]},{name:"Samson",role:"Prayer Team Lead",teams:["prayer"]},{name:"Pavithra Big",role:"Fellowship & Evangelism + Backup Photo",teams:["outreach","social","media"]},{name:"Joel",role:"Worship + Social Media Content",teams:["worship","social"]},{name:"Johnson",role:"Worship Intercessor",teams:["worship","prayer"]},{name:"Jasper",role:"Guitarist",teams:["worship"]},{name:"Sharon",role:"To Be Assigned",teams:[]},{name:"Rosy",role:"To Be Assigned",teams:[]},{name:"Deva",role:"To Be Assigned",teams:[]},{name:"Kanuj",role:"To Be Assigned",teams:[]}];
+const WEEKLY_SCHEDULE=[{month:1,weeks:[{wk:1,theme:"Team Launch",events:["Team dedication meeting","First rehearsal","Equipment audit","Set up social accounts","Launch Wednesday prayer"]},{wk:2,theme:"Roles Solidified",events:["Rehearsal #2","Test camera + projector","First 3 social posts","Discovery meetings: Sharon, Rosy, Deva, Kanuj"]},{wk:3,theme:"Content Push",events:["Rehearsal #3","Content Challenge","Fellowship event planning","Pre-worship night prayer fast"]},{wk:4,theme:"Worship Night #1",events:["WORSHIP NIGHT","Full livestream attempt","Highlight reel within 24hrs","Visitor follow-up by Monday"]}]},{month:2,weeks:[{wk:5,theme:"Debrief & Systems",events:["Month 1 review","Build song library","Analytics review","Launch Newcomers Connect"]},{wk:6,theme:"Cross-Training",events:["Joint Media + Worship meeting","Testimony video series","Gospel sharing training","Sneha leads rehearsal"]},{wk:7,theme:"Creative Week",events:["Worship mashup","CapCut/Canva workshop","Plan community outreach","Brotherhood fellowship"]},{wk:8,theme:"Youth-Led Night #2",events:["WORSHIP NIGHT #2","Community outreach event","Daily social posts","Invite competition"]}]},{month:3,weeks:[{wk:9,theme:"Evaluate & Mentor",events:["Quarterly evaluation","One-on-one feedback","Social media report","Retention check"]},{wk:10,theme:"Evangelism Training",events:["60-Sec Testimony practice","Collab content","Evangelism training night","Breakthrough prayer"]},{wk:11,theme:"Final Push",events:["Highlight reel editing","Share Challenge","Invite blitz (5 each)","Prayer and fasting day"]},{wk:12,theme:"Celebrate & Commission",events:["CELEBRATION NIGHT","Multi-camera production","Commission new leaders","Cast Q2 vision"]}]}];
+const PHOTO_CHECKLIST=[{id:1,shot:"Wide Establishing Shot",desc:"Whole room from the back",tip:"Shoot from slightly above"},{id:2,shot:"Worship Leader Close-Up",desc:"Singing with emotion",tip:"Use Portrait mode"},{id:3,shot:"Band / Musicians",desc:"Hands on strings, drummer",tip:"Side angles"},{id:4,shot:"Congregation Worshipping",desc:"Raised hands, singing",tip:"Front AND back"},{id:5,shot:"Altar / Prayer Moments",desc:"People at the altar",tip:"Respect the moment"},{id:6,shot:"Speaker / Pastor",desc:"Preaching with energy",tip:"Burst mode"},{id:7,shot:"Fellowship / Candid",desc:"Laughing, hugging, chatting",tip:"Don't stage it"},{id:8,shot:"Details / Atmosphere",desc:"Bible, lights, lyrics",tip:"Shoot 5-10"},{id:9,shot:"Before & After",desc:"Empty room vs packed",tip:"Contrast tells a story"},{id:10,shot:"Group / Team Photo",desc:"Whole team together",tip:"Take multiple shots"}];
+const CONTENT_CALENDAR=[{day:"Monday",type:"Scripture Graphic",platform:"IG + FB",who:"Designer",color:"#7C3AED"},{day:"Tuesday",type:"Behind the Scenes",platform:"IG Stories",who:"Joel",color:"#EA580C"},{day:"Wednesday",type:"Sermon Clip / Reel",platform:"IG + YT Shorts",who:"Joel + Isaac",color:"#DC2626"},{day:"Thursday",type:"Team Appreciation",platform:"IG Stories",who:"Isaac",color:"#059669"},{day:"Friday",type:"Hype Reel",platform:"IG + TikTok",who:"Joel + Isaac",color:"#2563EB"},{day:"Saturday",type:"Sunday Reminder",platform:"IG Stories",who:"Isaac",color:"#7C3AED"},{day:"Sunday",type:"Live / Best Photo",platform:"All",who:"Isaac + Rutex",color:"#EA580C"}];
+const PRAYER_FOCUS=[{day:"Mon",focus:"Pray for each team member by name",icon:"👥"},{day:"Tue",focus:"Pray for unity among the teams",icon:"🤝"},{day:"Wed",focus:"Wednesday prayer (Samson leads)",icon:"📞"},{day:"Thu",focus:"Pray for church growth & new youth",icon:"🌱"},{day:"Fri",focus:"Pray for wisdom & anointing",icon:"👑"},{day:"Sat",focus:"Pray for Sunday's service",icon:"\u26EA"},{day:"Sun",focus:"Pray for the harvest",icon:"🌾"}];
+
+const SK={attendance:"fgclc-att",photoChecks:"fgclc-pho",prayerLog:"fgclc-pra",contentDone:"fgclc-con",tasks:"fgclc-tsk",notes:"fgclc-not",weekProgress:"fgclc-wp",activities:"fgclc-act",user:"fgclc-user",users:"fgclc-users",bbbs:"fgclc-bbbs",customWeeks:"fgclc-cw",customTeams:"fgclc-ct",teens:"fgclc-teens",followups:"fgclc-fu",pubWeeks:"fgclc-pub",teamData:"fgclc-td",practice:"fgclc-prc",messages:"fgclc-msg",customPlan:"fgclc-cp"};
+const PASTOR_PHONE="0000000000";
+
+// Supabase config
+const SUPA_URL="https://hcjsltqdzihpgthnhlno.supabase.co";
+const SUPA_KEY="sb_publishable_3cICyqcvxDKWQ0r7CHIJ3w_m87qH1pz";
+var _supaHeaders={"apikey":SUPA_KEY,"Authorization":"Bearer "+SUPA_KEY,"Content-Type":"application/json","Prefer":"return=minimal"};
+
+async function ld(k,f){
+  try{
+    var res=await fetch(SUPA_URL+"/rest/v1/app_data?key=eq."+encodeURIComponent(k)+"&select=value",{headers:{"apikey":SUPA_KEY,"Authorization":"Bearer "+SUPA_KEY}});
+    if(!res.ok)throw new Error("fetch fail");
+    var rows=await res.json();
+    if(rows&&rows.length>0&&rows[0].value!==null)return rows[0].value;
+    return f;
+  }catch(e){
+    // Fallback to window.storage if Supabase fails
+    try{var r=await window.storage.get(k);return r?JSON.parse(r.value):f}catch(e2){return f}
+  }
+}
+
+async function sv(k,d){
+  try{
+    // Upsert to Supabase
+    var body=JSON.stringify({key:k,value:d});
+    var res=await fetch(SUPA_URL+"/rest/v1/app_data",{
+      method:"POST",
+      headers:Object.assign({},_supaHeaders,{"Prefer":"resolution=merge-duplicates,return=minimal"}),
+      body:body
+    });
+    if(!res.ok){var txt=await res.text();console.error("Supabase save error:",txt)}
+  }catch(e){
+    console.error("Supabase error, falling back:",e);
+    // Fallback to window.storage
+    try{await window.storage.set(k,JSON.stringify(d))}catch(e2){console.error(e2)}
+  }
+}
+
+// Week date range helper - starts from the nearest past Monday
+const _now=new Date();
+const _day=_now.getDay();
+const _diff=_now.getDate()-_day+(_day===0?-6:1);
+const PLAN_START=new Date(_now.getFullYear(),_now.getMonth(),_diff);
+function weekRange(wkNum){
+  const s=new Date(PLAN_START);s.setDate(s.getDate()+(wkNum-1)*7);
+  const e=new Date(s);e.setDate(e.getDate()+6);
+  const fm=(d)=>d.toLocaleDateString("en-IN",{day:"numeric",month:"short"});
+  return fm(s)+" - "+fm(e);
+}
+function weekLabel(wkNum){return "Week "+wkNum+" \u00b7 "+weekRange(wkNum)}
+function monthName(moNum){const ms=new Date(PLAN_START);ms.setMonth(ms.getMonth()+(moNum-1));return"Month "+moNum+" \u00b7 "+ms.toLocaleDateString("en-IN",{month:"long",year:"numeric"})}
+
+const Ic={
+  check:<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
+  chev:<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6"/></svg>,
+  x:<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+  plus:<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>,
+  out:<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>,
+};
+
+function useWindowSize(){
+  var s=useState({w:typeof window!=="undefined"?window.innerWidth:480,h:typeof window!=="undefined"?window.innerHeight:800});
+  useEffect(function(){
+    function handle(){s[1]({w:window.innerWidth,h:window.innerHeight})}
+    window.addEventListener("resize",handle);
+    return function(){window.removeEventListener("resize",handle)};
+  },[]);
+  return s[0];
+}
+
+var CSS_INJECTED=false;
+function injectCSS(){
+  if(CSS_INJECTED)return;
+  CSS_INJECTED=true;
+  var style=document.createElement("style");
+  style.textContent=[
+    "@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}",
+    "@keyframes slideIn{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:translateX(0)}}",
+    "@keyframes scaleIn{from{opacity:0;transform:scale(0.95)}to{opacity:1;transform:scale(1)}}",
+    "@keyframes popIn{0%{opacity:0;transform:scale(0.8)}60%{transform:scale(1.02)}100%{opacity:1;transform:scale(1)}}",
+    ".kb-fade{animation:fadeIn 0.3s ease-out both}",
+    ".kb-slide{animation:slideIn 0.3s ease-out both}",
+    ".kb-scale{animation:scaleIn 0.25s ease-out both}",
+    ".kb-pop{animation:popIn 0.35s ease-out both}",
+    ".kb-card{transition:transform 0.15s ease,box-shadow 0.15s ease}",
+    ".kb-card:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,0.08)}",
+    ".kb-card:active{transform:scale(0.98)}",
+    ".kb-btn{transition:all 0.15s ease}",
+    ".kb-btn:hover{filter:brightness(1.05);transform:translateY(-1px)}",
+    ".kb-btn:active{transform:scale(0.97)}",
+    ".kb-nav-item{transition:all 0.2s ease}",
+    ".kb-nav-item:hover{background:rgba(37,99,235,0.06);border-radius:8px}",
+    "*::-webkit-scrollbar{width:6px;height:6px}",
+    "*::-webkit-scrollbar-track{background:transparent}",
+    "*::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:3px}",
+    "*::-webkit-scrollbar-thumb:hover{background:#94a3b8}",
+    "@media(max-width:480px){.kb-desktop-only{display:none!important}}",
+    "@media(min-width:769px){.kb-mobile-only{display:none!important}}",
+  ].join("\n");
+  document.head.appendChild(style);
+}
+
+var S={
+  pg:{padding:"16px 20px"},ti:{fontSize:20,fontWeight:700,color:"#0f172a",margin:"0 0 14px",fontFamily:"'Playfair Display',serif"},
+  sec:{fontSize:12,fontWeight:700,color:"#334155",margin:"18px 0 8px",textTransform:"uppercase",letterSpacing:0.5},
+  cb:function(on,col){col=col||"#059669";return{width:20,height:20,borderRadius:5,border:"2px solid "+(on?col:"#cbd5e1"),background:on?col:"transparent",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}},
+  pill:function(on,col){col=col||"#1e293b";return{padding:"5px 12px",borderRadius:20,border:"1px solid #e2e8f0",fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",background:on?col:"#f8fafc",color:on?"#fff":"#64748b"}},
+  prog:{height:5,background:"#e2e8f0",borderRadius:3,overflow:"hidden",marginBottom:4},
+  pf:function(p,c){c=c||"#059669";return{height:"100%",background:c,borderRadius:3,width:p+"%",transition:"width 0.4s"}},
+  cd:{background:"#fff",borderRadius:12,border:"1px solid #e2e8f0",padding:14,marginBottom:8},
+  row:function(on,cl){return{display:"flex",alignItems:"flex-start",gap:10,padding:"10px 12px",borderRadius:10,border:"1px solid #e2e8f0",marginBottom:5,width:"100%",textAlign:"left",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",background:on?"#f0fdf4":"#fff",borderLeft:cl?"4px solid "+cl:"1px solid #e2e8f0"}},
+  inp:{flex:1,padding:"9px 14px",border:"1px solid #e2e8f0",borderRadius:10,fontSize:13,fontFamily:"'DM Sans',sans-serif",outline:"none",background:"#fff",boxSizing:"border-box"},
+  abtn:{width:38,height:38,background:"#2563EB",color:"#fff",border:"none",borderRadius:10,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0},
+  rst:{background:"none",border:"1px solid #e2e8f0",color:"#94a3b8",fontSize:11,padding:"7px 14px",borderRadius:8,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",marginTop:12},
+  rm:{background:"none",border:"none",color:"#cbd5e1",cursor:"pointer",padding:3},
+};
+
+function App(){
+  const [user,setUser]=useState(null);
+  const [pg,setPg]=useState("home");
+  const [d,setD]=useState({attendance:{},photoChecks:{},prayerLog:[],contentDone:{},tasks:[],notes:"",weekProgress:{},activities:[],users:[],bbbs:[],customWeeks:{},customTeams:null,teens:[],followups:[],pubWeeks:{},teamData:{},practice:{},messages:[],customPlan:null});
+  const [ok,setOk]=useState(false);
+  const [wk,setWk]=useState(1);
+
+  useEffect(()=>{(async()=>{
+    const[a,p,pr,c,t,n,w,act,u,us,bb,cw,ct,tn,fu,pw,td,prc,msg,cp]=await Promise.all([ld(SK.attendance,{}),ld(SK.photoChecks,{}),ld(SK.prayerLog,[]),ld(SK.contentDone,{}),ld(SK.tasks,[]),ld(SK.notes,""),ld(SK.weekProgress,{}),ld(SK.activities,[]),ld(SK.user,null),ld(SK.users,[]),ld(SK.bbbs,[]),ld(SK.customWeeks,{}),ld(SK.customTeams,null),ld(SK.teens,[]),ld(SK.followups,[]),ld(SK.pubWeeks,{}),ld(SK.teamData,{}),ld(SK.practice,{}),ld(SK.messages,[]),ld(SK.customPlan,null)]);
+    setD({attendance:a,photoChecks:p,prayerLog:pr,contentDone:c,tasks:t,notes:n,weekProgress:w,activities:act,users:us,bbbs:bb,customWeeks:cw,customTeams:ct,teens:tn,followups:fu,pubWeeks:pw,teamData:td,practice:prc,messages:msg,customPlan:cp});
+    // Only restore session if user has phone (new login format). Clear old sessions.
+    if(u && u.phone) setUser(u); else sv(SK.user,null);
+    setOk(true);
+  })()},[]);
+
+  const up=useCallback((k,v)=>{setD(prev=>{const next={...prev,[k]:v};sv(SK[k],v);return next})},[]);
+  const login=(userObj)=>{setUser(userObj);sv(SK.user,userObj);setPg("home")};
+  const logout=()=>{setUser(null);sv(SK.user,null);setPg("home")};
+  const [dismissed,setDismissed]=useState([]);
+  const [popupMsg,setPopupMsg]=useState(null);
+
+  // Auto-show popup for unread messages (members only)
+  useEffect(()=>{
+    if(!user||user.role==="pastor"||!ok)return;
+    const msgs=d.messages||[];
+    const unread=msgs.filter(m=>!dismissed.includes(m.id));
+    if(unread.length>0&&!popupMsg){
+      // Small delay so the UI renders first
+      const t=setTimeout(()=>setPopupMsg(unread[unread.length-1]),500);
+      return()=>clearTimeout(t);
+    }
+  },[d.messages,user,dismissed,popupMsg,ok]);
+
+  const dismissPopup=(msgId)=>{setDismissed(prev=>[...prev,msgId]);setPopupMsg(null)};
+  const openPopup=(msg)=>setPopupMsg(msg);
+
+  var sz=useWindowSize();
+  var isDesk=sz.w>=768;
+
+  useEffect(function(){injectCSS()},[]);
+
+  if(!ok)return(<div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",height:"100vh",background:"#0a0f1a"}}><div className="kb-pop" style={{fontSize:36,fontWeight:700,color:"#fff",fontFamily:"'Playfair Display',serif",letterSpacing:1}}>FGCLC</div><p className="kb-fade" style={{color:"#64748b",marginTop:8,fontFamily:"'DM Sans',sans-serif",fontSize:12}}>English Church</p></div>);
+  if(!user)return <Login login={login} users={d.users||[]} up={up}/>;
+
+  const ip=user.role==="pastor";
+  const pPages={home:<PHome d={d} go={setPg} wk={wk} setWk={setWk} up={up}/>,teams:<Tms d={d} up={up} isPastor={true}/>,schedule:<Sched d={d} up={up} wk={wk} setWk={setWk}/>,photo:<Pho d={d} up={up}/>,content:<Cnt d={d} up={up}/>,prayer:<Pray d={d} up={up} wk={wk}/>,attend:<Att d={d} up={up} isPastor={true}/>,notes:<Nts d={d} up={up}/>,activities:<Acts d={d} up={up}/>,bbbs:<BBBS d={d} up={up} isPastor={true}/>,practice:<PracticePage d={d} up={up} isPastor={true}/>,messages:<MsgPage d={d} up={up}/>};
+  const mPages={home:<MHome d={d} go={setPg} wk={wk} user={user} onOpenMsg={openPopup}/>,myTasks:<MyTasks d={d} up={up} user={user}/>,prayer:<Pray d={d} up={up} wk={wk}/>,teams:<Tms d={d} up={up} isPastor={false}/>,photo:<Pho d={d} up={up}/>,content:<Cnt d={d} up={up}/>,bbbs:<BBBS d={d} up={up} isPastor={false} user={user}/>,practice:<PracticePage d={d} up={up} isPastor={false} user={user}/>};
+  const pages=ip?pPages:mPages;
+  const pNav=[{id:"home",em:"\uD83C\uDFE0",l:"Home"},{id:"activities",em:"\uD83D\uDCCB",l:"Activities"},{id:"practice",em:"\uD83C\uDFAF",l:"Practice"},{id:"messages",em:"\uD83D\uDCE9",l:"Messages"},{id:"attend",em:"\uD83D\uDCDD",l:"Roll Call"},{id:"bbbs",em:"\uD83D\uDC6B",l:"Bro/Sis"},{id:"teams",em:"\uD83D\uDC65",l:"Teams"},{id:"notes",em:"\u270D\uFE0F",l:"Notes"}];
+  const mNav=[{id:"home",em:"\uD83C\uDFE0",l:"Home"},{id:"myTasks",em:"\u2705",l:"Tasks"},{id:"practice",em:"\uD83C\uDFAF",l:"Practice"},{id:"bbbs",em:"\uD83D\uDC6B",l:"Bro/Sis"},{id:"prayer",em:"\uD83D\uDE4F",l:"Prayer"},{id:"teams",em:"\uD83D\uDC65",l:"Teams"}];
+  const nav=ip?pNav:mNav;
+
+  // DESKTOP LAYOUT
+  if(isDesk){
+    return(
+      <div style={{display:"flex",minHeight:"100vh",background:"#f1f5f9",fontFamily:"'DM Sans',sans-serif"}}>
+        <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet"/>
+        {/* SIDEBAR */}
+        <div style={{width:220,background:"linear-gradient(180deg,#0a0f1a,#162033,#1a2744)",display:"flex",flexDirection:"column",position:"fixed",top:0,left:0,bottom:0,zIndex:50}}>
+          <div style={{padding:"24px 20px 16px"}}>
+            <h1 style={{margin:0,fontSize:22,fontWeight:700,color:"#fff",fontFamily:"'Playfair Display',serif",letterSpacing:1.5}}>FGCLC</h1>
+            <p style={{margin:"2px 0 0",fontSize:11,color:"#94a3b8"}}>English Church</p>
+          </div>
+          <div style={{padding:"0 10px",flex:1,overflowY:"auto"}}>
+            {nav.map(function(n,idx){var active=pg===n.id;return(
+              <button key={n.id} className="kb-nav-item" onClick={function(){setPg(n.id)}} style={{display:"flex",alignItems:"center",gap:12,width:"100%",padding:"10px 14px",marginBottom:2,background:active?"rgba(37,99,235,0.15)":"transparent",border:"none",borderRadius:10,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",textAlign:"left",animationDelay:idx*40+"ms"}}>
+                <span style={{fontSize:18,opacity:active?1:0.5}}>{n.em}</span>
+                <span style={{fontSize:13,fontWeight:active?700:500,color:active?"#93c5fd":"#94a3b8"}}>{n.l}</span>
+              </button>
+            )})}
+          </div>
+          <div style={{padding:"12px 14px",borderTop:"1px solid rgba(255,255,255,0.08)",display:"flex",alignItems:"center",gap:10}}>
+            <div style={{width:32,height:32,borderRadius:"50%",background:ip?"#2563EB":"#059669",display:"flex",alignItems:"center",justifyContent:"center",color:"#fff",fontSize:13,fontWeight:700}}>{user.name[0]}</div>
+            <div style={{flex:1}}><div style={{fontSize:12,color:"#e2e8f0",fontWeight:600}}>{user.name}</div><div style={{fontSize:10,color:ip?"#93c5fd":"#a7f3d0"}}>{ip?"Pastor":"Member"}</div></div>
+            <button onClick={logout} style={{background:"rgba(255,255,255,0.08)",border:"none",borderRadius:8,padding:6,cursor:"pointer",color:"#94a3b8",display:"flex"}}>{Ic.out}</button>
+          </div>
+        </div>
+        {/* MAIN CONTENT */}
+        <div style={{marginLeft:220,flex:1,minHeight:"100vh"}}>
+          <div style={{maxWidth:680,margin:"0 auto",padding:"20px 24px 40px"}}>
+            <div key={pg} className="kb-fade">{pages[pg]||pages.home}</div>
+          </div>
+        </div>
+        {/* POPUP */}
+        {popupMsg&&(
+          <div style={{position:"fixed",top:0,left:0,right:0,bottom:0,background:"rgba(0,0,0,0.6)",zIndex:200,display:"flex",alignItems:"center",justifyContent:"center",padding:20}} onClick={function(){dismissPopup(popupMsg.id)}}>
+            <div className="kb-pop" onClick={function(e){e.stopPropagation()}} style={{background:"#fff",borderRadius:20,maxWidth:440,width:"100%",overflow:"hidden",boxShadow:"0 20px 60px rgba(0,0,0,0.3)"}}>
+              <div style={{background:"linear-gradient(135deg,#059669,#065f46)",padding:"24px 24px 20px",textAlign:"center"}}>
+                <span style={{fontSize:44,display:"block",marginBottom:10}}>{"\uD83D\uDCE9"}</span>
+                <div style={{fontSize:18,fontWeight:700,color:"#fff",fontFamily:"'Playfair Display',serif"}}>{popupMsg.subject||"Message from Pastor"}</div>
+                <div style={{fontSize:12,color:"#a7f3d0",marginTop:4}}>{popupMsg.date}</div>
+              </div>
+              <div style={{padding:"24px",maxHeight:300,overflowY:"auto"}}>
+                <p style={{fontSize:14,color:"#334155",lineHeight:1.7,margin:0,whiteSpace:"pre-wrap"}}>{popupMsg.text}</p>
+              </div>
+              <div style={{padding:"16px 24px 24px",display:"flex",gap:8}}>
+                <button className="kb-btn" onClick={function(){dismissPopup(popupMsg.id)}} style={{flex:1,padding:"14px",background:"#059669",color:"#fff",border:"none",borderRadius:12,fontSize:14,fontWeight:700,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Got it!</button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // MOBILE LAYOUT
+  return(
+    <div style={{maxWidth:480,margin:"0 auto",minHeight:"100vh",background:"#f8fafc",fontFamily:"'DM Sans',sans-serif"}}>
+      <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet"/>
+      <div style={{background:"linear-gradient(135deg,#0a0f1a,#162033,#1a2744)",padding:"14px 20px 12px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+        <div><h1 style={{margin:0,fontSize:18,fontWeight:700,color:"#fff",fontFamily:"'Playfair Display',serif",letterSpacing:1}}>FGCLC</h1><p style={{margin:"1px 0 0",fontSize:10,color:"#94a3b8"}}>English Church</p></div>
+        <div style={{display:"flex",alignItems:"center",gap:10}}>
+          <div style={{textAlign:"right"}}><div style={{fontSize:11,color:"#e2e8f0",fontWeight:600}}>{user.name}</div><div style={{fontSize:9,color:ip?"#93c5fd":"#a7f3d0"}}>{ip?"Pastor":"Member"}</div></div>
+          <button onClick={logout} style={{background:"rgba(255,255,255,0.08)",border:"none",borderRadius:8,padding:6,cursor:"pointer",color:"#94a3b8",display:"flex"}}>{Ic.out}</button>
+        </div>
+      </div>
+      <div style={{flex:1,paddingBottom:76,overflowY:"auto"}}><div key={pg} className="kb-fade">{pages[pg]||pages.home}</div></div>
+      <nav style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:480,display:"flex",justifyContent:"space-around",background:"#fff",borderTop:"1px solid #e2e8f0",padding:"5px 0",paddingBottom:"max(10px, env(safe-area-inset-bottom))",zIndex:100}}>
+        {nav.map(function(n){return(
+          <button key={n.id} className="kb-nav-item" onClick={function(){setPg(n.id)}} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:1,background:"none",border:"none",padding:"3px 4px",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",color:pg===n.id?"#2563EB":"#94a3b8"}}>
+            <span style={{fontSize:16,opacity:pg===n.id?1:0.5}}>{n.em}</span>
+            <span style={{fontSize:8,fontWeight:pg===n.id?700:500}}>{n.l}</span>
+          </button>
+        )})}
+      </nav>
+      {/* POPUP */}
+      {popupMsg&&(
+        <div style={{position:"fixed",top:0,left:0,right:0,bottom:0,background:"rgba(0,0,0,0.6)",zIndex:200,display:"flex",alignItems:"center",justifyContent:"center",padding:20}} onClick={function(){dismissPopup(popupMsg.id)}}>
+          <div className="kb-pop" onClick={function(e){e.stopPropagation()}} style={{background:"#fff",borderRadius:20,maxWidth:380,width:"100%",overflow:"hidden",boxShadow:"0 20px 60px rgba(0,0,0,0.3)"}}>
+            <div style={{background:"linear-gradient(135deg,#059669,#065f46)",padding:"20px 20px 16px",textAlign:"center"}}>
+              <span style={{fontSize:40,display:"block",marginBottom:8}}>{"\uD83D\uDCE9"}</span>
+              <div style={{fontSize:16,fontWeight:700,color:"#fff",fontFamily:"'Playfair Display',serif"}}>{popupMsg.subject||"Message from Pastor"}</div>
+              <div style={{fontSize:11,color:"#a7f3d0",marginTop:4}}>{popupMsg.date}</div>
+            </div>
+            <div style={{padding:"20px",maxHeight:250,overflowY:"auto"}}>
+              <p style={{fontSize:13,color:"#334155",lineHeight:1.7,margin:0,whiteSpace:"pre-wrap"}}>{popupMsg.text}</p>
+            </div>
+            <div style={{padding:"12px 20px 20px",display:"flex",gap:8}}>
+              <button className="kb-btn" onClick={function(){dismissPopup(popupMsg.id)}} style={{flex:1,padding:"12px",background:"#059669",color:"#fff",border:"none",borderRadius:12,fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Got it!</button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// === LOGIN ===
+function Login({login,users,up}){
+  const [step,setStep]=useState("phone"); // phone, otp, register
+  const [phone,setPhone]=useState("");
+  const [otp,setOtp]=useState("");
+  const [name,setName]=useState("");
+  const [sentOtp,setSentOtp]=useState("");
+  const [err,setErr]=useState("");
+  const [countdown,setCountdown]=useState(0);
+
+  useEffect(()=>{if(countdown>0){const t=setTimeout(()=>setCountdown(countdown-1),1000);return()=>clearTimeout(t)}},[countdown]);
+
+  const formatPhone=(v)=>{return v.replace(/[^0-9]/g,"").slice(0,10)};
+
+  const sendOtp=()=>{
+    if(phone.length<10){setErr("Enter a valid 10-digit phone number");return}
+    setErr("");
+    // Simulated OTP - always 1234
+    const code="1234";
+    setSentOtp(code);
+    setStep("otp");
+    setCountdown(30);
+    // In production, this would call an SMS API
+  };
+
+  const verifyOtp=()=>{
+    if(otp!==sentOtp){setErr("Invalid OTP. Try 1234");return}
+    setErr("");
+    // Check if phone is pastor
+    if(phone===PASTOR_PHONE){
+      login({name:"Pastor",role:"pastor",phone});
+      return;
+    }
+    // Check if user exists
+    const existing=users.find(u=>u.phone===phone);
+    if(existing){
+      login({name:existing.name,role:existing.role||"member",phone:existing.phone});
+    } else {
+      setStep("register");
+    }
+  };
+
+  const register=()=>{
+    if(!name.trim()){setErr("Please enter your name");return}
+    setErr("");
+    const newUser={name:name.trim(),phone,role:"member",joined:new Date().toLocaleDateString()};
+    const updated=[...users,newUser];
+    up("users",updated);
+    login({name:newUser.name,role:"member",phone});
+  };
+
+  const inputStyle={width:"100%",maxWidth:300,padding:"14px 16px",background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.15)",borderRadius:12,color:"#fff",fontSize:18,fontWeight:600,fontFamily:"'DM Sans',sans-serif",outline:"none",textAlign:"center",letterSpacing:phone.length>0?2:0,boxSizing:"border-box"};
+  const btnStyle=(active)=>({width:"100%",maxWidth:300,padding:"14px 20px",background:active?"linear-gradient(135deg,#1e3a5f,#2563EB)":"rgba(255,255,255,0.05)",border:"none",borderRadius:12,color:active?"#fff":"#475569",fontSize:15,fontWeight:700,cursor:active?"pointer":"default",fontFamily:"'DM Sans',sans-serif",marginTop:12});
+  const backBtn=<button onClick={()=>{setStep("phone");setOtp("");setErr("");setName("")}} style={{background:"none",border:"none",color:"#64748b",fontSize:12,marginTop:16,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Back</button>;
+
+  return(
+    <div style={{maxWidth:480,margin:"0 auto",minHeight:"100vh",background:"#0a0f1a",fontFamily:"'DM Sans',sans-serif",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:24}}>
+      <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet"/>
+      <div style={{fontSize:42,fontWeight:700,color:"#fff",fontFamily:"'Playfair Display',serif",letterSpacing:1.5}}>FGCLC</div>
+      <p style={{color:"#64748b",fontSize:13,marginTop:6,marginBottom:36}}>English Church</p>
+
+      {step==="phone"&&<>
+        <div style={{width:48,height:48,borderRadius:14,background:"rgba(37,99,235,0.15)",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:16}}>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#93c5fd" strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        </div>
+        <p style={{color:"#e2e8f0",fontSize:16,fontWeight:600,marginBottom:4}}>Enter your phone number</p>
+        <p style={{color:"#64748b",fontSize:12,marginBottom:20}}>We'll send you a verification code</p>
+        <div style={{position:"relative",width:"100%",maxWidth:300}}>
+          <span style={{position:"absolute",left:16,top:"50%",transform:"translateY(-50%)",color:"#64748b",fontSize:16,fontWeight:600}}>+91</span>
+          <input value={phone} onChange={e=>setPhone(formatPhone(e.target.value))} placeholder="9876543210" maxLength={10}
+            style={{...inputStyle,paddingLeft:52,textAlign:"left"}} onKeyDown={e=>e.key==="Enter"&&sendOtp()}/>
+        </div>
+        {err&&<p style={{color:"#f87171",fontSize:12,marginTop:8}}>{err}</p>}
+        <button onClick={sendOtp} style={btnStyle(phone.length===10)}>Send OTP</button>
+        <div style={{width:"100%",maxWidth:300,marginTop:28,borderTop:"1px solid rgba(255,255,255,0.08)",paddingTop:16,display:"flex",flexDirection:"column",alignItems:"center",gap:8}}>
+          <p style={{color:"#475569",fontSize:10,margin:0}}>Quick access for testing</p>
+          <button onClick={()=>login({name:"Pastor",role:"pastor",phone:"0000000000"})} style={{width:"100%",padding:"10px 16px",background:"rgba(37,99,235,0.12)",border:"1px solid rgba(37,99,235,0.25)",borderRadius:10,color:"#93c5fd",fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Enter as Admin / Pastor</button>
+          <button onClick={()=>login({name:"TestMember",role:"member",phone:"1111111111"})} style={{width:"100%",padding:"10px 16px",background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:10,color:"#94a3b8",fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Enter as Test Member</button>
+        </div>
+      </>}
+
+      {step==="otp"&&<>
+        <div style={{width:48,height:48,borderRadius:14,background:"rgba(5,150,105,0.15)",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:16}}>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#a7f3d0" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <p style={{color:"#e2e8f0",fontSize:16,fontWeight:600,marginBottom:4}}>Verify OTP</p>
+        <p style={{color:"#64748b",fontSize:12,marginBottom:4}}>Code sent to +91 {phone}</p>
+        <p style={{color:"#059669",fontSize:11,marginBottom:16,background:"rgba(5,150,105,0.1)",padding:"4px 12px",borderRadius:8}}>Demo: Use code 1234</p>
+        <input value={otp} onChange={e=>setOtp(e.target.value.replace(/[^0-9]/g,"").slice(0,4))} placeholder="Enter 4-digit OTP" maxLength={4}
+          style={{...inputStyle,letterSpacing:12,fontSize:28}} onKeyDown={e=>e.key==="Enter"&&verifyOtp()}/>
+        {err&&<p style={{color:"#f87171",fontSize:12,marginTop:8}}>{err}</p>}
+        <button onClick={verifyOtp} style={btnStyle(otp.length===4)}>Verify</button>
+        <div style={{marginTop:16,display:"flex",alignItems:"center",gap:8}}>
+          {countdown>0?<p style={{color:"#64748b",fontSize:12}}>Resend in {countdown}s</p>
+            :<button onClick={()=>{setSentOtp("1234");setCountdown(30);setOtp("")}} style={{background:"none",border:"none",color:"#93c5fd",fontSize:12,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",fontWeight:600}}>Resend OTP</button>}
+        </div>
+        {backBtn}
+      </>}
+
+      {step==="register"&&<>
+        <div style={{width:48,height:48,borderRadius:14,background:"rgba(124,58,237,0.15)",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:16}}>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c4b5fd" strokeWidth="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+        </div>
+        <p style={{color:"#e2e8f0",fontSize:16,fontWeight:600,marginBottom:4}}>Welcome! You're new here</p>
+        <p style={{color:"#64748b",fontSize:12,marginBottom:20}}>Enter your name to join FGCLC</p>
+        <input value={name} onChange={e=>setName(e.target.value)} placeholder="Your full name"
+          style={{...inputStyle,fontSize:16,letterSpacing:0,textAlign:"left",paddingLeft:16}} onKeyDown={e=>e.key==="Enter"&&register()}/>
+        {err&&<p style={{color:"#f87171",fontSize:12,marginTop:8}}>{err}</p>}
+        <button onClick={register} style={btnStyle(name.trim().length>0)}>Join FGCLC</button>
+        <p style={{color:"#475569",fontSize:10,marginTop:16}}>Phone: +91 {phone}</p>
+        {backBtn}
+      </>}
+    </div>
+  );
+}
+
+// === PASTOR HOME ===
+// Events are now objects: {text, date, time} - old strings are auto-normalized
+function norm(ev){return typeof ev==="string"?{text:ev,date:"",time:""}:ev}
+
+function PHome({d,go,wk,setWk,up}){
+  var plan=d.customPlan||WEEKLY_SCHEDULE;
+  var allWeeks=[];
+  for(var mi=0;mi<plan.length;mi++){for(var wi=0;wi<plan[mi].weeks.length;wi++){allWeeks.push(plan[mi].weeks[wi])}}
+  var wd=null;
+  for(var fi=0;fi<allWeeks.length;fi++){if(allWeeks[fi].wk===wk){wd=allWeeks[fi];break}}
+  var sk="sun-"+wk;
+  var attObj=d.attendance[sk]||{};
+  var pr=Object.values(attObj).filter(Boolean).length;
+  var rawEvts=wd?wd.events:[];
+  var planEvents=rawEvts.map(norm);
+
+  var wkStart=new Date(PLAN_START);
+  wkStart.setDate(wkStart.getDate()+(wk-1)*7);
+  var wkEnd=new Date(wkStart);
+  wkEnd.setDate(wkEnd.getDate()+6);
+  wkEnd.setHours(23,59,59);
+  var prac=d.practice||{};
+  var allSess=prac.sessions||[];
+  var pracSess=allSess.filter(function(s){
+    if(!s.date)return false;
+    var sd=new Date(s.date+"T00:00:00");
+    return sd>=wkStart&&sd<=wkEnd;
+  });
+  var pracEvents=pracSess.map(function(s){
+    var lbl="\uD83C\uDFAF PRACTICE: "+s.name;
+    if(s.linkedEvent)lbl+=" (for "+s.linkedEvent+")";
+    return{text:lbl,date:s.date,time:s.time||"",isPractice:true};
+  });
+  var weekEvents=planEvents.concat(pracEvents);
+  var te=weekEvents.length;
+  var wp=d.weekProgress[wk]||{};
+  var ce=Object.values(wp).filter(Boolean).length;
+  var aa=d.activities.filter(function(a){return!a.done}).length;
+  var dayIdx=(new Date().getDay()||7)-1;
+  var pf=PRAYER_FOCUS[dayIdx]||PRAYER_FOCUS[0];
+  var pubWeeks=d.pubWeeks||{};
+  var isPublished=!!pubWeeks[wk];
+  var wdTheme=wd?wd.theme:"Plan";
+
+  function doPublish(){
+    var pw=Object.assign({},pubWeeks);
+    pw[wk]={events:weekEvents,progress:wp,theme:wdTheme,weekLabel:weekLabel(wk),publishedAt:new Date().toLocaleString()};
+    up("pubWeeks",pw);
+  }
+  function doUnpublish(){
+    var pw=Object.assign({},pubWeeks);
+    delete pw[wk];
+    up("pubWeeks",pw);
+  }
+  function togTask(i){
+    var newWp=Object.assign({},wp);
+    newWp[i]=!newWp[i];
+    var newWps=Object.assign({},d.weekProgress);
+    newWps[wk]=newWp;
+    up("weekProgress",newWps);
+    if(pubWeeks[wk]){
+      var pw=Object.assign({},pubWeeks);
+      pw[wk]=Object.assign({},pubWeeks[wk],{progress:newWp,publishedAt:new Date().toLocaleString()});
+      up("pubWeeks",pw);
+    }
+  }
+  function fmtDate(ds){
+    if(!ds)return"";
+    try{var d2=new Date(ds+"T00:00:00");return d2.toLocaleDateString("en-IN",{weekday:"short",day:"numeric",month:"short"})}
+    catch(e){return ds}
+  }
+  function fmtTime(ts){
+    if(!ts)return"";
+    try{var p=ts.split(":");var hr=parseInt(p[0]);return(hr>12?hr-12:hr||12)+":"+p[1]+(hr>=12?" PM":" AM")}
+    catch(e){return ts}
+  }
+
+  var stats=[
+    {l:"Attendance",v:pr+"/"+ALL_MEMBERS.length,em:"\uD83D\uDC65",c:"#2563EB",p:"attend"},
+    {l:"Activities",v:aa+" active",em:"\uD83D\uDCCB",c:"#7C3AED",p:"activities"},
+    {l:"Tasks Done",v:ce+"/"+te,em:"\u2705",c:"#059669",p:"schedule"},
+    {l:"Prayer",v:d.prayerLog.filter(function(p){return p.week===wk}).length,em:"\uD83D\uDE4F",c:"#EA580C",p:"prayer"}
+  ];
+
+  var quickActs=[
+    {l:"Activities",em:"\uD83D\uDCCB",p:"activities"},{l:"Roll Call",em:"\uD83D\uDCDD",p:"attend"},
+    {l:"Prayer",em:"\uD83D\uDE4F",p:"prayer"},{l:"Content",em:"\uD83D\uDCF1",p:"content"},
+    {l:"Teams",em:"\uD83D\uDC65",p:"teams"},{l:"Notes",em:"\u270D\uFE0F",p:"notes"}
+  ];
+
+  return(
+    <div style={S.pg}>
+      <div style={{background:"linear-gradient(135deg,#0a0f1a,#1a2744)",borderRadius:16,padding:20,marginBottom:14}}>
+        <h2 style={{margin:0,color:"#fff",fontSize:18,fontFamily:"'Playfair Display',serif"}}>Welcome, Pastor</h2>
+        <p style={{color:"#93c5fd",fontSize:13,margin:"4px 0 0"}}>{weekLabel(wk)}</p>
+        <p style={{color:"#e2e8f0",fontSize:12,margin:"2px 0 0"}}><strong>{wdTheme}</strong></p>
+        <div style={{display:"flex",gap:6,marginTop:10}}>
+          <button onClick={function(){setWk(Math.max(1,wk-1))}} style={{background:"rgba(255,255,255,0.1)",border:"none",color:"#93c5fd",fontSize:11,fontWeight:600,padding:"4px 12px",borderRadius:6,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Prev</button>
+          <button onClick={function(){setWk(Math.min(12,wk+1))}} style={{background:"rgba(255,255,255,0.1)",border:"none",color:"#93c5fd",fontSize:11,fontWeight:600,padding:"4px 12px",borderRadius:6,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Next</button>
+        </div>
+      </div>
+
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:14}}>
+        {stats.map(function(s){return(
+          <button key={s.l} onClick={function(){go(s.p)}} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:3,padding:"12px 8px",background:"#fff",borderRadius:12,border:"none",cursor:"pointer",boxShadow:"0 1px 3px rgba(0,0,0,0.05)",borderTop:"3px solid "+s.c,fontFamily:"'DM Sans',sans-serif"}}>
+            <span style={{fontSize:18}}>{s.em}</span>
+            <span style={{fontSize:18,fontWeight:700,color:"#0f172a"}}>{s.v}</span>
+            <span style={{fontSize:10,color:"#64748b"}}>{s.l}</span>
+          </button>
+        )})}
+      </div>
+
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+        <h3 style={{fontSize:12,fontWeight:700,color:"#334155",margin:"0 0 4px",textTransform:"uppercase",letterSpacing:0.5}}>
+          {"This Week "}
+          {isPublished && <span style={{fontSize:9,color:"#059669",background:"#f0fdf4",padding:"1px 6px",borderRadius:6,marginLeft:4,fontWeight:600,textTransform:"none"}}>Live</span>}
+          {!isPublished && weekEvents.length>0 && <span style={{fontSize:9,color:"#d97706",background:"#fffbeb",padding:"1px 6px",borderRadius:6,marginLeft:4,fontWeight:600,textTransform:"none"}}>Draft</span>}
+        </h3>
+        <button onClick={function(){go("schedule")}} style={{fontSize:10,color:"#2563EB",background:"#eff6ff",border:"none",borderRadius:6,padding:"4px 10px",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",fontWeight:600}}>Edit in Plan</button>
+      </div>
+
+      {weekEvents.length>0 && <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:10,flexWrap:"wrap"}}>
+        {!isPublished && <button onClick={doPublish} style={{padding:"6px 14px",background:"#059669",color:"#fff",border:"none",borderRadius:8,fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Publish to Team</button>}
+        {isPublished && <button onClick={doUnpublish} style={{padding:"6px 12px",background:"#fef2f2",color:"#dc2626",border:"1px solid #fecaca",borderRadius:8,fontSize:10,fontWeight:600,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Unpublish</button>}
+        {isPublished && <button onClick={doPublish} style={{padding:"6px 12px",background:"#eff6ff",color:"#2563EB",border:"1px solid #bfdbfe",borderRadius:8,fontSize:10,fontWeight:600,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Republish</button>}
+        {isPublished && pubWeeks[wk] && <span style={{fontSize:9,color:"#64748b"}}>{pubWeeks[wk].publishedAt}</span>}
+      </div>}
+
+      {weekEvents.map(function(ev,i){
+        var done=wp[i];
+        var isHL=ev.text.toUpperCase().indexOf("WORSHIP")>=0||ev.text.toUpperCase().indexOf("CELEBRATION")>=0;
+        var isPrac=ev.isPractice;
+        var bCol=isPrac?"#d97706":isHL?"#DC2626":"#e2e8f0";
+        return(
+          <button key={i} onClick={function(){togTask(i)}} style={{display:"flex",alignItems:"flex-start",gap:10,padding:"10px 12px",background:done?"#f0fdf4":isPrac?"#fffbeb":"#fff",borderRadius:10,marginBottom:5,width:"100%",border:"1px solid "+(done?"#bbf7d0":"#e2e8f0"),borderLeftWidth:3,borderLeftStyle:"solid",borderLeftColor:bCol,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",textAlign:"left",opacity:done?0.6:1}}>
+            <div style={S.cb(done,isPrac?"#d97706":"#059669")}>{done && <span style={{color:"#fff"}}>{Ic.check}</span>}</div>
+            <div style={{flex:1}}>
+              <div style={{fontSize:12,color:isPrac?"#92400e":"#0f172a",fontWeight:600,textDecoration:done?"line-through":"none"}}>{ev.text}</div>
+              {(ev.date||ev.time) && <div style={{display:"flex",gap:6,marginTop:3}}>
+                {ev.date && <span style={{fontSize:10,color:"#2563EB",background:"#eff6ff",padding:"1px 8px",borderRadius:6}}>{fmtDate(ev.date)}</span>}
+                {ev.time && <span style={{fontSize:10,color:"#7C3AED",background:"#f4ecf7",padding:"1px 8px",borderRadius:6}}>{fmtTime(ev.time)}</span>}
+              </div>}
+              {isPrac && <span style={{fontSize:9,color:"#d97706",fontWeight:600,marginTop:2,display:"block"}}>Mandatory attendance</span>}
+            </div>
+            {done && <span style={{fontSize:10,color:"#059669",fontWeight:700,flexShrink:0}}>Done</span>}
+          </button>
+        );
+      })}
+
+      {weekEvents.length===0 && <div style={{background:"#fff",borderRadius:12,border:"1px solid #e2e8f0",padding:16,textAlign:"center"}}>
+        <p style={{fontSize:12,color:"#94a3b8",margin:0}}>No tasks for this week. <button onClick={function(){go("schedule")}} style={{color:"#2563EB",background:"none",border:"none",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",fontWeight:600,fontSize:12}}>Go to Plan</button></p>
+      </div>}
+
+      <h3 style={S.sec}>Quick Actions</h3>
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}>
+        {quickActs.map(function(q){return(
+          <button key={q.p} onClick={function(){go(q.p)}} style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:5,padding:14,background:"#fff",border:"1px solid #e2e8f0",borderRadius:12,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>
+            <span style={{fontSize:20}}>{q.em}</span>
+            <span style={{fontSize:10,fontWeight:600,color:"#334155"}}>{q.l}</span>
+          </button>
+        )})}
+      </div>
+
+      <h3 style={S.sec}>{"Today's Prayer"}</h3>
+      <div style={{display:"flex",alignItems:"center",gap:12,padding:14,background:"#f0fdf4",borderRadius:12,border:"1px solid #bbf7d0"}}>
+        <span style={{fontSize:24}}>{pf.icon}</span>
+        <div>
+          <strong style={{color:"#065f46",fontSize:11}}>{pf.day}</strong>
+          <p style={{margin:"2px 0 0",fontSize:12,color:"#334155"}}>{pf.focus}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// === MEMBER HOME ===
+function MHome({d,go,wk,user,onOpenMsg}){
+  const me=ALL_MEMBERS.find(m=>m.name===user.name);
+  const myTeams=TEAMS.filter(t=>me?.teams.includes(t.id));
+  const myActs=d.activities.filter(a=>a.assigned.includes(user.name)&&!a.done);
+  const wd=WEEKLY_SCHEDULE.flatMap(m=>m.weeks).find(w=>w.wk===wk);
+  const pf=PRAYER_FOCUS[(new Date().getDay()||7)-1]||PRAYER_FOCUS[0];
+  const pubWeeks=d.pubWeeks||{};
+  const published=pubWeeks[wk];
+  const weekEvents=published?published.events.map(norm):[];
+  const fmtDate=ds=>{if(!ds)return"";try{const d2=new Date(ds+"T00:00:00");return d2.toLocaleDateString("en-IN",{weekday:"short",day:"numeric",month:"short"})}catch(e){return ds}};
+  const fmtTime=ts=>{if(!ts)return"";try{const[h,m]=ts.split(":");const hr=parseInt(h);return(hr>12?hr-12:hr||12)+":"+m+(hr>=12?" PM":" AM")}catch(e){return ts}};
+
+  // Practice eligibility check
+  const prac=d.practice||{};
+  const sessions=prac.sessions||[];
+  const myRequired=sessions.filter(s=>s.required.includes(user.name)&&!s.eventDone);
+  const myMissed=myRequired.filter(s=>{const att=s.attendance||{};return !att[user.name]&&new Date(s.date+"T23:59:59")<new Date()});
+  const blocked=myMissed.length>0;
+
+  // Messages/notifications
+  const msgs=d.messages||[];
+  const myMsgs=msgs.slice().reverse();
+
+  return(<div style={S.pg}>
+    {/* BLOCKED WARNING */}
+    {blocked&&<div style={{background:"#fef2f2",border:"2px solid #dc2626",borderRadius:14,padding:14,marginBottom:12,display:"flex",alignItems:"flex-start",gap:10}}>
+      <span style={{fontSize:22}}>{"🚫"}</span>
+      <div><div style={{fontSize:13,fontWeight:700,color:"#dc2626"}}>Practice Attendance Required</div>
+        <p style={{fontSize:11,color:"#7f1d1d",margin:"4px 0 0"}}>You missed {myMissed.length} required practice session{myMissed.length>1?"s":""}. You are not eligible to perform until you attend. Please speak to your team lead or Pastor.</p>
+        {myMissed.map(s=>(<div key={s.id} style={{fontSize:10,color:"#991b1b",marginTop:3}}>{"• "}{s.name} ({s.date})</div>))}
+      </div>
+    </div>}
+
+    {/* NOTIFICATION BANNER - tap to open */}
+    {myMsgs.length>0&&<div style={{marginBottom:12}}>
+      {myMsgs.map(m=>(<button key={m.id} onClick={()=>onOpenMsg&&onOpenMsg(m)} style={{width:"100%",background:"#eff6ff",border:"1px solid #bfdbfe",borderRadius:10,padding:"10px 12px",marginBottom:4,display:"flex",alignItems:"flex-start",gap:8,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",textAlign:"left"}}>
+        <span style={{fontSize:16}}>{"📩"}</span>
+        <div style={{flex:1}}><div style={{fontSize:11,fontWeight:700,color:"#1e40af"}}>{m.subject||"Message from Pastor"}</div><p style={{fontSize:11,color:"#334155",margin:"2px 0 0"}}>{m.text.slice(0,80)}{m.text.length>80?"... tap to read":""}</p><div style={{fontSize:9,color:"#94a3b8",marginTop:2}}>{m.date} {"• tap to open"}</div></div>
+      </button>))}
+    </div>}
+
+    {/* UPCOMING PRACTICE */}
+    {myRequired.filter(s=>new Date(s.date+"T23:59:59")>=new Date()).length>0&&<div style={{background:"#fffbeb",border:"1px solid #fde68a",borderRadius:12,padding:12,marginBottom:12}}>
+      <div style={{fontSize:12,fontWeight:700,color:"#92400e",marginBottom:4}}>{"🎯"} Upcoming Practice (Mandatory)</div>
+      {myRequired.filter(s=>new Date(s.date+"T23:59:59")>=new Date()).map(s=>(<div key={s.id} style={{fontSize:11,color:"#78350f",marginTop:2}}>{"• "}{s.name} - {s.date}{s.time?" at "+s.time:""}</div>))}
+    </div>}
+
+    <div style={{background:"linear-gradient(135deg,#065f46,#059669)",borderRadius:16,padding:20,marginBottom:14}}>
+      <h2 style={{margin:0,color:"#fff",fontSize:18,fontFamily:"'Playfair Display',serif"}}>Hey, {user.name}!</h2>
+      <p style={{color:"#a7f3d0",fontSize:11,margin:"3px 0 0"}}>{me?.role}</p>
+      <p style={{color:"#d1fae5",fontSize:12,margin:"6px 0 0"}}>{weekLabel(wk)}</p>
+      <p style={{color:"#e2e8f0",fontSize:11,margin:"2px 0 0"}}><strong>{wd?.theme}</strong></p>
+    </div>
+    {myTeams.length>0&&<><h3 style={S.sec}>My Teams</h3><div style={{display:"flex",gap:6,flexWrap:"wrap",marginBottom:10}}>{myTeams.map(t=>(<span key={t.id} style={{padding:"4px 11px",borderRadius:14,fontSize:10,fontWeight:600,color:"#fff",background:t.color}}>{t.icon} {t.name}</span>))}</div></>}
+
+    {/* THIS WEEK - from published plan with live completion status */}
+    {weekEvents.length>0&&<>
+      <h3 style={S.sec}>{published?.weekLabel||weekLabel(wk)} <span style={{fontSize:9,color:"#059669",background:"#f0fdf4",padding:"1px 6px",borderRadius:6,marginLeft:4,fontWeight:600,textTransform:"none"}}>Live</span></h3>
+      <div style={{...S.prog,marginBottom:2}}><div style={S.pf((Object.values(published?.progress||{}).filter(Boolean).length/Math.max(weekEvents.length,1))*100,"#059669")}/></div>
+      <p style={{fontSize:10,color:"#64748b",marginBottom:8}}>{Object.values(published?.progress||{}).filter(Boolean).length}/{weekEvents.length} tasks completed by Pastor</p>
+      {weekEvents.map((ev,i)=>{
+        const prog=published?.progress||{};
+        const done=prog[i];
+        const hl=ev.text.toUpperCase().includes("WORSHIP")||ev.text.toUpperCase().includes("CELEBRATION");
+        const isPrac=ev.isPractice||ev.text.includes("PRACTICE:");
+        const borderCol=isPrac?"#d97706":hl?"#DC2626":done?"#059669":"#e2e8f0";
+        return(
+        <div key={i} style={{display:"flex",alignItems:"flex-start",gap:10,padding:"10px 12px",background:done?"#f0fdf4":isPrac?"#fffbeb":"#fff",borderRadius:10,marginBottom:5,borderLeft:"3px solid "+borderCol,opacity:done?0.7:1}}>
+          <div style={{...S.cb(done,isPrac?"#d97706":"#059669"),marginTop:2,cursor:"default"}}>{done&&<span style={{color:"#fff"}}>{Ic.check}</span>}</div>
+          <div style={{flex:1}}>
+            <div style={{fontSize:12,color:done?"#065f46":isPrac?"#92400e":"#0f172a",fontWeight:600,textDecoration:done?"line-through":"none"}}>{ev.text}</div>
+            {(ev.date||ev.time)&&<div style={{display:"flex",gap:6,marginTop:3}}>
+              {ev.date&&<span style={{fontSize:10,color:"#2563EB",background:"#eff6ff",padding:"1px 8px",borderRadius:6}}>{fmtDate(ev.date)}</span>}
+              {ev.time&&<span style={{fontSize:10,color:"#7C3AED",background:"#f4ecf7",padding:"1px 8px",borderRadius:6}}>{fmtTime(ev.time)}</span>}
+            </div>}
+            {isPrac&&<span style={{fontSize:9,color:"#d97706",fontWeight:600,marginTop:2,display:"block"}}>Mandatory attendance</span>}
+          </div>
+          {done&&<span style={{fontSize:9,color:"#059669",fontWeight:700,flexShrink:0}}>Done</span>}
+          {!done&&<span style={{fontSize:9,color:"#d97706",fontWeight:600,flexShrink:0}}>Pending</span>}
+        </div>
+      );})}
+      {published?.publishedAt&&<p style={{fontSize:9,color:"#94a3b8",marginTop:2}}>Last updated: {published.publishedAt}</p>}
+    </>}
+    {!published&&<div style={{...S.cd,textAlign:"center",padding:16,marginBottom:8}}><span style={{fontSize:20}}>{"📅"}</span><p style={{fontSize:12,color:"#94a3b8",margin:"6px 0 0"}}>This week's schedule hasn't been published yet. Check back soon!</p></div>}
+    <h3 style={S.sec}>My Activities ({myActs.length})</h3>
+    {myActs.length===0&&<div style={{...S.cd,textAlign:"center",padding:20}}><span style={{fontSize:24}}>{"\u2705"}</span><p style={{fontSize:12,color:"#64748b",margin:"6px 0 0"}}>No pending tasks!</p></div>}
+    {myActs.map(a=>(<div key={a.id} style={{...S.cd,borderLeft:"4px solid #2563EB"}}><div style={{fontWeight:700,fontSize:13,color:"#0f172a"}}>{a.title}</div>{a.description&&<p style={{fontSize:11,color:"#64748b",margin:"3px 0 0"}}>{a.description}</p>}<div style={{display:"flex",gap:6,marginTop:5,flexWrap:"wrap"}}>{a.date&&<span style={{fontSize:10,color:"#2563EB",background:"#eff6ff",padding:"2px 7px",borderRadius:8}}>{a.date}</span>}{a.time&&<span style={{fontSize:10,color:"#7C3AED",background:"#f4ecf7",padding:"2px 7px",borderRadius:8}}>{a.time}</span>}</div><div style={{fontSize:10,color:"#94a3b8",marginTop:4}}>Also: {a.assigned.filter(n=>n!==user.name).join(", ")||"Just you"}</div></div>))}
+    <h3 style={S.sec}>Quick Links</h3>
+    <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}>
+      {[{l:"My Tasks",em:"\u2705",p:"myTasks"},{l:"Prayer",em:"🙏",p:"prayer"},{l:"Photo",em:"📷",p:"photo"},{l:"Content",em:"📱",p:"content"},{l:"Teams",em:"👥",p:"teams"}].map(q=>(<button key={q.p} onClick={()=>go(q.p)} style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:5,padding:14,background:"#fff",border:"1px solid #e2e8f0",borderRadius:12,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}><span style={{fontSize:20}}>{q.em}</span><span style={{fontSize:10,fontWeight:600,color:"#334155"}}>{q.l}</span></button>))}
+    </div>
+    <h3 style={S.sec}>Today's Prayer</h3>
+    <div style={{display:"flex",alignItems:"center",gap:12,padding:14,background:"#f0fdf4",borderRadius:12,border:"1px solid #bbf7d0"}}><span style={{fontSize:24}}>{pf.icon}</span><div><strong style={{color:"#065f46",fontSize:11}}>{pf.day}</strong><p style={{margin:"2px 0 0",fontSize:12,color:"#334155"}}>{pf.focus}</p></div></div>
+  </div>);
+}
+
+// === MY TASKS (MEMBER) ===
+function MyTasks({d,up,user}){
+  const myA=d.activities.filter(a=>a.assigned.includes(user.name));
+  const pend=myA.filter(a=>!a.done);const comp=myA.filter(a=>a.done);
+  const markDone=id=>{up("activities",d.activities.map(a=>a.id===id?{...a,done:true,doneBy:user.name,doneDate:new Date().toLocaleDateString()}:a))};
+  return(<div style={S.pg}>
+    <h2 style={S.ti}>My Tasks</h2>
+    {pend.length===0&&<div style={{...S.cd,textAlign:"center",padding:20}}><p style={{fontSize:12,color:"#64748b"}}>All clear! No pending tasks.</p></div>}
+    {pend.map(a=>(<div key={a.id} style={{...S.cd,borderLeft:"4px solid #2563EB"}}><div style={{fontWeight:700,fontSize:13,color:"#0f172a"}}>{a.title}</div>{a.description&&<p style={{fontSize:11,color:"#64748b",margin:"3px 0 0"}}>{a.description}</p>}<div style={{display:"flex",gap:6,marginTop:5,flexWrap:"wrap"}}>{a.date&&<span style={{fontSize:10,color:"#2563EB",background:"#eff6ff",padding:"2px 7px",borderRadius:8}}>{a.date}</span>}{a.time&&<span style={{fontSize:10,color:"#7C3AED",background:"#f4ecf7",padding:"2px 7px",borderRadius:8}}>{a.time}</span>}</div><div style={{fontSize:10,color:"#94a3b8",marginTop:4}}>Assigned: {a.assigned.join(", ")}</div><button onClick={()=>markDone(a.id)} style={{marginTop:8,padding:"6px 14px",background:"#059669",color:"#fff",border:"none",borderRadius:8,fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Mark Complete</button></div>))}
+    {comp.length>0&&<><h3 style={S.sec}>Completed</h3>{comp.map(a=>(<div key={a.id} style={{...S.cd,opacity:0.5}}><div style={{fontWeight:600,fontSize:12,textDecoration:"line-through",color:"#0f172a"}}>{a.title}</div><div style={{fontSize:10,color:"#059669",marginTop:2}}>Done {a.doneDate||""}</div></div>))}</>}
+  </div>);
+}
+
+// === ACTIVITIES (PASTOR) ===
+function Acts({d,up}){
+  const [show,setShow]=useState(false);
+  const [ti,setTi]=useState("");const [desc,setDesc]=useState("");const [dt,setDt]=useState("");const [tm,setTm]=useState("");const [asgn,setAsgn]=useState([]);
+  const togA=n=>setAsgn(p=>p.includes(n)?p.filter(x=>x!==n):[...p,n]);
+  const asgTeam=id=>{const t=TEAMS.find(x=>x.id===id);if(t)setAsgn(p=>[...new Set([...p,...t.members])])};
+  const create=()=>{if(!ti.trim()||asgn.length===0)return;up("activities",[...d.activities,{id:Date.now(),title:ti.trim(),description:desc.trim(),date:dt,time:tm,assigned:asgn,done:false,created:new Date().toLocaleDateString()}]);setTi("");setDesc("");setDt("");setTm("");setAsgn([]);setShow(false)};
+  const rm=id=>up("activities",d.activities.filter(a=>a.id!==id));
+  const togDone=id=>up("activities",d.activities.map(a=>a.id===id?{...a,done:!a.done}:a));
+  const pend=d.activities.filter(a=>!a.done);const comp=d.activities.filter(a=>a.done);
+  return(<div style={S.pg}>
+    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
+      <h2 style={{...S.ti,margin:0}}>Activities</h2>
+      <button onClick={()=>setShow(!show)} style={{padding:"7px 14px",background:show?"#dc2626":"#2563EB",color:"#fff",border:"none",borderRadius:10,fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>{show?"Cancel":"+ Create"}</button>
+    </div>
+    {show&&<div style={{background:"#fff",borderRadius:14,border:"2px solid #2563EB",padding:16,marginBottom:16}}>
+      <h3 style={{fontSize:14,fontWeight:700,color:"#0f172a",margin:"0 0 10px"}}>New Activity</h3>
+      <input value={ti} onChange={e=>setTi(e.target.value)} placeholder="Activity title *" style={{...S.inp,width:"100%",marginBottom:8,boxSizing:"border-box",flex:"none"}}/>
+      <textarea value={desc} onChange={e=>setDesc(e.target.value)} placeholder="Description (optional)" style={{width:"100%",padding:"9px 14px",border:"1px solid #e2e8f0",borderRadius:10,fontSize:13,fontFamily:"'DM Sans',sans-serif",outline:"none",resize:"vertical",minHeight:50,boxSizing:"border-box",marginBottom:8}}/>
+      <div style={{display:"flex",gap:8,marginBottom:10}}>
+        <input type="date" value={dt} onChange={e=>setDt(e.target.value)} style={{...S.inp,flex:1}}/>
+        <input type="time" value={tm} onChange={e=>setTm(e.target.value)} style={{...S.inp,flex:1}}/>
+      </div>
+      <h4 style={{fontSize:11,fontWeight:700,color:"#0f172a",margin:"0 0 6px"}}>Assign to team:</h4>
+      <div style={{display:"flex",gap:4,flexWrap:"wrap",marginBottom:8}}>
+        {TEAMS.map(t=>(<button key={t.id} onClick={()=>asgTeam(t.id)} style={{padding:"3px 9px",borderRadius:14,fontSize:10,fontWeight:600,border:"1px solid "+t.color,color:t.color,background:"#fff",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>{t.icon} {t.name}</button>))}
+        <button onClick={()=>setAsgn(ALL_MEMBERS.map(m=>m.name))} style={{padding:"3px 9px",borderRadius:14,fontSize:10,fontWeight:600,border:"1px solid #0f172a",color:"#0f172a",background:"#fff",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>All</button>
+      </div>
+      <h4 style={{fontSize:11,fontWeight:700,color:"#0f172a",margin:"0 0 6px"}}>Or pick individuals ({asgn.length}):</h4>
+      <div style={{display:"flex",gap:3,flexWrap:"wrap",marginBottom:10}}>
+        {ALL_MEMBERS.map(m=>{const on=asgn.includes(m.name);return(<button key={m.name} onClick={()=>togA(m.name)} style={{padding:"3px 9px",borderRadius:14,fontSize:10,fontWeight:600,border:on?"1px solid #2563EB":"1px solid #e2e8f0",color:on?"#fff":"#64748b",background:on?"#2563EB":"#f8fafc",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>{m.name}</button>)})}
+      </div>
+      <button onClick={create} disabled={!ti.trim()||asgn.length===0} style={{width:"100%",padding:"10px",background:(!ti.trim()||asgn.length===0)?"#cbd5e1":"#2563EB",color:"#fff",border:"none",borderRadius:10,fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Create ({asgn.length} people)</button>
+    </div>}
+    {pend.length===0&&!show&&<div style={{...S.cd,textAlign:"center",padding:20}}><p style={{color:"#64748b",fontSize:12}}>No activities. Tap "+ Create" to add one.</p></div>}
+    {pend.map(a=>(<div key={a.id} style={{...S.cd,borderLeft:"4px solid #2563EB"}}>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}><div style={{flex:1}}><div style={{fontWeight:700,fontSize:13,color:"#0f172a"}}>{a.title}</div>{a.description&&<p style={{fontSize:11,color:"#64748b",margin:"3px 0 0"}}>{a.description}</p>}</div><button onClick={()=>rm(a.id)} style={S.rm}>{Ic.x}</button></div>
+      <div style={{display:"flex",gap:5,marginTop:5,flexWrap:"wrap"}}>{a.date&&<span style={{fontSize:10,color:"#2563EB",background:"#eff6ff",padding:"2px 7px",borderRadius:8}}>{a.date}</span>}{a.time&&<span style={{fontSize:10,color:"#7C3AED",background:"#f4ecf7",padding:"2px 7px",borderRadius:8}}>{a.time}</span>}<span style={{fontSize:10,color:"#059669",background:"#f0fdf4",padding:"2px 7px",borderRadius:8}}>{a.assigned.length} assigned</span></div>
+      <div style={{display:"flex",gap:3,flexWrap:"wrap",marginTop:5}}>{a.assigned.map(n=>(<span key={n} style={{fontSize:9,padding:"2px 6px",borderRadius:10,background:"#f1f5f9",color:"#475569"}}>{n}</span>))}</div>
+      <button onClick={()=>togDone(a.id)} style={{marginTop:8,padding:"5px 12px",background:"#059669",color:"#fff",border:"none",borderRadius:8,fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Mark Complete</button>
+    </div>))}
+    {comp.length>0&&<><h3 style={S.sec}>Completed ({comp.length})</h3>{comp.map(a=>(<div key={a.id} style={{...S.cd,opacity:0.5}}><div style={{display:"flex",justifyContent:"space-between"}}><span style={{fontWeight:600,fontSize:12,textDecoration:"line-through",color:"#0f172a"}}>{a.title}</span><button onClick={()=>togDone(a.id)} style={{fontSize:10,color:"#2563EB",background:"none",border:"none",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Reopen</button></div></div>))}</>}
+  </div>);
+}
+
+// === TEAMS ===
+const DEFAULT_TEAM_CHECKLISTS={
+  worship:[{text:"Tune all instruments",done:false},{text:"Test microphones and monitors",done:false},{text:"Print/load song lyrics",done:false},{text:"Run through setlist once",done:false},{text:"Pray as a team before service",done:false}],
+  media:[{text:"Test projector and slides",done:false},{text:"Check camera battery and storage",done:false},{text:"Test livestream connection",done:false},{text:"Prepare lower thirds / graphics",done:false},{text:"Backup all files from last week",done:false}],
+  social:[{text:"Schedule this week's posts",done:false},{text:"Edit and upload Sunday reel",done:false},{text:"Reply to all comments and DMs",done:false},{text:"Check analytics and note top post",done:false},{text:"Prepare Friday hype content",done:false}],
+  outreach:[{text:"Welcome cards / QR codes ready",done:false},{text:"Greeters assigned for Sunday",done:false},{text:"Follow up with last week's visitors",done:false},{text:"Update visitor contact list",done:false},{text:"Plan next fellowship event",done:false}],
+  prayer:[{text:"Prepare Wednesday prayer topics",done:false},{text:"Send prayer reminders to team",done:false},{text:"Update prayer request list",done:false},{text:"Pray for each team member by name",done:false},{text:"Arrive 30min early for pre-service prayer",done:false}],
+};
+
+function Tms({d,up,isPastor}){
+  const [sel,setSel]=useState(null);
+  const [showAdd,setShowAdd]=useState(false);
+  const [tName,setTName]=useState("");const [tColor,setTColor]=useState("#2563EB");const [tIcon,setTIcon]=useState("👥");const [tLead,setTLead]=useState("");const [tMembers,setTMembers]=useState([]);
+  const [addingMember,setAddingMember]=useState(null);const [newMemberName,setNewMemberName]=useState("");
+  const [teamTab,setTeamTab]=useState("members"); // members, checklist, sops, inventory
+  const [newCheckItem,setNewCheckItem]=useState("");
+  const [newSop,setNewSop]=useState({title:"",content:""});
+  const [newInvItem,setNewInvItem]=useState({name:"",qty:"",status:"good"});
+  const [editingSop,setEditingSop]=useState(null);
+  const [showDirectory,setShowDirectory]=useState(false);
+  const [newPersonName,setNewPersonName]=useState("");
+  const [newPersonRole,setNewPersonRole]=useState("");
+
+  const teams=d.customTeams||TEAMS;
+  const td=d.teamData||{};
+  const allNames=[...new Set([...ALL_MEMBERS.map(m=>m.name),...(d.users||[]).map(u=>u.name)])];
+  const colors=["#2563EB","#7C3AED","#EA580C","#DC2626","#059669","#d97706","#0891b2","#be185d"];
+  const icons=["🎵","📷","📱","🤝","🙏","👥","🎤","\u26EA","📚","🌟"];
+
+  // Add person to church directory
+  const addPerson=()=>{if(!newPersonName.trim())return;const exists=allNames.includes(newPersonName.trim());if(exists)return;const users=[...(d.users||[]),{name:newPersonName.trim(),role:newPersonRole.trim()||"Member",phone:"",joined:new Date().toLocaleDateString()}];up("users",users);setNewPersonName("");setNewPersonRole("")};
+  const removePersonFromDirectory=(name)=>{up("users",(d.users||[]).filter(u=>u.name!==name))};
+
+  const getTeamData=(teamId)=>td[teamId]||{checklist:DEFAULT_TEAM_CHECKLISTS[teamId]||[],sops:[],inventory:[]};
+  const updateTeamData=(teamId,field,val)=>{const cur=getTeamData(teamId);const updated={...td,[teamId]:{...cur,[field]:val}};up("teamData",updated)};
+
+  // Checklist
+  const toggleCheck=(teamId,idx)=>{const cl=[...getTeamData(teamId).checklist];cl[idx]={...cl[idx],done:!cl[idx].done};updateTeamData(teamId,"checklist",cl)};
+  const addCheck=(teamId)=>{if(!newCheckItem.trim())return;const cl=[...getTeamData(teamId).checklist,{text:newCheckItem.trim(),done:false}];updateTeamData(teamId,"checklist",cl);setNewCheckItem("")};
+  const removeCheck=(teamId,idx)=>{const cl=getTeamData(teamId).checklist.filter((_,i)=>i!==idx);updateTeamData(teamId,"checklist",cl)};
+  const resetChecklist=(teamId)=>{const cl=getTeamData(teamId).checklist.map(c=>({...c,done:false}));updateTeamData(teamId,"checklist",cl)};
+
+  // SOPs
+  const addSop=(teamId)=>{if(!newSop.title.trim())return;const sops=[...getTeamData(teamId).sops,{id:Date.now(),title:newSop.title.trim(),content:newSop.content.trim(),updated:new Date().toLocaleDateString()}];updateTeamData(teamId,"sops",sops);setNewSop({title:"",content:""})};
+  const removeSop=(teamId,id)=>{updateTeamData(teamId,"sops",getTeamData(teamId).sops.filter(s=>s.id!==id))};
+  const updateSop=(teamId,id,field,val)=>{const sops=getTeamData(teamId).sops.map(s=>s.id===id?{...s,[field]:val,updated:new Date().toLocaleDateString()}:s);updateTeamData(teamId,"sops",sops)};
+
+  // Inventory
+  const addInv=(teamId)=>{if(!newInvItem.name.trim())return;const inv=[...getTeamData(teamId).inventory,{id:Date.now(),name:newInvItem.name.trim(),qty:newInvItem.qty.trim(),status:newInvItem.status,updated:new Date().toLocaleDateString()}];updateTeamData(teamId,"inventory",inv);setNewInvItem({name:"",qty:"",status:"good"})};
+  const removeInv=(teamId,id)=>{updateTeamData(teamId,"inventory",getTeamData(teamId).inventory.filter(i=>i.id!==id))};
+  const updateInv=(teamId,id,field,val)=>{const inv=getTeamData(teamId).inventory.map(i=>i.id===id?{...i,[field]:val,updated:new Date().toLocaleDateString()}:i);updateTeamData(teamId,"inventory",inv)};
+
+  // Team CRUD
+  const createTeam=()=>{if(!tName.trim()||!tLead)return;const nt={id:"t-"+Date.now(),name:tName.trim(),color:tColor,icon:tIcon,lead:tLead,members:[...new Set([tLead,...tMembers])]};up("customTeams",[...teams,nt]);setTName("");setTLead("");setTMembers([]);setShowAdd(false)};
+  const removeTeam=id=>up("customTeams",teams.filter(t=>t.id!==id));
+  const addMemberToTeam=(teamId)=>{if(!newMemberName.trim())return;const updated=teams.map(t=>t.id===teamId?{...t,members:[...new Set([...t.members,newMemberName.trim()])]}:t);up("customTeams",updated);setNewMemberName("");setAddingMember(null)};
+  const removeMemberFromTeam=(teamId,name)=>{const updated=teams.map(t=>t.id===teamId?{...t,members:t.members.filter(m=>m!==name),lead:t.lead===name?"":t.lead}:t);up("customTeams",updated)};
+  const setLead=(teamId,name)=>{up("customTeams",teams.map(t=>t.id===teamId?{...t,lead:name}:t))};
+
+  const ttab=(active,color)=>({flex:1,padding:"7px 2px",background:active?color:"transparent",border:"none",borderRadius:8,fontSize:10,fontWeight:700,color:active?"#fff":"#64748b",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"});
+
+  return(<div style={S.pg}>
+    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
+      <h2 style={{...S.ti,margin:0}}>Teams</h2>
+      {isPastor&&<div style={{display:"flex",gap:4}}>
+        <button onClick={()=>{setShowDirectory(!showDirectory);setShowAdd(false)}} style={{padding:"7px 10px",background:showDirectory?"#d97706":"#059669",color:"#fff",border:"none",borderRadius:10,fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>{showDirectory?"Close":"+ Person"}</button>
+        <button onClick={()=>{setShowAdd(!showAdd);setShowDirectory(false)}} style={{padding:"7px 10px",background:showAdd?"#dc2626":"#2563EB",color:"#fff",border:"none",borderRadius:10,fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>{showAdd?"Cancel":"+ Team"}</button>
+      </div>}
+    </div>
+
+    {/* ADD PERSON / DIRECTORY */}
+    {showDirectory&&isPastor&&<div style={{background:"#fff",borderRadius:14,border:"2px solid #059669",padding:16,marginBottom:14}}>
+      <h3 style={{fontSize:14,fontWeight:700,color:"#0f172a",margin:"0 0 10px"}}>Church Directory</h3>
+      <p style={{fontSize:11,color:"#64748b",margin:"0 0 10px"}}>Add new people here. They'll appear in team assignment, attendance, activities, and Big Bro/Sis.</p>
+      <div style={{display:"flex",gap:6,marginBottom:10}}>
+        <input value={newPersonName} onChange={e=>setNewPersonName(e.target.value)} placeholder="Full name" style={{...S.inp,fontSize:12,flex:2}} onKeyDown={e=>e.key==="Enter"&&addPerson()}/>
+        <input value={newPersonRole} onChange={e=>setNewPersonRole(e.target.value)} placeholder="Role (optional)" style={{...S.inp,fontSize:12,flex:2}}/>
+        <button onClick={addPerson} style={{...S.abtn,width:34,height:34,background:"#059669"}}>{Ic.plus}</button>
+      </div>
+      <h4 style={{fontSize:11,fontWeight:700,color:"#334155",margin:"0 0 6px"}}>All Members ({allNames.length})</h4>
+      <div style={{maxHeight:200,overflowY:"auto"}}>
+        {allNames.map(name=>{
+          const isOriginal=ALL_MEMBERS.find(m=>m.name===name);
+          const userObj=(d.users||[]).find(u=>u.name===name);
+          return(<div key={name} style={{display:"flex",alignItems:"center",gap:8,padding:"5px 8px",borderRadius:8,marginBottom:2,background:"#f8fafc"}}>
+            <div style={{width:24,height:24,borderRadius:"50%",background:"#64748b",display:"flex",alignItems:"center",justifyContent:"center",color:"#fff",fontSize:11,fontWeight:700}}>{name[0]}</div>
+            <div style={{flex:1}}>
+              <div style={{fontSize:11,fontWeight:600,color:"#0f172a"}}>{name}</div>
+              <div style={{fontSize:9,color:"#94a3b8"}}>{isOriginal?isOriginal.role:userObj?.role||"Member"}{isOriginal?" \u00b7 Original":""}</div>
+            </div>
+            {!isOriginal&&<button onClick={()=>removePersonFromDirectory(name)} style={S.rm}>{Ic.x}</button>}
+          </div>);
+        })}
+      </div>
+    </div>}
+
+    {/* CREATE TEAM */}
+    {showAdd&&isPastor&&<div style={{background:"#fff",borderRadius:14,border:"2px solid #2563EB",padding:16,marginBottom:14}}>
+      <h3 style={{fontSize:14,fontWeight:700,color:"#0f172a",margin:"0 0 10px"}}>Create Team</h3>
+      <input value={tName} onChange={e=>setTName(e.target.value)} placeholder="Team name" style={{...S.inp,width:"100%",marginBottom:8,boxSizing:"border-box",flex:"none"}}/>
+      <div style={{display:"flex",gap:4,marginBottom:8,flexWrap:"wrap"}}><span style={{fontSize:11,color:"#64748b",lineHeight:"24px"}}>Color:</span>{colors.map(c=>(<button key={c} onClick={()=>setTColor(c)} style={{width:24,height:24,borderRadius:"50%",background:c,border:tColor===c?"3px solid #0f172a":"2px solid #e2e8f0",cursor:"pointer"}}/>))}</div>
+      <div style={{display:"flex",gap:4,marginBottom:8,flexWrap:"wrap"}}><span style={{fontSize:11,color:"#64748b",lineHeight:"28px"}}>Icon:</span>{icons.map(ic=>(<button key={ic} onClick={()=>setTIcon(ic)} style={{width:28,height:28,borderRadius:6,background:tIcon===ic?"#eff6ff":"#f8fafc",border:tIcon===ic?"2px solid #2563EB":"1px solid #e2e8f0",cursor:"pointer",fontSize:16,display:"flex",alignItems:"center",justifyContent:"center"}}>{ic}</button>))}</div>
+      <p style={{fontSize:11,fontWeight:700,color:"#334155",margin:"0 0 4px"}}>Lead:</p>
+      <div style={{display:"flex",gap:3,flexWrap:"wrap",marginBottom:8}}>{allNames.map(n=>(<button key={n} onClick={()=>setTLead(n)} style={{padding:"3px 9px",borderRadius:14,fontSize:10,fontWeight:600,border:tLead===n?"1px solid #2563EB":"1px solid #e2e8f0",color:tLead===n?"#fff":"#64748b",background:tLead===n?"#2563EB":"#f8fafc",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>{n}</button>))}</div>
+      <p style={{fontSize:11,fontWeight:700,color:"#334155",margin:"0 0 4px"}}>Members:</p>
+      <div style={{display:"flex",gap:3,flexWrap:"wrap",marginBottom:10}}>{allNames.map(n=>{const on=tMembers.includes(n);return(<button key={n} onClick={()=>setTMembers(on?tMembers.filter(x=>x!==n):[...tMembers,n])} style={{padding:"3px 9px",borderRadius:14,fontSize:10,fontWeight:600,border:on?"1px solid #059669":"1px solid #e2e8f0",color:on?"#fff":"#64748b",background:on?"#059669":"#f8fafc",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>{n}</button>)})}</div>
+      <button onClick={createTeam} disabled={!tName.trim()||!tLead} style={{width:"100%",padding:"10px",background:(!tName.trim()||!tLead)?"#cbd5e1":"#2563EB",color:"#fff",border:"none",borderRadius:10,fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Create</button>
+    </div>}
+
+    {/* TEAM LIST */}
+    {teams.map(t=>{
+      const isOpen=sel===t.id;
+      const tData=getTeamData(t.id);
+      const checkDone=tData.checklist.filter(c=>c.done).length;
+      return(<div key={t.id} style={{marginBottom:8}}>
+        <button onClick={()=>{setSel(isOpen?null:t.id);setTeamTab("members")}} style={{display:"flex",alignItems:"center",width:"100%",padding:"12px 14px",background:"#fff",border:"1px solid #e2e8f0",borderLeft:"4px solid "+t.color,borderRadius:isOpen?"10px 10px 0 0":"10px",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>
+          <div style={{display:"flex",alignItems:"center",gap:10,flex:1}}>
+            <span style={{fontSize:18}}>{t.icon}</span>
+            <div style={{textAlign:"left"}}>
+              <div style={{fontWeight:700,color:"#0f172a",fontSize:13}}>{t.name}</div>
+              <div style={{fontSize:10,color:"#64748b"}}>{t.lead?"Lead: "+t.lead+" \u00b7 ":""}{t.members.length} members \u00b7 {checkDone}/{tData.checklist.length} tasks</div>
+            </div>
+          </div>
+          <span style={{transform:isOpen?"rotate(90deg)":"none",transition:"0.2s"}}>{Ic.chev}</span>
+        </button>
+
+        {isOpen&&<div style={{background:"#fff",border:"1px solid #e2e8f0",borderTop:"none",borderRadius:"0 0 10px 10px",overflow:"hidden"}}>
+          {/* TABS */}
+          <div style={{display:"flex",gap:3,padding:"8px 10px",background:"#f8fafc",borderBottom:"1px solid #f1f5f9"}}>
+            <button onClick={()=>setTeamTab("members")} style={ttab(teamTab==="members",t.color)}>Members</button>
+            <button onClick={()=>setTeamTab("checklist")} style={ttab(teamTab==="checklist",t.color)}>Checklist</button>
+            <button onClick={()=>setTeamTab("sops")} style={ttab(teamTab==="sops",t.color)}>SOPs</button>
+            <button onClick={()=>setTeamTab("inventory")} style={ttab(teamTab==="inventory",t.color)}>Inventory</button>
+          </div>
+
+          {/* MEMBERS TAB */}
+          {teamTab==="members"&&<div style={{padding:"10px 14px"}}>
+            {t.members.map(n=>(<div key={n} style={{display:"flex",alignItems:"center",gap:10,padding:"5px 0"}}>
+              <div style={{width:28,height:28,borderRadius:"50%",background:t.color,display:"flex",alignItems:"center",justifyContent:"center",color:"#fff",fontSize:12,fontWeight:700}}>{n[0]}</div>
+              <div style={{flex:1}}><div style={{fontWeight:600,fontSize:11,color:"#0f172a"}}>{n}{n===t.lead&&<span style={{fontSize:9,fontWeight:700,background:"#dbeafe",color:"#2563EB",padding:"1px 5px",borderRadius:4,marginLeft:4}}>LEAD</span>}</div></div>
+              {isPastor&&n!==t.lead&&<button onClick={()=>setLead(t.id,n)} style={{fontSize:9,color:"#2563EB",background:"#eff6ff",border:"none",borderRadius:4,padding:"2px 6px",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Lead</button>}
+              {isPastor&&<button onClick={()=>removeMemberFromTeam(t.id,n)} style={S.rm}>{Ic.x}</button>}
+            </div>))}
+            {isPastor&&addingMember===t.id&&<div style={{display:"flex",gap:4,marginTop:6,flexWrap:"wrap"}}>
+              {allNames.filter(n=>!t.members.includes(n)).map(n=>(<button key={n} onClick={()=>setNewMemberName(n)} style={{padding:"3px 8px",borderRadius:12,fontSize:10,fontWeight:600,border:newMemberName===n?"1px solid #059669":"1px solid #e2e8f0",color:newMemberName===n?"#fff":"#64748b",background:newMemberName===n?"#059669":"#fff",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>{n}</button>))}
+              {newMemberName&&<button onClick={()=>addMemberToTeam(t.id)} style={{padding:"3px 10px",borderRadius:12,fontSize:10,fontWeight:700,background:"#2563EB",color:"#fff",border:"none",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Add</button>}
+            </div>}
+            {isPastor&&<div style={{display:"flex",gap:6,marginTop:8}}>
+              <button onClick={()=>setAddingMember(addingMember===t.id?null:t.id)} style={{fontSize:10,color:"#2563EB",background:"#eff6ff",border:"none",borderRadius:6,padding:"4px 10px",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",fontWeight:600}}>{addingMember===t.id?"Done":"+ Member"}</button>
+              {!TEAMS.find(dt=>dt.id===t.id)&&<button onClick={()=>removeTeam(t.id)} style={{fontSize:10,color:"#dc2626",background:"#fef2f2",border:"none",borderRadius:6,padding:"4px 10px",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",fontWeight:600}}>Delete Team</button>}
+            </div>}
+          </div>}
+
+          {/* CHECKLIST TAB */}
+          {teamTab==="checklist"&&<div style={{padding:"10px 14px"}}>
+            <div style={S.prog}><div style={S.pf((checkDone/Math.max(tData.checklist.length,1))*100,t.color)}/></div>
+            <p style={{fontSize:10,color:"#64748b",marginBottom:8}}>{checkDone}/{tData.checklist.length} done</p>
+            {tData.checklist.map((item,idx)=>(<button key={idx} onClick={()=>toggleCheck(t.id,idx)} style={{display:"flex",alignItems:"center",gap:8,padding:"7px 8px",borderRadius:8,border:"1px solid #e2e8f0",marginBottom:3,width:"100%",textAlign:"left",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",background:item.done?"#f0fdf4":"#fff"}}>
+              <div style={S.cb(item.done,t.color)}>{item.done&&<span style={{color:"#fff"}}>{Ic.check}</span>}</div>
+              <span style={{flex:1,fontSize:12,color:item.done?"#059669":"#334155",textDecoration:item.done?"line-through":"none"}}>{item.text}</span>
+              {isPastor&&<button onClick={e=>{e.stopPropagation();removeCheck(t.id,idx)}} style={S.rm}>{Ic.x}</button>}
+            </button>))}
+            <div style={{display:"flex",gap:6,marginTop:8}}>
+              <input value={newCheckItem} onChange={e=>setNewCheckItem(e.target.value)} placeholder="Add checklist item..." style={{...S.inp,fontSize:11}} onKeyDown={e=>e.key==="Enter"&&addCheck(t.id)}/>
+              <button onClick={()=>addCheck(t.id)} style={{...S.abtn,width:32,height:32}}>{Ic.plus}</button>
+            </div>
+            <button onClick={()=>resetChecklist(t.id)} style={{...S.rst,fontSize:10}}>Reset All</button>
+          </div>}
+
+          {/* SOPS TAB */}
+          {teamTab==="sops"&&<div style={{padding:"10px 14px"}}>
+            <p style={{fontSize:11,color:"#64748b",margin:"0 0 8px"}}>Standard procedures, guides, and references for {t.name}.</p>
+            {tData.sops.length===0&&<p style={{fontSize:11,color:"#94a3b8",textAlign:"center",padding:12}}>No SOPs yet. Add your first one below.</p>}
+            {tData.sops.map(sop=>(
+              <div key={sop.id} style={{background:"#f8fafc",borderRadius:10,border:"1px solid #e2e8f0",marginBottom:6,overflow:"hidden"}}>
+                <button onClick={()=>setEditingSop(editingSop===sop.id?null:sop.id)} style={{width:"100%",padding:"10px 12px",background:"transparent",border:"none",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",textAlign:"left",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                  <div><div style={{fontWeight:700,fontSize:12,color:"#0f172a"}}>{sop.title}</div><div style={{fontSize:9,color:"#94a3b8"}}>Updated {sop.updated}</div></div>
+                  <span style={{transform:editingSop===sop.id?"rotate(90deg)":"none",transition:"0.2s",color:"#94a3b8"}}>{Ic.chev}</span>
+                </button>
+                {editingSop===sop.id&&<div style={{padding:"8px 12px",borderTop:"1px solid #e2e8f0"}}>
+                  {isPastor?<>
+                    <input value={sop.title} onChange={e=>updateSop(t.id,sop.id,"title",e.target.value)} style={{...S.inp,width:"100%",fontSize:12,marginBottom:6,boxSizing:"border-box",flex:"none",fontWeight:700}}/>
+                    <textarea value={sop.content} onChange={e=>updateSop(t.id,sop.id,"content",e.target.value)} style={{width:"100%",padding:"8px 12px",border:"1px solid #e2e8f0",borderRadius:8,fontSize:11,fontFamily:"'DM Sans',sans-serif",outline:"none",resize:"vertical",minHeight:80,boxSizing:"border-box"}}/>
+                    <button onClick={()=>removeSop(t.id,sop.id)} style={{fontSize:10,color:"#dc2626",background:"none",border:"none",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",marginTop:6}}>Delete SOP</button>
+                  </>:<div style={{fontSize:12,color:"#334155",whiteSpace:"pre-wrap",lineHeight:1.5}}>{sop.content||"No content yet."}</div>}
+                </div>}
+              </div>
+            ))}
+            {isPastor&&<div style={{marginTop:8,padding:10,background:"#f0f9ff",borderRadius:10,border:"1px dashed #93c5fd"}}>
+              <input value={newSop.title} onChange={e=>setNewSop({...newSop,title:e.target.value})} placeholder="SOP title (e.g. Sunday Setup Procedure)" style={{...S.inp,width:"100%",fontSize:12,marginBottom:6,boxSizing:"border-box",flex:"none"}}/>
+              <textarea value={newSop.content} onChange={e=>setNewSop({...newSop,content:e.target.value})} placeholder="Write the procedure step by step..." style={{width:"100%",padding:"8px 12px",border:"1px solid #e2e8f0",borderRadius:8,fontSize:11,fontFamily:"'DM Sans',sans-serif",outline:"none",resize:"vertical",minHeight:60,boxSizing:"border-box",marginBottom:6}}/>
+              <button onClick={()=>addSop(t.id)} disabled={!newSop.title.trim()} style={{padding:"6px 14px",background:newSop.title.trim()?"#2563EB":"#cbd5e1",color:"#fff",border:"none",borderRadius:8,fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Add SOP</button>
+            </div>}
+          </div>}
+
+          {/* INVENTORY TAB */}
+          {teamTab==="inventory"&&<div style={{padding:"10px 14px"}}>
+            <p style={{fontSize:11,color:"#64748b",margin:"0 0 8px"}}>Equipment, supplies, and maintenance tracking.</p>
+            {tData.inventory.length===0&&<p style={{fontSize:11,color:"#94a3b8",textAlign:"center",padding:12}}>No inventory items. Add equipment below.</p>}
+            {tData.inventory.map(item=>{
+              const sc=item.status==="good"?"#059669":item.status==="needs-repair"?"#d97706":"#dc2626";
+              return(<div key={item.id} style={{display:"flex",alignItems:"center",gap:8,padding:"8px 10px",background:"#fff",borderRadius:8,border:"1px solid #e2e8f0",marginBottom:4}}>
+                <div style={{width:8,height:8,borderRadius:"50%",background:sc,flexShrink:0}}/>
+                <div style={{flex:1}}>
+                  <div style={{fontSize:12,fontWeight:600,color:"#0f172a"}}>{item.name}{item.qty&&<span style={{fontSize:10,color:"#64748b",fontWeight:400}}> (Qty: {item.qty})</span>}</div>
+                  <div style={{fontSize:9,color:"#94a3b8"}}>Updated {item.updated}</div>
+                </div>
+                <select value={item.status} onChange={e=>updateInv(t.id,item.id,"status",e.target.value)} style={{fontSize:10,border:"1px solid #e2e8f0",borderRadius:6,padding:"2px 4px",fontFamily:"'DM Sans',sans-serif",color:sc,background:"#fff"}}>
+                  <option value="good">Good</option>
+                  <option value="needs-repair">Needs Repair</option>
+                  <option value="missing">Missing</option>
+                </select>
+                {isPastor&&<button onClick={()=>removeInv(t.id,item.id)} style={S.rm}>{Ic.x}</button>}
+              </div>);
+            })}
+            <div style={{marginTop:8,padding:10,background:"#f0fdf4",borderRadius:10,border:"1px dashed #bbf7d0"}}>
+              <div style={{display:"flex",gap:6,marginBottom:6}}>
+                <input value={newInvItem.name} onChange={e=>setNewInvItem({...newInvItem,name:e.target.value})} placeholder="Item name (e.g. Projector)" style={{...S.inp,fontSize:11,flex:2}}/>
+                <input value={newInvItem.qty} onChange={e=>setNewInvItem({...newInvItem,qty:e.target.value})} placeholder="Qty" style={{...S.inp,fontSize:11,flex:1}}/>
+              </div>
+              <div style={{display:"flex",gap:6}}>
+                <select value={newInvItem.status} onChange={e=>setNewInvItem({...newInvItem,status:e.target.value})} style={{...S.inp,fontSize:11,flex:1}}>
+                  <option value="good">Good</option>
+                  <option value="needs-repair">Needs Repair</option>
+                  <option value="missing">Missing</option>
+                </select>
+                <button onClick={()=>addInv(t.id)} disabled={!newInvItem.name.trim()} style={{padding:"6px 14px",background:newInvItem.name.trim()?"#059669":"#cbd5e1",color:"#fff",border:"none",borderRadius:8,fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Add</button>
+              </div>
+            </div>
+          </div>}
+        </div>}
+      </div>);
+    })}
+  </div>);
+}
+
+// === SCHEDULE ===
+function Sched({d,up,wk,setWk}){
+  const plan=d.customPlan||WEEKLY_SCHEDULE;
+  const [editing,setEditing]=useState(null); // week number being edited
+  const [editTheme,setEditTheme]=useState("");
+  const [editEvents,setEditEvents]=useState([]);
+  const [newEv,setNewEv]=useState("");
+  const [showAI,setShowAI]=useState(false);
+  const [aiDesc,setAiDesc]=useState("");
+  const [aiLoading,setAiLoading]=useState(false);
+
+  const tog=(w,i)=>{const wp={...d.weekProgress};if(!wp[w])wp[w]={};wp[w][i]=!wp[w][i];up("weekProgress",wp)};
+
+  const startEdit=(week)=>{setEditing(week.wk);setEditTheme(week.theme);setEditEvents([...week.events])};
+  const saveEdit=()=>{
+    const np=plan.map(mo=>({...mo,weeks:mo.weeks.map(w=>w.wk===editing?{...w,theme:editTheme,events:editEvents}:w)}));
+    up("customPlan",np);setEditing(null);
+  };
+  const addEv=()=>{if(!newEv.trim())return;setEditEvents([...editEvents,newEv.trim()]);setNewEv("")};
+  const rmEv=i=>setEditEvents(editEvents.filter((_,idx)=>idx!==i));
+  const moveEv=(i,dir)=>{const arr=[...editEvents];const ni=i+dir;if(ni<0||ni>=arr.length)return;[arr[i],arr[ni]]=[arr[ni],arr[i]];setEditEvents(arr)};
+
+  const generateFullPlan=async()=>{
+    if(!aiDesc.trim())return;setAiLoading(true);
+    try{
+      const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:2000,messages:[{role:"user",content:"You are a youth ministry planning assistant for FGCLC English Church. The pastor wants a 12-week (3-month) plan. Their description: \""+aiDesc.trim()+"\"\n\nGenerate a JSON array of 3 months. Each month: {\"month\":1, \"weeks\":[{\"wk\":1,\"theme\":\"...\",\"events\":[\"item1\",\"item2\",...]},...]}. Each week has 4-5 events. Month 1 = weeks 1-4, Month 2 = weeks 5-8, Month 3 = weeks 9-12. Themes should be short (2-4 words). Events should be actionable tasks. Respond with ONLY the JSON array."}]})});
+      const data=await res.json();
+      const text=data.content?.map(c=>c.text||"").join("")||"";
+      var cleanText=text;while(cleanText.indexOf(String.fromCharCode(96))>=0)cleanText=cleanText.replace(String.fromCharCode(96),"");cleanText=cleanText.replace(/^json\s*/,"").trim();const parsed=JSON.parse(cleanText);
+      if(Array.isArray(parsed)&&parsed.length===3){up("customPlan",parsed);setShowAI(false);setAiDesc("")}
+    }catch(e){console.error(e)}
+    setAiLoading(false);
+  };
+
+  const resetPlan=()=>{up("customPlan",null)};
+  const isCustom=d.customPlan!==null&&d.customPlan!==undefined;
+
+  return(<div style={S.pg}>
+    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
+      <h2 style={{...S.ti,margin:0}}>12-Week Plan {isCustom&&<span style={{fontSize:9,color:"#7C3AED",background:"#f4ecf7",padding:"1px 6px",borderRadius:6,marginLeft:6,fontWeight:600}}>Custom</span>}</h2>
+      <div style={{display:"flex",gap:4}}>
+        {!showAI&&<button onClick={()=>setShowAI(true)} style={{padding:"5px 10px",background:"linear-gradient(135deg,#7C3AED,#2563EB)",border:"none",color:"#fff",fontSize:10,fontWeight:700,borderRadius:6,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>AI Generate</button>}
+        {isCustom&&!showAI&&<button onClick={resetPlan} style={{padding:"5px 10px",background:"#f1f5f9",border:"none",color:"#64748b",fontSize:10,fontWeight:600,borderRadius:6,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Reset</button>}
+      </div>
+    </div>
+
+    {/* AI FULL PLAN GENERATOR */}
+    {showAI&&<div style={{background:"#fff",borderRadius:14,border:"2px solid #7C3AED",padding:16,marginBottom:14}}>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
+        <h3 style={{margin:0,fontSize:13,fontWeight:700,color:"#0f172a"}}>{"✨"} AI Plan Generator</h3>
+        <button onClick={()=>{setShowAI(false);setAiDesc("")}} style={{background:"none",border:"none",color:"#94a3b8",cursor:"pointer",fontSize:10,fontFamily:"'DM Sans',sans-serif"}}>Cancel</button>
+      </div>
+      <p style={{fontSize:11,color:"#64748b",margin:"0 0 10px"}}>Describe your 3-month vision and AI will create the full 12-week plan.</p>
+      <textarea value={aiDesc} onChange={e=>setAiDesc(e.target.value)} placeholder={"e.g. Month 1 focus on team building and unity, Month 2 on worship training and media setup, Month 3 on outreach and community service. We have worship nights every 4 weeks. We want to grow from 17 to 30 members..."} style={{width:"100%",padding:"10px 14px",border:"1px solid #e2e8f0",borderRadius:10,fontSize:12,fontFamily:"'DM Sans',sans-serif",outline:"none",resize:"vertical",minHeight:80,boxSizing:"border-box",marginBottom:10}}/>
+      <button onClick={generateFullPlan} disabled={aiLoading||!aiDesc.trim()} style={{width:"100%",padding:"10px",background:(aiLoading||!aiDesc.trim())?"#cbd5e1":"linear-gradient(135deg,#7C3AED,#2563EB)",color:"#fff",border:"none",borderRadius:10,fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>
+        {aiLoading?"Generating 12-week plan...":"Generate Full Plan"}
+      </button>
+    </div>}
+
+    {/* WEEK PILLS */}
+    <div style={{display:"flex",gap:5,flexWrap:"wrap",marginBottom:14}}>
+      {Array.from({length:12},(_,i)=>i+1).map(w=>(<button key={w} onClick={()=>setWk(w)} style={{width:28,height:28,borderRadius:"50%",display:"flex",alignItems:"center",justifyContent:"center",fontSize:10,fontWeight:700,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",background:w===wk?"#1e293b":"#f1f5f9",color:w===wk?"#fff":"#475569",border:w===wk?"none":"1px solid #e2e8f0"}}>{w}</button>))}
+    </div>
+
+    {/* MONTHS */}
+    {plan.map(mo=>(<div key={mo.month}>
+      <h3 style={{fontSize:10,fontWeight:700,color:"#94a3b8",textTransform:"uppercase",letterSpacing:1,margin:"10px 0 5px"}}>{monthName(mo.month)}</h3>
+      {mo.weeks.map(week=>{
+        const dn=Object.values(d.weekProgress[week.wk]||{}).filter(Boolean).length;
+        const isEditing=editing===week.wk;
+
+        return(<div key={week.wk} style={{...S.cd,border:week.wk===wk?"2px solid #2563EB":"1px solid #e2e8f0"}}>
+          {/* HEADER */}
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:5}}>
+            <div>
+              <span style={{fontSize:10,fontWeight:700,color:"#2563EB"}}>{weekLabel(week.wk)}</span>
+              {!isEditing&&<h4 style={{margin:"1px 0 0",fontSize:13,fontWeight:700,color:"#0f172a"}}>{week.theme}</h4>}
+              {isEditing&&<input value={editTheme} onChange={e=>setEditTheme(e.target.value)} style={{...S.inp,fontSize:13,fontWeight:700,padding:"4px 8px",marginTop:2}}/>}
+            </div>
+            <div style={{display:"flex",alignItems:"center",gap:4}}>
+              {!isEditing&&<span style={{fontSize:10,color:"#64748b",background:"#f1f5f9",padding:"2px 7px",borderRadius:10}}>{dn}/{week.events.length}</span>}
+              {!isEditing&&<button onClick={()=>startEdit(week)} style={{fontSize:9,color:"#2563EB",background:"#eff6ff",border:"none",borderRadius:4,padding:"3px 7px",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",fontWeight:600}}>Edit</button>}
+              {isEditing&&<button onClick={()=>setEditing(null)} style={{fontSize:9,color:"#64748b",background:"none",border:"none",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Cancel</button>}
+              {isEditing&&<button onClick={saveEdit} style={{fontSize:9,color:"#fff",background:"#2563EB",border:"none",borderRadius:4,padding:"3px 8px",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",fontWeight:700}}>Save</button>}
+            </div>
+          </div>
+
+          {/* VIEW MODE */}
+          {!isEditing&&week.events.map((ev,i)=>{const done=d.weekProgress[week.wk]?.[i];return(
+            <button key={i} onClick={()=>tog(week.wk,i)} style={{display:"flex",alignItems:"center",gap:8,padding:"4px 0",background:"none",border:"none",width:"100%",cursor:"pointer",textAlign:"left",fontFamily:"'DM Sans',sans-serif",opacity:done?0.4:1}}>
+              <div style={S.cb(done)}>{done&&<span style={{color:"#fff"}}>{Ic.check}</span>}</div>
+              <span style={{fontSize:11,textDecoration:done?"line-through":"none",color:"#334155"}}>{ev}</span>
+            </button>
+          )})}
+
+          {/* EDIT MODE */}
+          {isEditing&&<div>
+            {editEvents.map((ev,i)=>(<div key={i} style={{display:"flex",alignItems:"center",gap:4,padding:"4px 6px",background:"#f8fafc",borderRadius:6,marginBottom:3,border:"1px solid #e2e8f0"}}>
+              <div style={{display:"flex",flexDirection:"column",gap:1}}>
+                <button onClick={()=>moveEv(i,-1)} style={{background:"none",border:"none",cursor:"pointer",padding:0,fontSize:9,color:i===0?"#e2e8f0":"#64748b"}}>{"\u25B2"}</button>
+                <button onClick={()=>moveEv(i,1)} style={{background:"none",border:"none",cursor:"pointer",padding:0,fontSize:9,color:i===editEvents.length-1?"#e2e8f0":"#64748b"}}>{"\u25BC"}</button>
+              </div>
+              <input value={ev} onChange={e=>{const arr=[...editEvents];arr[i]=e.target.value;setEditEvents(arr)}} style={{...S.inp,fontSize:11,padding:"4px 8px",flex:1}}/>
+              <button onClick={()=>rmEv(i)} style={S.rm}>{Ic.x}</button>
+            </div>))}
+            <div style={{display:"flex",gap:4,marginTop:6}}>
+              <input value={newEv} onChange={e=>setNewEv(e.target.value)} placeholder="Add event..." style={{...S.inp,fontSize:11}} onKeyDown={e=>e.key==="Enter"&&addEv()}/>
+              <button onClick={addEv} style={{...S.abtn,width:30,height:30}}>{Ic.plus}</button>
+            </div>
+          </div>}
+        </div>);
+      })}
+    </div>))}
+  </div>);
+}
+
+// === PHOTO ===
+function Pho({d,up}){const [ev,setEv]=useState("sunday");const key=ev+"-cur";const ch=d.photoChecks[key]||{};const tog=id=>{const p={...d.photoChecks};if(!p[key])p[key]={};p[key][id]=!p[key][id];up("photoChecks",p)};const dn=Object.values(ch).filter(Boolean).length;return(<div style={S.pg}><h2 style={S.ti}>Photo Checklist</h2><div style={{display:"flex",gap:6,marginBottom:10}}>{["sunday","worship-night","event"].map(e=>(<button key={e} onClick={()=>setEv(e)} style={S.pill(ev===e)}>{e==="sunday"?"Sunday":e==="worship-night"?"Worship Night":"Event"}</button>))}</div><div style={S.prog}><div style={S.pf((dn/10)*100)}/></div><p style={{fontSize:11,color:"#64748b",marginBottom:8}}>{dn}/10 shots</p>{PHOTO_CHECKLIST.map(s=>{const on=ch[s.id];return(<button key={s.id} onClick={()=>tog(s.id)} style={S.row(on)}><div style={S.cb(on)}>{on&&<span style={{color:"#fff"}}>{Ic.check}</span>}</div><div style={{flex:1}}><div style={{fontWeight:600,fontSize:11,color:"#0f172a"}}>{s.id}. {s.shot}</div><div style={{fontSize:10,color:"#64748b"}}>{s.desc}</div><div style={{fontSize:9,color:"#2563EB"}}>{"💡"} {s.tip}</div></div></button>)})}<button onClick={()=>{const p={...d.photoChecks};p[key]={};up("photoChecks",p)}} style={S.rst}>Reset</button></div>)}
+
+// === CONTENT ===
+function Cnt({d,up}){const key="con-this";const dn=d.contentDone[key]||{};const tog=day=>{const c={...d.contentDone};if(!c[key])c[key]={};c[key][day]=!c[key][day];up("contentDone",c)};return(<div style={S.pg}><h2 style={S.ti}>Content Calendar</h2>{CONTENT_CALENDAR.map(item=>{const on=dn[item.day];return(<button key={item.day} onClick={()=>tog(item.day)} style={S.row(on,item.color)}><div style={S.cb(on)}>{on&&<span style={{color:"#fff"}}>{Ic.check}</span>}</div><div style={{flex:1}}><div style={{display:"flex",justifyContent:"space-between"}}><span style={{fontWeight:700,fontSize:11,color:"#0f172a"}}>{item.day}</span><span style={{fontSize:9,color:"#64748b",background:"#f1f5f9",padding:"1px 6px",borderRadius:8}}>{item.platform}</span></div><div style={{fontSize:11,color:"#334155",marginTop:1}}>{item.type}</div><div style={{fontSize:10,color:"#64748b"}}>{item.who}</div></div></button>)})}<button onClick={()=>{const c={...d.contentDone};c[key]={};up("contentDone",c)}} style={S.rst}>Reset</button></div>)}
+
+// === PRAYER ===
+function Pray({d,up,wk}){const [txt,setTxt]=useState("");const [typ,setTyp]=useState("personal");const pf=PRAYER_FOCUS[(new Date().getDay()||7)-1]||PRAYER_FOCUS[0];const add=()=>{if(!txt.trim())return;up("prayerLog",[...d.prayerLog,{text:txt.trim(),type:typ,date:new Date().toLocaleDateString(),week:wk,id:Date.now()}]);setTxt("")};const rm=id=>up("prayerLog",d.prayerLog.filter(p=>p.id!==id));return(<div style={S.pg}><h2 style={S.ti}>Prayer & Devotion</h2><div style={{background:"linear-gradient(135deg,#065f46,#059669)",borderRadius:14,padding:14,display:"flex",alignItems:"center",gap:12,marginBottom:14}}><span style={{fontSize:28}}>{pf.icon}</span><div><div style={{fontSize:10,color:"#a7f3d0",fontWeight:600}}>TODAY ({pf.day.toUpperCase()})</div><div style={{fontSize:13,color:"#fff",fontWeight:600,marginTop:2}}>{pf.focus}</div></div></div><h3 style={S.sec}>Daily Guide</h3>{PRAYER_FOCUS.map(p=>(<div key={p.day} style={{display:"flex",alignItems:"center",gap:8,padding:"7px 10px",borderRadius:8,marginBottom:3,background:p.day===pf.day?"#f0fdf4":"#fff",border:p.day===pf.day?"1px solid #bbf7d0":"1px solid #f1f5f9"}}><span style={{fontSize:14}}>{p.icon}</span><div style={{flex:1}}><span style={{fontWeight:700,fontSize:10,color:p.day===pf.day?"#059669":"#94a3b8"}}>{p.day}</span><p style={{margin:0,fontSize:11,color:"#334155"}}>{p.focus}</p></div></div>))}<h3 style={{...S.sec,marginTop:16}}>Log a Prayer</h3><div style={{display:"flex",gap:5,marginBottom:8,flexWrap:"wrap"}}>{["personal","team","church","answered"].map(t=>(<button key={t} onClick={()=>setTyp(t)} style={S.pill(typ===t,"#065f46")}>{t==="answered"?"🎉 Answered":t[0].toUpperCase()+t.slice(1)}</button>))}</div><div style={{display:"flex",gap:6}}><input value={txt} onChange={e=>setTxt(e.target.value)} placeholder="Prayer request..." style={S.inp} onKeyDown={e=>e.key==="Enter"&&add()}/><button onClick={add} style={S.abtn}>{Ic.plus}</button></div><div style={{marginTop:10}}>{d.prayerLog.slice().reverse().slice(0,15).map(p=>(<div key={p.id} style={{display:"flex",alignItems:"flex-start",gap:8,padding:"7px 10px",background:"#fff",borderRadius:8,border:"1px solid #e2e8f0",marginBottom:3,borderLeft:p.type==="answered"?"3px solid #059669":p.type==="team"?"3px solid #2563EB":"3px solid #e2e8f0"}}><div style={{flex:1}}><span style={{fontSize:9,color:"#94a3b8"}}>{p.date} {"\u00b7"} {p.type}</span><p style={{margin:"1px 0 0",fontSize:11,color:"#334155"}}>{p.text}</p></div><button onClick={()=>rm(p.id)} style={S.rm}>{Ic.x}</button></div>))}</div></div>)}
+
+// === ATTENDANCE ===
+function Att({d,up,isPastor}){
+  const [ev,setEv]=useState("sunday");const [dt]=useState(new Date().toLocaleDateString());const [view,setView]=useState("mark"); // mark, summary, followup
+  const key=ev+"-"+dt;const att=d.attendance[key]||{};
+  const tog=name=>{const a={...d.attendance};if(!a[key])a[key]={};a[key][name]=!a[key][name];up("attendance",a)};
+  const pr=Object.values(att).filter(Boolean).length;
+  const allNames=[...new Set([...ALL_MEMBERS.map(m=>m.name),...(d.users||[]).map(u=>u.name)])];
+  const absent=allNames.filter(n=>!att[n]);
+  const followups=d.followups||[];
+
+  // Summary calculations
+  const allKeys=Object.keys(d.attendance);
+  const getMemberStats=(name)=>{
+    let total=0,present=0;
+    allKeys.forEach(k=>{if(d.attendance[k]){total++;if(d.attendance[k][name])present++}});
+    return{total,present,pct:total?Math.round((present/total)*100):0};
+  };
+  const getWeekKeys=()=>allKeys.filter(k=>{const parts=k.split("-");const ds=parts.slice(1).join("-");if(!ds)return false;try{const dd=new Date(ds);const now=new Date();const diff=(now-dd)/(1000*60*60*24);return diff<=7&&diff>=0}catch(e){return false}});
+  const getMonthKeys=()=>allKeys.filter(k=>{const parts=k.split("-");const ds=parts.slice(1).join("-");if(!ds)return false;try{const dd=new Date(ds);const now=new Date();return dd.getMonth()===now.getMonth()&&dd.getFullYear()===now.getFullYear()}catch(e){return false}});
+
+  const addFollowup=(name)=>{
+    const fu=[...followups,{id:Date.now(),name,date:new Date().toLocaleDateString(),status:"called",note:""}];
+    up("followups",fu);
+  };
+  const updateFollowup=(id,field,val)=>{up("followups",followups.map(f=>f.id===id?{...f,[field]:val}:f))};
+  const removeFollowup=id=>up("followups",followups.filter(f=>f.id!==id));
+
+  const tabSt=(active)=>({flex:1,padding:"8px 4px",background:active?"#2563EB":"transparent",border:"none",borderRadius:8,fontSize:11,fontWeight:700,color:active?"#fff":"#64748b",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"});
+
+  return(<div style={S.pg}>
+    <h2 style={S.ti}>Attendance</h2>
+    {isPastor&&<div style={{display:"flex",gap:4,marginBottom:12,background:"#f1f5f9",borderRadius:10,padding:3}}>
+      <button onClick={()=>setView("mark")} style={tabSt(view==="mark")}>Mark</button>
+      <button onClick={()=>setView("summary")} style={tabSt(view==="summary")}>Summary</button>
+      <button onClick={()=>setView("followup")} style={tabSt(view==="followup")}>Follow Up</button>
+    </div>}
+
+    {view==="mark"&&<>
+      <div style={{display:"flex",gap:5,marginBottom:10,flexWrap:"wrap"}}>{["sunday","worship-night","wednesday-prayer","event"].map(e=>(<button key={e} onClick={()=>setEv(e)} style={S.pill(ev===e)}>{e.split("-").map(w=>w[0].toUpperCase()+w.slice(1)).join(" ")}</button>))}</div>
+      <div style={S.prog}><div style={S.pf((pr/allNames.length)*100,"#2563EB")}/></div>
+      <p style={{fontSize:11,color:"#64748b",marginBottom:8}}>{pr}/{allNames.length} present</p>
+      {allNames.map(name=>{const on=att[name];return(<button key={name} onClick={()=>tog(name)} style={{display:"flex",alignItems:"center",gap:10,padding:"7px 10px",borderRadius:8,border:"1px solid #e2e8f0",marginBottom:3,width:"100%",textAlign:"left",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",background:on?"#eff6ff":"#fff"}}><div style={S.cb(on,"#2563EB")}>{on&&<span style={{color:"#fff"}}>{Ic.check}</span>}</div><span style={{fontWeight:600,fontSize:12,color:"#0f172a"}}>{name}</span></button>)})}
+      <button onClick={()=>{const a={...d.attendance};a[key]={};up("attendance",a)}} style={S.rst}>Clear</button>
+    </>}
+
+    {view==="summary"&&isPastor&&<>
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8,marginBottom:14}}>
+        <div style={{...S.cd,textAlign:"center",padding:12}}><div style={{fontSize:20,fontWeight:700,color:"#2563EB"}}>{allKeys.length}</div><div style={{fontSize:10,color:"#64748b"}}>Total Records</div></div>
+        <div style={{...S.cd,textAlign:"center",padding:12}}><div style={{fontSize:20,fontWeight:700,color:"#059669"}}>{getWeekKeys().length}</div><div style={{fontSize:10,color:"#64748b"}}>This Week</div></div>
+        <div style={{...S.cd,textAlign:"center",padding:12}}><div style={{fontSize:20,fontWeight:700,color:"#7C3AED"}}>{getMonthKeys().length}</div><div style={{fontSize:10,color:"#64748b"}}>This Month</div></div>
+      </div>
+      <h3 style={S.sec}>Member Attendance</h3>
+      {allNames.map(name=>{const s=getMemberStats(name);return(
+        <div key={name} style={{display:"flex",alignItems:"center",gap:10,padding:"8px 12px",background:"#fff",borderRadius:10,border:"1px solid #e2e8f0",marginBottom:4}}>
+          <div style={{width:28,height:28,borderRadius:"50%",background:s.pct>=75?"#059669":s.pct>=50?"#d97706":"#dc2626",display:"flex",alignItems:"center",justifyContent:"center",color:"#fff",fontSize:11,fontWeight:700}}>{s.pct}%</div>
+          <div style={{flex:1}}><div style={{fontSize:12,fontWeight:700,color:"#0f172a"}}>{name}</div><div style={{fontSize:10,color:"#64748b"}}>{s.present}/{s.total} services attended</div></div>
+          <div style={{width:60}}>
+            <div style={{height:4,background:"#e2e8f0",borderRadius:2}}><div style={{height:4,background:s.pct>=75?"#059669":s.pct>=50?"#d97706":"#dc2626",borderRadius:2,width:s.pct+"%"}}/></div>
+          </div>
+        </div>
+      )})}
+    </>}
+
+    {view==="followup"&&isPastor&&<>
+      <h3 style={S.sec}>Absent Today ({absent.length})</h3>
+      {absent.length===0&&<p style={{fontSize:12,color:"#059669",padding:12,textAlign:"center"}}>Everyone is present! {"🎉"}</p>}
+      {absent.map(name=>{const alreadyCalled=followups.find(f=>f.name===name&&f.date===dt);return(
+        <div key={name} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 12px",background:"#fff",borderRadius:10,border:"1px solid #e2e8f0",marginBottom:4,borderLeft:alreadyCalled?"3px solid #059669":"3px solid #dc2626"}}>
+          <div style={{flex:1}}><div style={{fontSize:12,fontWeight:700,color:"#0f172a"}}>{name}</div>{alreadyCalled&&<div style={{fontSize:10,color:"#059669",fontWeight:600}}>{"✅"} Called {alreadyCalled.status==="responded"?"- Responded":alreadyCalled.status==="no-answer"?"- No answer":"- Followed up"}</div>}</div>
+          {!alreadyCalled&&<button onClick={()=>addFollowup(name)} style={{padding:"5px 12px",background:"#2563EB",color:"#fff",border:"none",borderRadius:8,fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Call</button>}
+        </div>
+      )})}
+
+      <h3 style={{...S.sec,marginTop:16}}>Follow-Up Log</h3>
+      {followups.length===0&&<p style={{fontSize:12,color:"#94a3b8",textAlign:"center"}}>No follow-ups recorded yet.</p>}
+      {followups.slice().reverse().slice(0,20).map(f=>(<div key={f.id} style={{padding:"10px 12px",background:"#fff",borderRadius:10,border:"1px solid #e2e8f0",marginBottom:4,borderLeft:f.status==="responded"?"3px solid #059669":f.status==="no-answer"?"3px solid #d97706":"3px solid #2563EB"}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+          <div><div style={{fontSize:12,fontWeight:700,color:"#0f172a"}}>{f.name}</div><div style={{fontSize:10,color:"#64748b"}}>{f.date}</div></div>
+          <div style={{display:"flex",gap:3}}>
+            {["called","responded","no-answer"].map(s=>(<button key={s} onClick={()=>updateFollowup(f.id,"status",s)} style={{padding:"2px 8px",borderRadius:6,fontSize:9,fontWeight:600,border:f.status===s?"1px solid #2563EB":"1px solid #e2e8f0",color:f.status===s?"#fff":"#64748b",background:f.status===s?(s==="responded"?"#059669":s==="no-answer"?"#d97706":"#2563EB"):"#f8fafc",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>{s==="no-answer"?"No Answer":s[0].toUpperCase()+s.slice(1)}</button>))}
+            <button onClick={()=>removeFollowup(f.id)} style={S.rm}>{Ic.x}</button>
+          </div>
+        </div>
+        <input value={f.note||""} onChange={e=>updateFollowup(f.id,"note",e.target.value)} placeholder="Add note..." style={{...S.inp,width:"100%",fontSize:11,marginTop:6,padding:"5px 10px",boxSizing:"border-box",flex:"none"}}/>
+      </div>))}
+    </>}
+  </div>);
+}
+
+// === NOTES ===
+function Nts({d,up}){const [tasks,setT]=useState(d.tasks||[]);const [nw,setNw]=useState("");const add=()=>{if(!nw.trim())return;const t=[...tasks,{text:nw.trim(),done:false,id:Date.now()}];setT(t);up("tasks",t);setNw("")};const tog=id=>{const t=tasks.map(x=>x.id===id?{...x,done:!x.done}:x);setT(t);up("tasks",t)};const rm=id=>{const t=tasks.filter(x=>x.id!==id);setT(t);up("tasks",t)};return(<div style={S.pg}><h2 style={S.ti}>Pastor's Notes</h2><h3 style={S.sec}>Tasks</h3><div style={{display:"flex",gap:6,marginBottom:10}}><input value={nw} onChange={e=>setNw(e.target.value)} placeholder="Add a task..." style={S.inp} onKeyDown={e=>e.key==="Enter"&&add()}/><button onClick={add} style={S.abtn}>{Ic.plus}</button></div>{tasks.map(t=>(<div key={t.id} style={{display:"flex",alignItems:"center",gap:8,padding:"5px 0",opacity:t.done?0.4:1}}><button onClick={()=>tog(t.id)} style={{...S.cb(t.done),cursor:"pointer"}}>{t.done&&<span style={{color:"#fff"}}>{Ic.check}</span>}</button><span style={{flex:1,fontSize:12,textDecoration:t.done?"line-through":"none",color:"#334155"}}>{t.text}</span><button onClick={()=>rm(t.id)} style={S.rm}>{Ic.x}</button></div>))}<h3 style={{...S.sec,marginTop:16}}>Journal</h3><textarea value={d.notes} onChange={e=>up("notes",e.target.value)} placeholder="Observations, ideas, follow-ups..." style={{width:"100%",minHeight:100,padding:12,border:"1px solid #e2e8f0",borderRadius:12,fontSize:12,fontFamily:"'DM Sans',sans-serif",resize:"vertical",outline:"none",boxSizing:"border-box",background:"#fff"}}/><h3 style={{...S.sec,marginTop:16}}>Weekly Rhythm</h3>{[{d:"Mon",t:"Review attendance. Check social posts."},{d:"Tue",t:"Plan Wed prayer with Samson."},{d:"Wed",t:"Join prayer. Check follow-ups."},{d:"Thu",t:"Worship rehearsal."},{d:"Fri",t:"Confirm slides, posts, equipment."},{d:"Sat",t:"Rest. Confirm Sunday roles."},{d:"Sun",t:"Pre-service prayer. Service. Lead check-in."}].map(r=>(<div key={r.d} style={{display:"flex",gap:8,padding:"6px 10px",background:"#fff",borderRadius:6,border:"1px solid #f1f5f9",marginBottom:3}}><span style={{fontWeight:700,fontSize:10,color:"#2563EB",minWidth:30}}>{r.d}</span><span style={{fontSize:10,color:"#475569"}}>{r.t}</span></div>))}</div>)}
+
+// === BIG BROTHER / BIG SISTER ===
+const WEEKLY_CHECKLIST=[
+  {id:"call",label:"Called / texted the teen this week",icon:"📞"},
+  {id:"meet",label:"Met in person (coffee, hangout, church)",icon:"🤝"},
+  {id:"pray",label:"Prayed together with the teen",icon:"🙏"},
+  {id:"bible",label:"Shared a scripture or devotional",icon:"📖"},
+  {id:"listen",label:"Listened to their struggles / joys",icon:"👂"},
+  {id:"school",label:"Asked about school / work / life",icon:"🎓"},
+  {id:"encourage",label:"Gave encouragement or advice",icon:"💪"},
+  {id:"invite",label:"Invited them to a church event",icon:"\u26EA"},
+];
+
+function BBBS({d,up,isPastor,user}){
+  const pairs=d.bbbs||[];
+  const teensList=d.teens||[];
+  const [showForm,setShowForm]=useState(false);
+  const [mentor,setMentor]=useState("");
+  const [teen,setTeen]=useState("");
+  const [teenAge,setTeenAge]=useState("");
+  const [notes,setNotes]=useState("");
+  const [expanded,setExpanded]=useState(null);
+  const [tab,setTab]=useState("checklist");
+  const [progText,setProgText]=useState("");
+  const [prayText,setPrayText]=useState("");
+  const [pastorPrayed,setPastorPrayed]=useState({});
+  const [showAddTeen,setShowAddTeen]=useState(false);
+  const [newTeenName,setNewTeenName]=useState("");
+  const [newTeenAge,setNewTeenAge]=useState("");
+
+  const addNewTeen=()=>{if(!newTeenName.trim())return;up("teens",[...teensList,{name:newTeenName.trim(),age:newTeenAge.trim(),id:Date.now()}]);setNewTeenName("");setNewTeenAge("");setShowAddTeen(false);setTeen(newTeenName.trim())};
+  const removeTeen=id=>up("teens",teensList.filter(t=>t.id!==id));
+
+  const create=()=>{
+    if(!mentor||!teen)return;
+    const teenObj=teensList.find(t=>t.name===teen);
+    const pair={id:Date.now(),mentor,teen,teenAge:teenObj?.age||teenAge,notes:notes.trim(),weeklyChecks:{},progressLogs:[],prayerPoints:[],created:new Date().toLocaleDateString()};
+    up("bbbs",[...pairs,pair]);
+    setMentor("");setTeen("");setTeenAge("");setNotes("");setShowForm(false);
+  };
+  const remove=id=>up("bbbs",pairs.filter(p=>p.id!==id));
+  const visiblePairs=isPastor?pairs:pairs.filter(p=>p.mentor===user?.name);
+  const mentorColor=name=>{const t=TEAMS.find(t=>t.members.includes(name));return t?t.color:"#64748b"};
+
+  // Weekly checklist - keyed by week string
+  const weekKey=()=>{const n=new Date();const s=new Date(n.getFullYear(),0,1);return "wk-"+Math.ceil(((n-s)/86400000+s.getDay()+1)/7)};
+  const wk=weekKey();
+
+  const toggleCheck=(pairId,checkId)=>{
+    const updated=pairs.map(p=>{
+      if(p.id===pairId){
+        const wc={...p.weeklyChecks};
+        if(!wc[wk])wc[wk]={};
+        wc[wk][checkId]=!wc[wk][checkId];
+        return {...p,weeklyChecks:wc};
+      }
+      return p;
+    });
+    up("bbbs",updated);
+  };
+
+  const getChecks=(pair)=>(pair.weeklyChecks||{})[wk]||{};
+  const getCheckCount=(pair)=>Object.values(getChecks(pair)).filter(Boolean).length;
+
+  // Progress logs
+  const addProgress=(pairId)=>{
+    if(!progText.trim())return;
+    const updated=pairs.map(p=>p.id===pairId?{...p,progressLogs:[...p.progressLogs,{id:Date.now(),text:progText.trim(),date:new Date().toLocaleDateString(),by:isPastor?"Pastor":(user?.name||"Member")}]}:p);
+    up("bbbs",updated);setProgText("");
+  };
+
+  // Prayer points
+  const addPrayer=(pairId)=>{
+    if(!prayText.trim())return;
+    const updated=pairs.map(p=>p.id===pairId?{...p,prayerPoints:[...p.prayerPoints,{id:Date.now(),text:prayText.trim(),date:new Date().toLocaleDateString(),by:isPastor?"Pastor":(user?.name||"Member"),answered:false}]}:p);
+    up("bbbs",updated);setPrayText("");
+  };
+
+  const toggleAnswered=(pairId,prayId)=>{
+    const updated=pairs.map(p=>p.id===pairId?{...p,prayerPoints:p.prayerPoints.map(pr=>pr.id===prayId?{...pr,answered:!pr.answered}:pr)}:p);
+    up("bbbs",updated);
+  };
+
+  const removePrayer=(pairId,prayId)=>{
+    const updated=pairs.map(p=>p.id===pairId?{...p,prayerPoints:p.prayerPoints.filter(pr=>pr.id!==prayId)}:p);
+    up("bbbs",updated);
+  };
+
+  const removeProgress=(pairId,logId)=>{
+    const updated=pairs.map(p=>p.id===pairId?{...p,progressLogs:p.progressLogs.filter(l=>l.id!==logId)}:p);
+    up("bbbs",updated);
+  };
+
+  // Pastor "I prayed" tracker
+  const markPrayed=(pairId)=>{
+    setPastorPrayed(prev=>({...prev,[pairId+"-"+wk]:true}));
+  };
+
+  const tabStyle=(active,color)=>({flex:1,padding:"8px 4px",background:active?color:"transparent",border:"none",borderRadius:8,fontSize:11,fontWeight:700,color:active?"#fff":"#64748b",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"});
+
+  return(
+    <div style={S.pg}>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}>
+        <h2 style={{...S.ti,margin:0}}>Big Bro / Big Sis</h2>
+        {isPastor&&<button onClick={()=>setShowForm(!showForm)} style={{padding:"7px 14px",background:showForm?"#dc2626":"#7C3AED",color:"#fff",border:"none",borderRadius:10,fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>{showForm?"Cancel":"+ Pair"}</button>}
+      </div>
+      <p style={{fontSize:12,color:"#64748b",margin:"4px 0 14px"}}>{isPastor?"Assign teens to mentors. Track weekly follow-ups & pray.":"Your assigned teens \u2014 complete weekly checklist & update progress."}</p>
+
+      {/* CREATE FORM */}
+      {showForm&&isPastor&&(
+        <div style={{background:"#fff",borderRadius:14,border:"2px solid #7C3AED",padding:16,marginBottom:16}}>
+          <h3 style={{fontSize:14,fontWeight:700,color:"#0f172a",margin:"0 0 12px"}}>Create New Pairing</h3>
+          <p style={{fontSize:11,fontWeight:700,color:"#334155",margin:"0 0 6px"}}>Select Big Bro / Big Sis:</p>
+          <div style={{display:"flex",gap:4,flexWrap:"wrap",marginBottom:12}}>
+            {ALL_MEMBERS.filter(m=>m.teams.length>0).map(m=>{const on=mentor===m.name;return(<button key={m.name} onClick={()=>setMentor(m.name)} style={{padding:"5px 11px",borderRadius:16,fontSize:11,fontWeight:600,border:on?"2px solid #7C3AED":"1px solid #e2e8f0",color:on?"#fff":"#475569",background:on?"#7C3AED":"#f8fafc",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>{m.name}</button>)})}
+          </div>
+          <p style={{fontSize:11,fontWeight:700,color:"#334155",margin:"0 0 6px"}}>Select Teen:</p>
+          <div style={{display:"flex",gap:4,flexWrap:"wrap",marginBottom:4}}>
+            {teensList.map(t=>{const on=teen===t.name;return(<button key={t.id} onClick={()=>{setTeen(t.name);setTeenAge(t.age||"")}} style={{padding:"5px 11px",borderRadius:16,fontSize:11,fontWeight:600,border:on?"2px solid #059669":"1px solid #e2e8f0",color:on?"#fff":"#475569",background:on?"#059669":"#f8fafc",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>{t.name}{t.age?" ("+t.age+")":""}</button>)})}
+            <button onClick={()=>setShowAddTeen(!showAddTeen)} style={{padding:"5px 11px",borderRadius:16,fontSize:11,fontWeight:600,border:"1px dashed #7C3AED",color:"#7C3AED",background:"#faf5ff",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>{showAddTeen?"Cancel":"+ New Teen"}</button>
+          </div>
+          {showAddTeen&&<div style={{padding:10,background:"#faf5ff",borderRadius:10,border:"1px solid #e9d5ff",marginBottom:8}}>
+            <div style={{display:"flex",gap:6}}>
+              <input value={newTeenName} onChange={e=>setNewTeenName(e.target.value)} placeholder="Teen's name" style={{...S.inp,fontSize:12,flex:2}}/>
+              <input value={newTeenAge} onChange={e=>setNewTeenAge(e.target.value)} placeholder="Age" style={{...S.inp,fontSize:12,flex:1}}/>
+              <button onClick={addNewTeen} style={{...S.abtn,width:34,height:34,background:"#7C3AED"}}>{Ic.plus}</button>
+            </div>
+          </div>}
+          {teensList.length===0&&!showAddTeen&&<p style={{fontSize:10,color:"#94a3b8",marginBottom:8}}>No teens added yet. Tap "+ New Teen" to add.</p>}
+          {isPastor&&teensList.length>0&&<div style={{marginBottom:8}}><button onClick={()=>setShowAddTeen(!showAddTeen)} style={{fontSize:10,color:"#7C3AED",background:"none",border:"none",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Manage teens ({teensList.length})</button>
+            {showAddTeen&&<div style={{marginTop:4}}>{teensList.map(t=>(<div key={t.id} style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"3px 0"}}><span style={{fontSize:11,color:"#334155"}}>{t.name} {t.age?"("+t.age+")":""}</span><button onClick={()=>removeTeen(t.id)} style={S.rm}>{Ic.x}</button></div>))}</div>}
+          </div>}
+          <p style={{fontSize:11,fontWeight:700,color:"#334155",margin:"0 0 4px"}}>Notes (optional):</p>
+          <textarea value={notes} onChange={e=>setNotes(e.target.value)} placeholder="Interests, needs, initial observations..." style={{width:"100%",padding:"9px 14px",border:"1px solid #e2e8f0",borderRadius:10,fontSize:13,fontFamily:"'DM Sans',sans-serif",outline:"none",resize:"vertical",minHeight:50,boxSizing:"border-box",marginBottom:12}}/>
+          <button onClick={create} disabled={!mentor||!teen} style={{width:"100%",padding:"10px",background:(!mentor||!teen)?"#cbd5e1":"#7C3AED",color:"#fff",border:"none",borderRadius:10,fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>{mentor&&teen?"Pair "+mentor+" with "+teen:"Select mentor & select teen"}</button>
+        </div>
+      )}
+
+      {/* EMPTY STATE */}
+      {visiblePairs.length===0&&!showForm&&(
+        <div style={{...S.cd,textAlign:"center",padding:28}}>
+          <span style={{fontSize:36}}>{"👫"}</span>
+          <p style={{fontSize:13,color:"#64748b",margin:"10px 0 0"}}>{isPastor?"No pairings yet. Tap \"+ Pair\" to start.":"No teens assigned to you yet."}</p>
+        </div>
+      )}
+
+      {/* PAIRINGS */}
+      {visiblePairs.map(pair=>{
+        const mc=mentorColor(pair.mentor);
+        const isOpen=expanded===pair.id;
+        const checks=getChecks(pair);
+        const checkCount=getCheckCount(pair);
+        const activePrayers=pair.prayerPoints.filter(p=>!p.answered);
+        const answeredPrayers=pair.prayerPoints.filter(p=>p.answered);
+
+        return(
+          <div key={pair.id} style={{background:"#fff",borderRadius:14,border:isOpen?"2px solid "+mc:"1px solid #e2e8f0",marginBottom:10,overflow:"hidden"}}>
+            {/* HEADER */}
+            <button onClick={()=>{setExpanded(isOpen?null:pair.id);setTab("checklist")}} style={{width:"100%",padding:"14px 16px",borderLeft:"4px solid "+mc,background:"#fff",border:"none",borderBottom:"1px solid #f1f5f9",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",textAlign:"left",borderLeftStyle:"solid",borderLeftWidth:4,borderLeftColor:mc}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                <div style={{display:"flex",alignItems:"center",gap:10}}>
+                  <div style={{width:36,height:36,borderRadius:"50%",background:mc,display:"flex",alignItems:"center",justifyContent:"center",color:"#fff",fontSize:15,fontWeight:700}}>{pair.mentor[0]}</div>
+                  <div>
+                    <div style={{fontSize:13,fontWeight:700,color:"#0f172a"}}>{pair.mentor} {"\u2192"} {pair.teen}</div>
+                    <div style={{fontSize:10,color:"#64748b"}}>{pair.teenAge?"Age "+pair.teenAge+" \u00b7 ":""}Since {pair.created}</div>
+                  </div>
+                </div>
+                <div style={{display:"flex",alignItems:"center",gap:6}}>
+                  <span style={{fontSize:10,color:checkCount>=6?"#059669":checkCount>=3?"#d97706":"#dc2626",background:checkCount>=6?"#f0fdf4":checkCount>=3?"#fffbeb":"#fef2f2",padding:"2px 8px",borderRadius:8,fontWeight:700}}>{checkCount}/8</span>
+                  <span style={{transform:isOpen?"rotate(90deg)":"none",transition:"0.2s",color:"#94a3b8"}}>{Ic.chev}</span>
+                </div>
+              </div>
+              {activePrayers.length>0&&<div style={{display:"flex",gap:4,marginTop:6,flexWrap:"wrap"}}><span style={{fontSize:10,color:"#7C3AED",background:"#f4ecf7",padding:"2px 8px",borderRadius:8}}>{"🙏"} {activePrayers.length} prayer point{activePrayers.length!==1?"s":""}</span></div>}
+            </button>
+
+            {/* EXPANDED */}
+            {isOpen&&(<div>
+              {/* TABS */}
+              <div style={{display:"flex",gap:4,padding:"10px 12px",background:"#f8fafc",borderBottom:"1px solid #f1f5f9"}}>
+                <button onClick={()=>setTab("checklist")} style={tabStyle(tab==="checklist","#2563EB")}>Weekly Checklist</button>
+                <button onClick={()=>setTab("progress")} style={tabStyle(tab==="progress","#059669")}>Progress</button>
+                <button onClick={()=>setTab("prayer")} style={tabStyle(tab==="prayer","#7C3AED")}>Prayer Points</button>
+              </div>
+
+              {/* CHECKLIST TAB */}
+              {tab==="checklist"&&(
+                <div style={{padding:"12px 16px"}}>
+                  <div style={S.prog}><div style={S.pf((checkCount/8)*100,"#7C3AED")}/></div>
+                  <p style={{fontSize:10,color:"#64748b",marginBottom:10}}>{checkCount}/8 completed this week</p>
+                  {WEEKLY_CHECKLIST.map(item=>{
+                    const on=checks[item.id];
+                    return(
+                      <button key={item.id} onClick={()=>toggleCheck(pair.id,item.id)} style={{display:"flex",alignItems:"center",gap:10,padding:"9px 10px",borderRadius:8,border:"1px solid #e2e8f0",marginBottom:4,width:"100%",textAlign:"left",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",background:on?"#f0fdf4":"#fff"}}>
+                        <div style={S.cb(on,"#7C3AED")}>{on&&<span style={{color:"#fff"}}>{Ic.check}</span>}</div>
+                        <span style={{fontSize:16}}>{item.icon}</span>
+                        <span style={{fontSize:12,color:on?"#065f46":"#334155",fontWeight:on?600:400}}>{item.label}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+
+              {/* PROGRESS TAB */}
+              {tab==="progress"&&(
+                <div style={{padding:"12px 16px"}}>
+                  <p style={{fontSize:11,color:"#64748b",margin:"0 0 8px"}}>How is {pair.teen} doing this week? Note their growth, struggles, breakthroughs.</p>
+                  <div style={{display:"flex",gap:6,marginBottom:10}}>
+                    <input value={progText} onChange={e=>setProgText(e.target.value)} placeholder={"Update on "+pair.teen+"..."} style={{...S.inp,fontSize:12}} onKeyDown={e=>e.key==="Enter"&&addProgress(pair.id)}/>
+                    <button onClick={()=>addProgress(pair.id)} style={{...S.abtn,width:34,height:34}}>{Ic.plus}</button>
+                  </div>
+                  {pair.progressLogs.length===0&&<p style={{fontSize:11,color:"#94a3b8",textAlign:"center",padding:8}}>No progress entries yet.</p>}
+                  {pair.progressLogs.slice().reverse().map(log=>(
+                    <div key={log.id} style={{padding:"10px 12px",background:"#f0fdf4",borderRadius:8,border:"1px solid #bbf7d0",marginBottom:5}}>
+                      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                        <span style={{fontSize:10,color:"#059669",fontWeight:600}}>{log.date} {"\u00b7"} {log.by}</span>
+                        <button onClick={()=>removeProgress(pair.id,log.id)} style={S.rm}>{Ic.x}</button>
+                      </div>
+                      <p style={{margin:"4px 0 0",fontSize:12,color:"#334155"}}>{log.text}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* PRAYER TAB */}
+              {tab==="prayer"&&(
+                <div style={{padding:"12px 16px"}}>
+                  <p style={{fontSize:11,color:"#64748b",margin:"0 0 8px"}}>Prayer points for {pair.teen}. {isPastor?"You can see these and pray along.":"Add things to pray for."}</p>
+                  <div style={{display:"flex",gap:6,marginBottom:10}}>
+                    <input value={prayText} onChange={e=>setPrayText(e.target.value)} placeholder={"Pray for "+pair.teen+"..."} style={{...S.inp,fontSize:12}} onKeyDown={e=>e.key==="Enter"&&addPrayer(pair.id)}/>
+                    <button onClick={()=>addPrayer(pair.id)} style={{...S.abtn,width:34,height:34,background:"#7C3AED"}}>{Ic.plus}</button>
+                  </div>
+
+                  {/* Active prayers */}
+                  {activePrayers.length===0&&answeredPrayers.length===0&&<p style={{fontSize:11,color:"#94a3b8",textAlign:"center",padding:8}}>No prayer points yet.</p>}
+                  {activePrayers.map(pr=>(
+                    <div key={pr.id} style={{padding:"10px 12px",background:"#faf5ff",borderRadius:8,border:"1px solid #e9d5ff",marginBottom:5}}>
+                      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                        <span style={{fontSize:10,color:"#7C3AED",fontWeight:600}}>{pr.date} {"\u00b7"} {pr.by}</span>
+                        <div style={{display:"flex",gap:4}}>
+                          <button onClick={()=>toggleAnswered(pair.id,pr.id)} style={{background:"#059669",color:"#fff",border:"none",borderRadius:6,fontSize:9,fontWeight:700,padding:"3px 8px",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Answered!</button>
+                          <button onClick={()=>removePrayer(pair.id,pr.id)} style={S.rm}>{Ic.x}</button>
+                        </div>
+                      </div>
+                      <p style={{margin:"4px 0 0",fontSize:12,color:"#334155"}}>{"🙏"} {pr.text}</p>
+                      {isPastor&&!pastorPrayed[pair.id+"-"+wk+"-"+pr.id]&&(
+                        <button onClick={()=>setPastorPrayed(prev=>({...prev,[pair.id+"-"+wk+"-"+pr.id]:true}))} style={{marginTop:6,padding:"4px 12px",background:"rgba(124,58,237,0.1)",border:"1px solid #e9d5ff",borderRadius:6,fontSize:10,fontWeight:600,color:"#7C3AED",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>I prayed for this</button>
+                      )}
+                      {isPastor&&pastorPrayed[pair.id+"-"+wk+"-"+pr.id]&&(
+                        <div style={{marginTop:6,fontSize:10,color:"#059669",fontWeight:600}}>{"✅"} You prayed for this</div>
+                      )}
+                    </div>
+                  ))}
+
+                  {/* Answered prayers */}
+                  {answeredPrayers.length>0&&<>
+                    <h4 style={{fontSize:11,fontWeight:700,color:"#059669",margin:"12px 0 6px"}}>{"🎉"} Answered Prayers</h4>
+                    {answeredPrayers.map(pr=>(
+                      <div key={pr.id} style={{padding:"8px 12px",background:"#f0fdf4",borderRadius:8,border:"1px solid #bbf7d0",marginBottom:4,opacity:0.7}}>
+                        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                          <span style={{fontSize:10,color:"#059669"}}>{pr.date}</span>
+                          <button onClick={()=>toggleAnswered(pair.id,pr.id)} style={{fontSize:9,color:"#64748b",background:"none",border:"none",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Reopen</button>
+                        </div>
+                        <p style={{margin:"2px 0 0",fontSize:11,color:"#334155",textDecoration:"line-through"}}>{pr.text}</p>
+                      </div>
+                    ))}
+                  </>}
+                </div>
+              )}
+
+              {/* NOTES */}
+              {pair.notes&&<div style={{padding:"8px 16px 12px",borderTop:"1px solid #f1f5f9"}}><p style={{fontSize:10,fontWeight:700,color:"#94a3b8",margin:"0 0 2px"}}>NOTES</p><p style={{fontSize:11,color:"#64748b",margin:0}}>{pair.notes}</p></div>}
+
+              {/* DELETE - pastor */}
+              {isPastor&&<div style={{padding:"8px 16px 12px",borderTop:"1px solid #f1f5f9"}}><button onClick={()=>remove(pair.id)} style={{fontSize:11,color:"#dc2626",background:"none",border:"none",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",fontWeight:600}}>Remove this pairing</button></div>}
+            </div>)}
+          </div>
+        );
+      })}
+
+      {/* PASTOR PRAYER DASHBOARD */}
+      {isPastor&&pairs.length>0&&(
+        <div style={{marginTop:16}}>
+          <h3 style={S.sec}>{"🙏"} All Prayer Points (for your intercession)</h3>
+          {pairs.flatMap(p=>p.prayerPoints.filter(pr=>!pr.answered).map(pr=>({...pr,teen:p.teen,mentor:p.mentor,pairId:p.id}))).length===0&&<p style={{fontSize:12,color:"#94a3b8",textAlign:"center",padding:12}}>No active prayer points across any teen.</p>}
+          {pairs.map(p=>{
+            const active=p.prayerPoints.filter(pr=>!pr.answered);
+            if(active.length===0)return null;
+            return(
+              <div key={p.id} style={{marginBottom:10}}>
+                <div style={{fontSize:12,fontWeight:700,color:"#0f172a",marginBottom:4}}>{p.teen} <span style={{fontWeight:400,color:"#64748b"}}>(mentored by {p.mentor})</span></div>
+                {active.map(pr=>(
+                  <div key={pr.id} style={{display:"flex",alignItems:"flex-start",gap:8,padding:"8px 10px",background:"#faf5ff",borderRadius:8,border:"1px solid #e9d5ff",marginBottom:3}}>
+                    <span style={{fontSize:12,flexShrink:0}}>{"🙏"}</span>
+                    <div style={{flex:1}}>
+                      <p style={{margin:0,fontSize:12,color:"#334155"}}>{pr.text}</p>
+                      <span style={{fontSize:9,color:"#94a3b8"}}>{pr.date} {"\u00b7"} {pr.by}</span>
+                    </div>
+                    {!pastorPrayed[p.id+"-"+wk+"-"+pr.id]?
+                      <button onClick={()=>setPastorPrayed(prev=>({...prev,[p.id+"-"+wk+"-"+pr.id]:true}))} style={{padding:"3px 8px",background:"#7C3AED",color:"#fff",border:"none",borderRadius:6,fontSize:9,fontWeight:700,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",flexShrink:0}}>Pray</button>
+                      :<span style={{fontSize:9,color:"#059669",fontWeight:600,flexShrink:0}}>{"✅"} Prayed</span>
+                    }
+                  </div>
+                ))}
+              </div>
+            );
+          })}
+
+          <h3 style={S.sec}>Overview</h3>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}>
+            <div style={{...S.cd,textAlign:"center",padding:12}}><div style={{fontSize:20,fontWeight:700,color:"#7C3AED"}}>{pairs.length}</div><div style={{fontSize:10,color:"#64748b"}}>Pairs</div></div>
+            <div style={{...S.cd,textAlign:"center",padding:12}}><div style={{fontSize:20,fontWeight:700,color:"#059669"}}>{pairs.reduce((s,p)=>s+p.prayerPoints.filter(x=>x.answered).length,0)}</div><div style={{fontSize:10,color:"#64748b"}}>Answered</div></div>
+            <div style={{...S.cd,textAlign:"center",padding:12}}><div style={{fontSize:20,fontWeight:700,color:"#EA580C"}}>{pairs.reduce((s,p)=>s+p.progressLogs.length,0)}</div><div style={{fontSize:10,color:"#64748b"}}>Updates</div></div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// === PRACTICE TRACKING & ELIGIBILITY ===
+function PracticePage({d,up,isPastor,user}){
+  const prac=d.practice||{};
+  const sessions=prac.sessions||[];
+  const [showCreate,setShowCreate]=useState(false);
+  const [sName,setSName]=useState("");const [sDate,setSDate]=useState("");const [sTime,setSTime]=useState("");const [sEvent,setSEvent]=useState("");const [sRequired,setSRequired]=useState([]);
+
+  const allNames=[...new Set([...ALL_MEMBERS.map(m=>m.name),...(d.users||[]).map(u=>u.name)])];
+  const teams=(d.customTeams||TEAMS);
+
+  const savePrac=(s)=>up("practice",{...prac,sessions:s});
+
+  const createSession=()=>{
+    if(!sName.trim()||!sDate||sRequired.length===0)return;
+    const ns={id:Date.now(),name:sName.trim(),date:sDate,time:sTime,linkedEvent:sEvent.trim(),required:sRequired,attendance:{},eventDone:false,created:new Date().toLocaleDateString()};
+    savePrac([...sessions,ns]);
+    setSName("");setSDate("");setSTime("");setSEvent("");setSRequired([]);setShowCreate(false);
+  };
+  const removeSession=id=>savePrac(sessions.filter(s=>s.id!==id));
+  const toggleAttend=(sessId,name)=>{const updated=sessions.map(s=>s.id===sessId?{...s,attendance:{...s.attendance,[name]:!s.attendance[name]}}:s);savePrac(updated)};
+  const markEventDone=id=>{savePrac(sessions.map(s=>s.id===id?{...s,eventDone:true}:s))};
+  const assignTeam=teamId=>{const t=teams.find(x=>x.id===teamId);if(t)setSRequired(prev=>[...new Set([...prev,...t.members])])};
+
+  // Member view helpers
+  const mySessions=isPastor?sessions:sessions.filter(s=>s.required.includes(user?.name));
+
+  const getEligibility=(sessId)=>{
+    const s=sessions.find(x=>x.id===sessId);if(!s)return{};
+    const result={};
+    s.required.forEach(name=>{const attended=s.attendance[name];const past=new Date(s.date+"T23:59:59")<new Date();result[name]=attended?"eligible":past?"blocked":"pending"});
+    return result;
+  };
+
+  const fmtD=ds=>{if(!ds)return"";try{return new Date(ds+"T00:00:00").toLocaleDateString("en-IN",{weekday:"short",day:"numeric",month:"short"})}catch(e){return ds}};
+  const fmtT=ts=>{if(!ts)return"";try{const[h,m]=ts.split(":");const hr=parseInt(h);return(hr>12?hr-12:hr||12)+":"+m+(hr>=12?" PM":" AM")}catch(e){return ts}};
+
+  return(<div style={S.pg}>
+    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
+      <h2 style={{...S.ti,margin:0}}>Practice & Eligibility</h2>
+      {isPastor&&<button onClick={()=>setShowCreate(!showCreate)} style={{padding:"7px 14px",background:showCreate?"#dc2626":"#2563EB",color:"#fff",border:"none",borderRadius:10,fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>{showCreate?"Cancel":"+ Session"}</button>}
+    </div>
+    <p style={{fontSize:11,color:"#64748b",margin:"-8px 0 12px"}}>{isPastor?"Create practice sessions. Members who miss cannot perform at the linked event.":"Your required practice sessions. Missing = not eligible to perform."}</p>
+
+    {/* CREATE */}
+    {showCreate&&isPastor&&<div style={{background:"#fff",borderRadius:14,border:"2px solid #2563EB",padding:16,marginBottom:14}}>
+      <h3 style={{fontSize:14,fontWeight:700,color:"#0f172a",margin:"0 0 10px"}}>New Practice Session</h3>
+      <input value={sName} onChange={e=>setSName(e.target.value)} placeholder="Session name (e.g. Worship Rehearsal)" style={{...S.inp,width:"100%",marginBottom:8,boxSizing:"border-box",flex:"none"}}/>
+      <div style={{display:"flex",gap:8,marginBottom:8}}>
+        <input type="date" value={sDate} onChange={e=>setSDate(e.target.value)} style={{...S.inp,flex:1}}/>
+        <input type="time" value={sTime} onChange={e=>setSTime(e.target.value)} style={{...S.inp,flex:1}}/>
+      </div>
+      <input value={sEvent} onChange={e=>setSEvent(e.target.value)} placeholder="Linked event (e.g. Sunday Service, Worship Night)" style={{...S.inp,width:"100%",marginBottom:10,boxSizing:"border-box",flex:"none"}}/>
+      <p style={{fontSize:11,fontWeight:700,color:"#334155",margin:"0 0 4px"}}>Assign by team:</p>
+      <div style={{display:"flex",gap:4,flexWrap:"wrap",marginBottom:6}}>
+        {teams.map(t=>(<button key={t.id} onClick={()=>assignTeam(t.id)} style={{padding:"3px 9px",borderRadius:14,fontSize:10,fontWeight:600,border:"1px solid "+t.color,color:t.color,background:"#fff",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>{t.icon} {t.name}</button>))}
+        <button onClick={()=>setSRequired(allNames)} style={{padding:"3px 9px",borderRadius:14,fontSize:10,fontWeight:600,border:"1px solid #0f172a",color:"#0f172a",background:"#fff",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>All</button>
+      </div>
+      <p style={{fontSize:11,fontWeight:700,color:"#334155",margin:"0 0 4px"}}>Required ({sRequired.length}):</p>
+      <div style={{display:"flex",gap:3,flexWrap:"wrap",marginBottom:10}}>
+        {allNames.map(n=>{const on=sRequired.includes(n);return(<button key={n} onClick={()=>setSRequired(on?sRequired.filter(x=>x!==n):[...sRequired,n])} style={{padding:"3px 8px",borderRadius:14,fontSize:10,fontWeight:600,border:on?"1px solid #2563EB":"1px solid #e2e8f0",color:on?"#fff":"#64748b",background:on?"#2563EB":"#f8fafc",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>{n}</button>)})}
+      </div>
+      <button onClick={createSession} disabled={!sName.trim()||!sDate||sRequired.length===0} style={{width:"100%",padding:"10px",background:(!sName.trim()||!sDate||sRequired.length===0)?"#cbd5e1":"#2563EB",color:"#fff",border:"none",borderRadius:10,fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Create Session</button>
+    </div>}
+
+    {mySessions.length===0&&!showCreate&&<div style={{...S.cd,textAlign:"center",padding:24}}><span style={{fontSize:28}}>{"🎯"}</span><p style={{fontSize:12,color:"#64748b",margin:"8px 0 0"}}>{isPastor?"No practice sessions. Tap \"+ Session\" to create one.":"No practice sessions assigned to you."}</p></div>}
+
+    {/* SESSIONS */}
+    {mySessions.map(sess=>{
+      const elig=getEligibility(sess.id);
+      const past=new Date(sess.date+"T23:59:59")<new Date();
+      const attended=Object.values(sess.attendance).filter(Boolean).length;
+      const blockedNames=Object.entries(elig).filter(([,v])=>v==="blocked").map(([n])=>n);
+
+      return(<div key={sess.id} style={{...S.cd,borderLeft:sess.eventDone?"4px solid #059669":past?"4px solid #dc2626":"4px solid #2563EB"}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
+          <div style={{flex:1}}>
+            <div style={{fontSize:14,fontWeight:700,color:"#0f172a"}}>{sess.name}</div>
+            <div style={{display:"flex",gap:6,marginTop:4,flexWrap:"wrap"}}>
+              <span style={{fontSize:10,color:"#2563EB",background:"#eff6ff",padding:"2px 8px",borderRadius:6}}>{fmtD(sess.date)}</span>
+              {sess.time&&<span style={{fontSize:10,color:"#7C3AED",background:"#f4ecf7",padding:"2px 8px",borderRadius:6}}>{fmtT(sess.time)}</span>}
+              {sess.linkedEvent&&<span style={{fontSize:10,color:"#d97706",background:"#fffbeb",padding:"2px 8px",borderRadius:6}}>For: {sess.linkedEvent}</span>}
+              <span style={{fontSize:10,color:sess.eventDone?"#059669":"#64748b",background:sess.eventDone?"#f0fdf4":"#f1f5f9",padding:"2px 8px",borderRadius:6}}>{sess.eventDone?"Event Done":past?"Past":"Upcoming"}</span>
+            </div>
+          </div>
+          {isPastor&&<button onClick={()=>removeSession(sess.id)} style={S.rm}>{Ic.x}</button>}
+        </div>
+
+        {/* Attendance */}
+        <div style={{marginTop:10}}>
+          <div style={{fontSize:11,fontWeight:700,color:"#334155",marginBottom:4}}>Attendance ({attended}/{sess.required.length})</div>
+          <div style={S.prog}><div style={S.pf((attended/Math.max(sess.required.length,1))*100,"#2563EB")}/></div>
+          {sess.required.map(name=>{
+            const att=sess.attendance[name];
+            const status=elig[name];
+            const isMember=!isPastor&&name===user?.name;
+            return(<button key={name} onClick={()=>{if(isPastor||isMember)toggleAttend(sess.id,name)}} style={{display:"flex",alignItems:"center",gap:8,padding:"6px 8px",borderRadius:8,border:"1px solid #e2e8f0",marginBottom:2,width:"100%",textAlign:"left",cursor:(isPastor||isMember)?"pointer":"default",fontFamily:"'DM Sans',sans-serif",background:att?"#f0fdf4":status==="blocked"?"#fef2f2":"#fff"}}>
+              <div style={S.cb(att,"#2563EB")}>{att&&<span style={{color:"#fff"}}>{Ic.check}</span>}</div>
+              <span style={{flex:1,fontSize:11,fontWeight:600,color:"#0f172a"}}>{name}{isMember?" (you)":""}</span>
+              {status==="eligible"&&<span style={{fontSize:9,color:"#059669",fontWeight:700}}>{"✅"} Eligible</span>}
+              {status==="blocked"&&<span style={{fontSize:9,color:"#dc2626",fontWeight:700}}>{"🚫"} Blocked</span>}
+              {status==="pending"&&<span style={{fontSize:9,color:"#d97706",fontWeight:700}}>Pending</span>}
+            </button>);
+          })}
+        </div>
+
+        {/* Blocked warning */}
+        {blockedNames.length>0&&!sess.eventDone&&<div style={{marginTop:8,padding:"8px 10px",background:"#fef2f2",borderRadius:8,border:"1px solid #fecaca"}}>
+          <div style={{fontSize:11,fontWeight:700,color:"#dc2626"}}>{"🚫"} Not eligible for {sess.linkedEvent||"the event"}:</div>
+          <div style={{fontSize:11,color:"#7f1d1d",marginTop:2}}>{blockedNames.join(", ")}</div>
+          {isPastor&&<div style={{marginTop:6}}>
+            <p style={{fontSize:10,color:"#64748b",margin:"0 0 4px"}}>Send notification (tap to copy for WhatsApp):</p>
+            {blockedNames.map(name=>(<button key={name} onClick={()=>{const msg="Hi "+name+", you missed the practice session \""+sess.name+"\" on "+sess.date+". As per our church policy, attendance at practice is mandatory to perform at "+( sess.linkedEvent||"the event")+". Please speak to Pastor to resolve this. God bless! - FGCLC";navigator.clipboard?.writeText(msg)}} style={{display:"block",width:"100%",padding:"6px 10px",background:"#fff",border:"1px solid #e2e8f0",borderRadius:6,fontSize:10,color:"#334155",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",textAlign:"left",marginBottom:2}}>
+              {"📋"} Copy message for {name}
+            </button>))}
+          </div>}
+        </div>}
+
+        {/* Mark event done */}
+        {isPastor&&!sess.eventDone&&past&&<button onClick={()=>markEventDone(sess.id)} style={{marginTop:8,padding:"6px 14px",background:"#059669",color:"#fff",border:"none",borderRadius:8,fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Mark Event Complete</button>}
+      </div>);
+    })}
+  </div>);
+}
+
+// === MESSAGES / WHATSAPP GENERATOR ===
+function MsgPage({d,up}){
+  const [tab,setTab]=useState("saturday"); // saturday, custom, history
+  const [customSubj,setCustomSubj]=useState("");
+  const [customMsg,setCustomMsg]=useState("");
+  const [copied,setCopied]=useState("");
+  const [aiPrompt,setAiPrompt]=useState("");
+  const [aiLoading,setAiLoading]=useState(false);
+
+  const allNames=[...new Set([...ALL_MEMBERS.map(m=>m.name),...(d.users||[]).map(u=>u.name)])];
+  const msgs=d.messages||[];
+
+  const saturdayMsg=()=>{
+    const d2=new Date();const sun=new Date(d2);sun.setDate(d2.getDate()+(7-d2.getDay())%7);
+    const sunStr=sun.toLocaleDateString("en-IN",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+    return "Dear FGCLC Family,\n\nWe are excited to welcome you to our Sunday Worship Service tomorrow, "+sunStr+"!\n\nCome with an open heart and a spirit of worship. Let's gather together to praise the Lord and be refreshed in His presence.\n\nService Time: 10:00 AM\nVenue: FGCLC English Church\n\n\"Let us not give up meeting together, as some are in the habit of doing, but let us encourage one another.\" - Hebrews 10:25\n\nSee you there!\nPastor & Team, FGCLC";
+  };
+
+  const copyToClip=(text,label)=>{
+    if(navigator.clipboard)navigator.clipboard.writeText(text);
+    setCopied(label);
+    setTimeout(()=>setCopied(""),2000);
+  };
+
+  const openWhatsApp=(text)=>{
+    const encoded=encodeURIComponent(text);
+    window.open("https://wa.me/?text="+encoded,"_blank");
+  };
+
+  const saveMsg=(subject,text)=>{
+    const m={id:Date.now(),subject,text,date:new Date().toLocaleDateString(),readBy:[]};
+    up("messages",[...msgs,m]);
+  };
+
+  const removeMsg=id=>up("messages",msgs.filter(m=>m.id!==id));
+
+  const ttab=(active)=>({flex:1,padding:"8px 4px",background:active?"#059669":"transparent",border:"none",borderRadius:8,fontSize:11,fontWeight:700,color:active?"#fff":"#64748b",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"});
+
+  return(<div style={S.pg}>
+    <h2 style={S.ti}>Messages</h2>
+    <div style={{display:"flex",gap:4,marginBottom:14,background:"#f1f5f9",borderRadius:10,padding:3}}>
+      <button onClick={()=>setTab("saturday")} style={ttab(tab==="saturday")}>Saturday Invite</button>
+      <button onClick={()=>setTab("custom")} style={ttab(tab==="custom")}>Custom Message</button>
+      <button onClick={()=>setTab("history")} style={ttab(tab==="history")}>History</button>
+    </div>
+
+    {/* SATURDAY INVITE */}
+    {tab==="saturday"&&<div>
+      <div style={{background:"linear-gradient(135deg,#059669,#065f46)",borderRadius:14,padding:16,marginBottom:12}}>
+        <div style={{fontSize:14,fontWeight:700,color:"#fff",marginBottom:4}}>{"📨"} Saturday Night Invitation</div>
+        <p style={{fontSize:11,color:"#a7f3d0",margin:0}}>Send this to your church WhatsApp group every Saturday evening.</p>
+      </div>
+      <div style={{background:"#fff",borderRadius:12,border:"1px solid #e2e8f0",padding:14,marginBottom:12}}>
+        <div style={{fontSize:12,color:"#334155",whiteSpace:"pre-wrap",lineHeight:1.6}}>{saturdayMsg()}</div>
+      </div>
+      <div style={{display:"flex",gap:8}}>
+        <button onClick={()=>copyToClip(saturdayMsg(),"saturday")} style={{flex:1,padding:"10px",background:"#2563EB",color:"#fff",border:"none",borderRadius:10,fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>{copied==="saturday"?"Copied!":"Copy Message"}</button>
+        <button onClick={()=>openWhatsApp(saturdayMsg())} style={{flex:1,padding:"10px",background:"#25D366",color:"#fff",border:"none",borderRadius:10,fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Open WhatsApp</button>
+      </div>
+      <button onClick={()=>saveMsg("Saturday Invite",saturdayMsg())} style={{width:"100%",padding:"8px",background:"#f1f5f9",color:"#475569",border:"none",borderRadius:8,fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",marginTop:8}}>Save to in-app notifications</button>
+    </div>}
+
+    {/* CUSTOM MESSAGE */}
+    {tab==="custom"&&<div>
+      <div style={{background:"linear-gradient(135deg,#7C3AED,#2563EB)",borderRadius:14,padding:16,marginBottom:12}}>
+        <div style={{fontSize:14,fontWeight:700,color:"#fff",marginBottom:4}}>{"✍️"} Custom Event Invitation</div>
+        <p style={{fontSize:11,color:"#c4b5fd",margin:0}}>Write your own or let AI generate a beautiful invitation for you.</p>
+      </div>
+
+      {/* AI GENERATOR */}
+      <div style={{background:"#faf5ff",borderRadius:12,border:"1px solid #e9d5ff",padding:12,marginBottom:12}}>
+        <div style={{fontSize:12,fontWeight:700,color:"#7C3AED",marginBottom:6}}>{"✨"} AI Message Generator</div>
+        <textarea value={aiPrompt} onChange={e=>setAiPrompt(e.target.value)} placeholder={"Describe the event and AI will write the invitation.\n\ne.g. \"Worship night this Friday at 7pm, theme is Holy Spirit fire, bring a friend, casual dress\""} style={{width:"100%",padding:"9px 12px",border:"1px solid #e9d5ff",borderRadius:10,fontSize:12,fontFamily:"'DM Sans',sans-serif",outline:"none",resize:"vertical",minHeight:60,boxSizing:"border-box",marginBottom:8,background:"#fff"}}/>
+        <button onClick={async()=>{
+          if(!aiPrompt.trim())return;setAiLoading(true);
+          try{
+            const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,messages:[{role:"user",content:"You are the communications assistant for FGCLC English Church. Write a warm, inviting WhatsApp message for this event: \""+aiPrompt.trim()+"\"\n\nRules: Keep it warm and friendly but not too long (under 150 words). Include the event details, a short encouraging line, a relevant Bible verse, and end with \"FGCLC English Church\". Use appropriate emojis sparingly. Do NOT use markdown formatting - just plain text with line breaks. Respond with ONLY the message text, nothing else. Also on the very first line put a short subject/title for the message (max 5 words) followed by a newline, then the message body."}]})});
+            const data=await res.json();
+            const text=data.content?.map(c=>c.text||"").join("")||"";
+            const lines=text.trim().split("\n");
+            const subj=lines[0]?.trim()||"Event Invitation";
+            const body=lines.slice(1).join("\n").trim();
+            setCustomSubj(subj);setCustomMsg(body||text);
+          }catch(e){console.error(e)}
+          setAiLoading(false);
+        }} disabled={aiLoading||!aiPrompt.trim()} style={{width:"100%",padding:"10px",background:(aiLoading||!aiPrompt.trim())?"#cbd5e1":"linear-gradient(135deg,#7C3AED,#2563EB)",color:"#fff",border:"none",borderRadius:10,fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>
+          {aiLoading?"Generating...":"Generate with AI"}
+        </button>
+      </div>
+
+      <input value={customSubj} onChange={e=>setCustomSubj(e.target.value)} placeholder="Subject (e.g. Special Worship Night)" style={{...S.inp,width:"100%",marginBottom:8,boxSizing:"border-box",flex:"none"}}/>
+      <textarea value={customMsg} onChange={e=>setCustomMsg(e.target.value)} placeholder={"Write your message here...\n\nTip: Include date, time, venue, and a Bible verse!"} style={{width:"100%",padding:"10px 14px",border:"1px solid #e2e8f0",borderRadius:10,fontSize:12,fontFamily:"'DM Sans',sans-serif",outline:"none",resize:"vertical",minHeight:120,boxSizing:"border-box",marginBottom:10}}/>
+      {customMsg.trim()&&<>
+        <div style={{display:"flex",gap:8,marginBottom:8}}>
+          <button onClick={()=>copyToClip(customMsg,"custom")} style={{flex:1,padding:"10px",background:"#2563EB",color:"#fff",border:"none",borderRadius:10,fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>{copied==="custom"?"Copied!":"Copy"}</button>
+          <button onClick={()=>openWhatsApp(customMsg)} style={{flex:1,padding:"10px",background:"#25D366",color:"#fff",border:"none",borderRadius:10,fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>WhatsApp</button>
+        </div>
+        <button onClick={()=>{saveMsg(customSubj||"Announcement",customMsg);setCustomSubj("");setCustomMsg("")}} style={{width:"100%",padding:"8px",background:"#f1f5f9",color:"#475569",border:"none",borderRadius:8,fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Save as in-app notification for all members</button>
+      </>}
+
+      <div style={{marginTop:16}}>
+        <h3 style={S.sec}>Quick Templates</h3>
+        {[
+          {name:"Worship Night",msg:"Dear FGCLC Youth,\n\nYou are invited to our Worship Night!\n\nDate: [DATE]\nTime: [TIME]\nVenue: FGCLC English Church\n\nCome expecting God to move! Bring a friend.\n\n\"Enter His gates with thanksgiving and His courts with praise.\" - Psalm 100:4\n\nSee you there!\nFGCLC Team"},
+          {name:"Prayer Meeting",msg:"Dear FGCLC Family,\n\nJoin us for our special Prayer Meeting!\n\nDate: [DATE]\nTime: [TIME]\n\nLet's come together to seek God's face and intercede for our church, city, and nation.\n\n\"If my people, who are called by my name, will humble themselves and pray...\" - 2 Chronicles 7:14\n\nFGCLC"},
+          {name:"Fellowship Event",msg:"Hey FGCLC Fam!\n\nWe're having a fellowship get-together and you're invited!\n\nDate: [DATE]\nTime: [TIME]\nVenue: [VENUE]\n\nFood, games, and great company. Bring your friends!\n\nFGCLC Youth"},
+        ].map(tmpl=>(<button key={tmpl.name} onClick={()=>{setCustomSubj(tmpl.name);setCustomMsg(tmpl.msg)}} style={{display:"block",width:"100%",padding:"10px 12px",background:"#fff",border:"1px solid #e2e8f0",borderRadius:8,fontSize:11,fontWeight:600,color:"#334155",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",textAlign:"left",marginBottom:4}}>
+          {"📝"} {tmpl.name}
+        </button>))}
+      </div>
+    </div>}
+
+    {/* HISTORY */}
+    {tab==="history"&&<div>
+      <p style={{fontSize:11,color:"#64748b",marginBottom:10}}>Sent messages (saved as in-app notifications for members).</p>
+      {msgs.length===0&&<p style={{fontSize:12,color:"#94a3b8",textAlign:"center",padding:16}}>No messages sent yet.</p>}
+      {msgs.slice().reverse().map(m=>(<div key={m.id} style={{...S.cd,borderLeft:"3px solid #059669"}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
+          <div style={{flex:1}}>
+            <div style={{fontSize:12,fontWeight:700,color:"#0f172a"}}>{m.subject||"Message"}</div>
+            <div style={{fontSize:9,color:"#94a3b8"}}>{m.date}</div>
+            <p style={{fontSize:11,color:"#475569",margin:"4px 0 0",whiteSpace:"pre-wrap",maxHeight:60,overflow:"hidden"}}>{m.text}</p>
+          </div>
+          <div style={{display:"flex",gap:4,flexShrink:0}}>
+            <button onClick={()=>copyToClip(m.text,"h-"+m.id)} style={{fontSize:9,color:"#2563EB",background:"#eff6ff",border:"none",borderRadius:4,padding:"3px 6px",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>{copied==="h-"+m.id?"Copied":"Copy"}</button>
+            <button onClick={()=>removeMsg(m.id)} style={S.rm}>{Ic.x}</button>
+          </div>
+        </div>
+      </div>))}
+    </div>}
+  </div>);
+}
+
+window.App = App;
