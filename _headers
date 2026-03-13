@@ -1,0 +1,2 @@
+/*
+  Content-Security-Policy: frame-src 'self' https://open.spotify.com https://*.spotify.com;

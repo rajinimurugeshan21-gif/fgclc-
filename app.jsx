@@ -2483,7 +2483,7 @@ function MusicPage({d,up}){
           {props.canRemove&&<button onClick={function(){removeSong(s.spotifyId)}} style={S.rm}>{Ic.x}</button>}
         </div>
         {isPlaying&&<div style={{padding:"0 12px 12px"}}>
-          <iframe src={"https://open.spotify.com/embed/track/"+s.spotifyId+"?utm_source=generator&theme=0"} width="100%" height="80" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" style={{borderRadius:8}}></iframe>
+          <div dangerouslySetInnerHTML={{__html:"<iframe src='https://open.spotify.com/embed/track/"+s.spotifyId+"?utm_source=generator&theme=0' width='100%' height='80' frameBorder='0' allow='autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture' loading='lazy' style='border-radius:8px;border:none'></iframe>"}}/>
         </div>}
       </div>
     );
@@ -2527,7 +2527,7 @@ function MusicPage({d,up}){
         <div key={pl.id} className="kb-card" style={{background:"#fff",borderRadius:12,border:"1px solid #e2e8f0",marginBottom:8,overflow:"hidden",padding:12}}>
           <div style={{fontSize:13,fontWeight:700,color:"#0f172a"}}>{pl.name}</div>
           <div style={{fontSize:11,color:"#64748b",marginBottom:8}}>{pl.desc}</div>
-          <iframe src={"https://open.spotify.com/embed/playlist/"+pl.id+"?utm_source=generator&theme=0"} width="100%" height="152" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" style={{borderRadius:8}}></iframe>
+          <div dangerouslySetInnerHTML={{__html:"<iframe src='https://open.spotify.com/embed/playlist/"+pl.id+"?utm_source=generator&theme=0' width='100%' height='152' frameBorder='0' allow='autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture' loading='lazy' style='border-radius:8px;border:none'></iframe>"}}/>
         </div>
       )})}
     </div>}
