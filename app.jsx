@@ -2403,7 +2403,30 @@ function ChatPage({d,up,user}){
   );
 }
 
-// === MUSIC (Spotify Embeds) ===
+// === SPOTIFY EMBED COMPONENT ===
+function SpotifyEmbed(props){
+  var ref=useState(null);
+  var containerId="spotify-"+props.type+"-"+props.id;
+
+  useEffect(function(){
+    var container=document.getElementById(containerId);
+    if(!container)return;
+    container.innerHTML="";
+    var iframe=document.createElement("iframe");
+    iframe.src="https://open.spotify.com/embed/"+props.type+"/"+props.id+"?utm_source=generator&theme=0";
+    iframe.width="100%";
+    iframe.height=String(props.height||152);
+    iframe.frameBorder="0";
+    iframe.allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture";
+    iframe.loading="lazy";
+    iframe.style.borderRadius="12px";
+    iframe.style.border="none";
+    container.appendChild(iframe);
+  },[props.id,props.type]);
+
+  return <div id={containerId} style={{minHeight:props.height||152}}/>;
+}
+
 // === MUSIC (Spotify Embeds - No API Key) ===
 function MusicPage({d,up}){
   var savedSongs=useState(d.savedSongs||[]);
@@ -2427,7 +2450,7 @@ function MusicPage({d,up}){
     {title:"Build My Life",artist:"Housefires",spotifyId:"2JOYbRDpflKmXYhP8U2KeN"},
     {title:"Great Are You Lord",artist:"All Sons and Daughters",spotifyId:"1P5GOqMCQsBmXmHUoO3stx"},
     {title:"King of Kings",artist:"Hillsong Worship",spotifyId:"0p1fRQPgKyGsMWBmPngjUu"},
-    {title:"Oceans",artist:"Hillsong United",spotifyId:"2dLLR6JTEimebFZzbDKFHP"},
+    {title:"Oceans",artist:"Hillsong United",spotifyId:"5Mw9bXG1dLNhbjofkVS2oR"},
     {title:"10,000 Reasons",artist:"Matt Redman",spotifyId:"4KCGd1M4IO2T0vO0alF9o1"},
     {title:"Graves Into Gardens",artist:"Elevation Worship",spotifyId:"6Y8cHsIG8V02D1YnghRZeR"},
     {title:"The Blessing",artist:"Kari Jobe",spotifyId:"4WYApvD2fQCcEqMGsAzLeB"},
@@ -2483,7 +2506,7 @@ function MusicPage({d,up}){
           {props.canRemove&&<button onClick={function(){removeSong(s.spotifyId)}} style={S.rm}>{Ic.x}</button>}
         </div>
         {isPlaying&&<div style={{padding:"0 12px 12px"}}>
-          <div dangerouslySetInnerHTML={{__html:"<iframe src='https://open.spotify.com/embed/track/"+s.spotifyId+"?utm_source=generator&theme=0' width='100%' height='80' frameBorder='0' allow='autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture' loading='lazy' style='border-radius:8px;border:none'></iframe>"}}/>
+          <SpotifyEmbed type="track" id={s.spotifyId} height={80}/>
         </div>}
       </div>
     );
@@ -2527,7 +2550,7 @@ function MusicPage({d,up}){
         <div key={pl.id} className="kb-card" style={{background:"#fff",borderRadius:12,border:"1px solid #e2e8f0",marginBottom:8,overflow:"hidden",padding:12}}>
           <div style={{fontSize:13,fontWeight:700,color:"#0f172a"}}>{pl.name}</div>
           <div style={{fontSize:11,color:"#64748b",marginBottom:8}}>{pl.desc}</div>
-          <div dangerouslySetInnerHTML={{__html:"<iframe src='https://open.spotify.com/embed/playlist/"+pl.id+"?utm_source=generator&theme=0' width='100%' height='152' frameBorder='0' allow='autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture' loading='lazy' style='border-radius:8px;border:none'></iframe>"}}/>
+          <SpotifyEmbed type="playlist" id={pl.id} height={152}/>
         </div>
       )})}
     </div>}
