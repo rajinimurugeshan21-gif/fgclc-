@@ -9,8 +9,44 @@ const PHOTO_CHECKLIST=[{id:1,shot:"Wide Establishing Shot",desc:"Whole room from
 const CONTENT_CALENDAR=[{day:"Monday",type:"Scripture Graphic",platform:"IG + FB",who:"Designer",color:"#7C3AED"},{day:"Tuesday",type:"Behind the Scenes",platform:"IG Stories",who:"Joel",color:"#EA580C"},{day:"Wednesday",type:"Sermon Clip / Reel",platform:"IG + YT Shorts",who:"Joel + Isaac",color:"#DC2626"},{day:"Thursday",type:"Team Appreciation",platform:"IG Stories",who:"Isaac",color:"#059669"},{day:"Friday",type:"Hype Reel",platform:"IG + TikTok",who:"Joel + Isaac",color:"#2563EB"},{day:"Saturday",type:"Sunday Reminder",platform:"IG Stories",who:"Isaac",color:"#7C3AED"},{day:"Sunday",type:"Live / Best Photo",platform:"All",who:"Isaac + Rutex",color:"#EA580C"}];
 const PRAYER_FOCUS=[{day:"Mon",focus:"Pray for each team member by name",icon:"👥"},{day:"Tue",focus:"Pray for unity among the teams",icon:"🤝"},{day:"Wed",focus:"Wednesday prayer (Samson leads)",icon:"📞"},{day:"Thu",focus:"Pray for church growth & new youth",icon:"🌱"},{day:"Fri",focus:"Pray for wisdom & anointing",icon:"👑"},{day:"Sat",focus:"Pray for Sunday's service",icon:"\u26EA"},{day:"Sun",focus:"Pray for the harvest",icon:"🌾"}];
 
-const SK={attendance:"fgclc-att",photoChecks:"fgclc-pho",prayerLog:"fgclc-pra",contentDone:"fgclc-con",tasks:"fgclc-tsk",notes:"fgclc-not",weekProgress:"fgclc-wp",activities:"fgclc-act",user:"fgclc-user",users:"fgclc-users",bbbs:"fgclc-bbbs",customWeeks:"fgclc-cw",customTeams:"fgclc-ct",teens:"fgclc-teens",followups:"fgclc-fu",pubWeeks:"fgclc-pub",teamData:"fgclc-td",practice:"fgclc-prc",messages:"fgclc-msg",customPlan:"fgclc-cp"};
+const SK={attendance:"fgclc-att",photoChecks:"fgclc-pho",prayerLog:"fgclc-pra",contentDone:"fgclc-con",tasks:"fgclc-tsk",notes:"fgclc-not",weekProgress:"fgclc-wp",activities:"fgclc-act",user:"fgclc-user",users:"fgclc-users",bbbs:"fgclc-bbbs",customWeeks:"fgclc-cw",customTeams:"fgclc-ct",teens:"fgclc-teens",followups:"fgclc-fu",pubWeeks:"fgclc-pub",teamData:"fgclc-td",practice:"fgclc-prc",messages:"fgclc-msg",customPlan:"fgclc-cp",chat:"fgclc-chat"};
+
+var VERSES=[
+  {ref:"Psalm 23:1",text:"The Lord is my shepherd; I shall not want."},
+  {ref:"Jeremiah 29:11",text:"For I know the plans I have for you, declares the Lord, plans to prosper you and not to harm you."},
+  {ref:"Philippians 4:13",text:"I can do all things through Christ who strengthens me."},
+  {ref:"Romans 8:28",text:"And we know that in all things God works for the good of those who love Him."},
+  {ref:"Isaiah 41:10",text:"Fear not, for I am with you; be not dismayed, for I am your God."},
+  {ref:"Proverbs 3:5-6",text:"Trust in the Lord with all your heart and lean not on your own understanding."},
+  {ref:"Matthew 11:28",text:"Come to me, all you who are weary and burdened, and I will give you rest."},
+  {ref:"Psalm 46:10",text:"Be still, and know that I am God."},
+  {ref:"Joshua 1:9",text:"Be strong and courageous. Do not be afraid; do not be discouraged."},
+  {ref:"Ephesians 2:10",text:"For we are God's handiwork, created in Christ Jesus to do good works."},
+  {ref:"1 Peter 4:10",text:"Each of you should use whatever gift you have received to serve others."},
+  {ref:"Colossians 3:23",text:"Whatever you do, work at it with all your heart, as working for the Lord."},
+  {ref:"Psalm 127:1",text:"Unless the Lord builds the house, the builders labor in vain."},
+  {ref:"Hebrews 10:25",text:"Let us not give up meeting together, but let us encourage one another."},
+  {ref:"2 Timothy 1:7",text:"For God has not given us a spirit of fear, but of power and of love and of a sound mind."},
+  {ref:"Psalm 119:105",text:"Your word is a lamp to my feet and a light to my path."},
+  {ref:"Romans 12:2",text:"Be transformed by the renewing of your mind, that you may prove what is the good and perfect will of God."},
+  {ref:"Galatians 6:9",text:"Let us not become weary in doing good, for at the proper time we will reap a harvest."},
+  {ref:"Psalm 37:4",text:"Delight yourself in the Lord, and He will give you the desires of your heart."},
+  {ref:"Isaiah 40:31",text:"Those who hope in the Lord will renew their strength. They will soar on wings like eagles."},
+  {ref:"John 3:16",text:"For God so loved the world that He gave His one and only Son, that whoever believes in Him shall not perish."},
+  {ref:"Psalm 91:1-2",text:"Whoever dwells in the shelter of the Most High will rest in the shadow of the Almighty."},
+  {ref:"Matthew 6:33",text:"Seek first His kingdom and His righteousness, and all these things will be given to you."},
+  {ref:"Lamentations 3:22-23",text:"His mercies are new every morning; great is Your faithfulness."},
+  {ref:"Psalm 34:8",text:"Taste and see that the Lord is good; blessed is the one who takes refuge in Him."},
+  {ref:"2 Corinthians 12:9",text:"My grace is sufficient for you, for my power is made perfect in weakness."},
+  {ref:"Deuteronomy 31:6",text:"Be strong and courageous. The Lord your God goes with you; He will never leave you nor forsake you."},
+  {ref:"Psalm 100:4",text:"Enter His gates with thanksgiving and His courts with praise; give thanks to Him and praise His name."},
+  {ref:"Romans 15:13",text:"May the God of hope fill you with all joy and peace as you trust in Him."},
+  {ref:"Psalm 27:1",text:"The Lord is my light and my salvation - whom shall I fear?"},
+  {ref:"Micah 6:8",text:"Act justly, love mercy, and walk humbly with your God."}
+];
+function getTodayVerse(){var dayOfYear=Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/(1000*60*60*24));return VERSES[dayOfYear%VERSES.length]}
 const PASTOR_PHONE="0000000000";
+var LOGO_SRC="data:image/png;base64,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";
 
 // Supabase config
 const SUPA_URL="https://hcjsltqdzihpgthnhlno.supabase.co";
@@ -129,13 +165,13 @@ var S={
 function App(){
   const [user,setUser]=useState(null);
   const [pg,setPg]=useState("home");
-  const [d,setD]=useState({attendance:{},photoChecks:{},prayerLog:[],contentDone:{},tasks:[],notes:"",weekProgress:{},activities:[],users:[],bbbs:[],customWeeks:{},customTeams:null,teens:[],followups:[],pubWeeks:{},teamData:{},practice:{},messages:[],customPlan:null});
+  const [d,setD]=useState({attendance:{},photoChecks:{},prayerLog:[],contentDone:{},tasks:[],notes:"",weekProgress:{},activities:[],users:[],bbbs:[],customWeeks:{},customTeams:null,teens:[],followups:[],pubWeeks:{},teamData:{},practice:{},messages:[],customPlan:null,chat:[]});
   const [ok,setOk]=useState(false);
   const [wk,setWk]=useState(1);
 
   useEffect(()=>{(async()=>{
-    const[a,p,pr,c,t,n,w,act,u,us,bb,cw,ct,tn,fu,pw,td,prc,msg,cp]=await Promise.all([ld(SK.attendance,{}),ld(SK.photoChecks,{}),ld(SK.prayerLog,[]),ld(SK.contentDone,{}),ld(SK.tasks,[]),ld(SK.notes,""),ld(SK.weekProgress,{}),ld(SK.activities,[]),ld(SK.user,null),ld(SK.users,[]),ld(SK.bbbs,[]),ld(SK.customWeeks,{}),ld(SK.customTeams,null),ld(SK.teens,[]),ld(SK.followups,[]),ld(SK.pubWeeks,{}),ld(SK.teamData,{}),ld(SK.practice,{}),ld(SK.messages,[]),ld(SK.customPlan,null)]);
-    setD({attendance:a,photoChecks:p,prayerLog:pr,contentDone:c,tasks:t,notes:n,weekProgress:w,activities:act,users:us,bbbs:bb,customWeeks:cw,customTeams:ct,teens:tn,followups:fu,pubWeeks:pw,teamData:td,practice:prc,messages:msg,customPlan:cp});
+    const[a,p,pr,c,t,n,w,act,u,us,bb,cw,ct,tn,fu,pw,td,prc,msg,cp,ch]=await Promise.all([ld(SK.attendance,{}),ld(SK.photoChecks,{}),ld(SK.prayerLog,[]),ld(SK.contentDone,{}),ld(SK.tasks,[]),ld(SK.notes,""),ld(SK.weekProgress,{}),ld(SK.activities,[]),ld(SK.user,null),ld(SK.users,[]),ld(SK.bbbs,[]),ld(SK.customWeeks,{}),ld(SK.customTeams,null),ld(SK.teens,[]),ld(SK.followups,[]),ld(SK.pubWeeks,{}),ld(SK.teamData,{}),ld(SK.practice,{}),ld(SK.messages,[]),ld(SK.customPlan,null),ld(SK.chat,[])]);
+    setD({attendance:a,photoChecks:p,prayerLog:pr,contentDone:c,tasks:t,notes:n,weekProgress:w,activities:act,users:us,bbbs:bb,customWeeks:cw,customTeams:ct,teens:tn,followups:fu,pubWeeks:pw,teamData:td,practice:prc,messages:msg,customPlan:cp,chat:ch});
     // Only restore session if user has phone (new login format). Clear old sessions.
     if(u && u.phone) setUser(u); else sv(SK.user,null);
     setOk(true);
@@ -144,6 +180,14 @@ function App(){
   const up=useCallback((k,v)=>{setD(prev=>{const next={...prev,[k]:v};sv(SK[k],v);return next})},[]);
   const login=(userObj)=>{setUser(userObj);sv(SK.user,userObj);setPg("home")};
   const logout=()=>{setUser(null);sv(SK.user,null);setPg("home")};
+  const [lastReadChat,setLastReadChat]=useState(0);
+
+  // Mark chat as read when user opens chat tab
+  useEffect(function(){
+    if(pg==="chat"&&d.chat&&d.chat.length>0){
+      setLastReadChat(d.chat.length);
+    }
+  },[pg,d.chat]);
   const [dismissed,setDismissed]=useState([]);
   const [popupMsg,setPopupMsg]=useState(null);
 
@@ -171,11 +215,11 @@ function App(){
   if(!user)return <Login login={login} users={d.users||[]} up={up}/>;
 
   const ip=user.role==="pastor";
-  const pPages={home:<PHome d={d} go={setPg} wk={wk} setWk={setWk} up={up}/>,teams:<Tms d={d} up={up} isPastor={true}/>,schedule:<Sched d={d} up={up} wk={wk} setWk={setWk}/>,photo:<Pho d={d} up={up}/>,content:<Cnt d={d} up={up}/>,prayer:<Pray d={d} up={up} wk={wk}/>,attend:<Att d={d} up={up} isPastor={true}/>,notes:<Nts d={d} up={up}/>,activities:<Acts d={d} up={up}/>,bbbs:<BBBS d={d} up={up} isPastor={true}/>,practice:<PracticePage d={d} up={up} isPastor={true}/>,messages:<MsgPage d={d} up={up}/>};
-  const mPages={home:<MHome d={d} go={setPg} wk={wk} user={user} onOpenMsg={openPopup}/>,myTasks:<MyTasks d={d} up={up} user={user}/>,prayer:<Pray d={d} up={up} wk={wk}/>,teams:<Tms d={d} up={up} isPastor={false}/>,photo:<Pho d={d} up={up}/>,content:<Cnt d={d} up={up}/>,bbbs:<BBBS d={d} up={up} isPastor={false} user={user}/>,practice:<PracticePage d={d} up={up} isPastor={false} user={user}/>};
+  const pPages={home:<PHome d={d} go={setPg} wk={wk} setWk={setWk} up={up}/>,teams:<Tms d={d} up={up} isPastor={true}/>,schedule:<Sched d={d} up={up} wk={wk} setWk={setWk}/>,photo:<Pho d={d} up={up}/>,content:<Cnt d={d} up={up}/>,prayer:<Pray d={d} up={up} wk={wk}/>,attend:<Att d={d} up={up} isPastor={true}/>,notes:<Nts d={d} up={up}/>,activities:<Acts d={d} up={up}/>,bbbs:<BBBS d={d} up={up} isPastor={true}/>,practice:<PracticePage d={d} up={up} isPastor={true}/>,messages:<MsgPage d={d} up={up}/>,chat:<ChatPage d={d} up={up} user={user}/>};
+  const mPages={home:<MHome d={d} go={setPg} wk={wk} user={user} onOpenMsg={openPopup}/>,myTasks:<MyTasks d={d} up={up} user={user}/>,prayer:<Pray d={d} up={up} wk={wk}/>,teams:<Tms d={d} up={up} isPastor={false}/>,photo:<Pho d={d} up={up}/>,content:<Cnt d={d} up={up}/>,bbbs:<BBBS d={d} up={up} isPastor={false} user={user}/>,practice:<PracticePage d={d} up={up} isPastor={false} user={user}/>,chat:<ChatPage d={d} up={up} user={user}/>};
   const pages=ip?pPages:mPages;
-  const pNav=[{id:"home",em:"\uD83C\uDFE0",l:"Home"},{id:"activities",em:"\uD83D\uDCCB",l:"Activities"},{id:"practice",em:"\uD83C\uDFAF",l:"Practice"},{id:"messages",em:"\uD83D\uDCE9",l:"Messages"},{id:"attend",em:"\uD83D\uDCDD",l:"Roll Call"},{id:"bbbs",em:"\uD83D\uDC6B",l:"Bro/Sis"},{id:"teams",em:"\uD83D\uDC65",l:"Teams"},{id:"notes",em:"\u270D\uFE0F",l:"Notes"}];
-  const mNav=[{id:"home",em:"\uD83C\uDFE0",l:"Home"},{id:"myTasks",em:"\u2705",l:"Tasks"},{id:"practice",em:"\uD83C\uDFAF",l:"Practice"},{id:"bbbs",em:"\uD83D\uDC6B",l:"Bro/Sis"},{id:"prayer",em:"\uD83D\uDE4F",l:"Prayer"},{id:"teams",em:"\uD83D\uDC65",l:"Teams"}];
+  const pNav=[{id:"home",em:"\uD83C\uDFE0",l:"Home"},{id:"chat",em:"\uD83D\uDCAC",l:"Chat"},{id:"activities",em:"\uD83D\uDCCB",l:"Activities"},{id:"practice",em:"\uD83C\uDFAF",l:"Practice"},{id:"messages",em:"\uD83D\uDCE9",l:"Messages"},{id:"attend",em:"\uD83D\uDCDD",l:"Roll Call"},{id:"bbbs",em:"\uD83D\uDC6B",l:"Bro/Sis"},{id:"teams",em:"\uD83D\uDC65",l:"Teams"},{id:"notes",em:"\u270D\uFE0F",l:"Notes"}];
+  const mNav=[{id:"home",em:"\uD83C\uDFE0",l:"Home"},{id:"chat",em:"\uD83D\uDCAC",l:"Chat"},{id:"myTasks",em:"\u2705",l:"Tasks"},{id:"practice",em:"\uD83C\uDFAF",l:"Practice"},{id:"bbbs",em:"\uD83D\uDC6B",l:"Bro/Sis"},{id:"prayer",em:"\uD83D\uDE4F",l:"Prayer"},{id:"teams",em:"\uD83D\uDC65",l:"Teams"}];
   const nav=ip?pNav:mNav;
 
   // DESKTOP LAYOUT
@@ -190,9 +234,9 @@ function App(){
             <p style={{margin:"2px 0 0",fontSize:11,color:"#94a3b8"}}>English Church</p>
           </div>
           <div style={{padding:"0 10px",flex:1,overflowY:"auto"}}>
-            {nav.map(function(n,idx){var active=pg===n.id;return(
-              <button key={n.id} className="kb-nav-item" onClick={function(){setPg(n.id)}} style={{display:"flex",alignItems:"center",gap:12,width:"100%",padding:"10px 14px",marginBottom:2,background:active?"rgba(37,99,235,0.15)":"transparent",border:"none",borderRadius:10,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",textAlign:"left",animationDelay:idx*40+"ms"}}>
-                <span style={{fontSize:18,opacity:active?1:0.5}}>{n.em}</span>
+            {nav.map(function(n,idx){var active=pg===n.id;var chatUnread=n.id==="chat"&&d.chat&&d.chat.length>lastReadChat&&pg!=="chat"?d.chat.length-lastReadChat:0;return(
+              <button key={n.id} className="kb-nav-item" onClick={function(){setPg(n.id)}} style={{display:"flex",alignItems:"center",gap:12,width:"100%",padding:"10px 14px",marginBottom:2,background:active?"rgba(37,99,235,0.15)":"transparent",border:"none",borderRadius:10,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",textAlign:"left",animationDelay:idx*40+"ms",position:"relative"}}>
+                <span style={{fontSize:18,opacity:active?1:0.5,position:"relative"}}>{n.em}{chatUnread>0&&<span style={{position:"absolute",top:-4,right:-6,width:16,height:16,borderRadius:"50%",background:"#dc2626",color:"#fff",fontSize:9,fontWeight:700,display:"flex",alignItems:"center",justifyContent:"center"}}>{chatUnread>9?"9+":chatUnread}</span>}</span>
                 <span style={{fontSize:13,fontWeight:active?700:500,color:active?"#93c5fd":"#94a3b8"}}>{n.l}</span>
               </button>
             )})}
@@ -244,9 +288,9 @@ function App(){
       </div>
       <div style={{flex:1,paddingBottom:76,overflowY:"auto"}}><div key={pg} className="kb-fade">{pages[pg]||pages.home}</div></div>
       <nav style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:480,display:"flex",justifyContent:"space-around",background:"#fff",borderTop:"1px solid #e2e8f0",padding:"5px 0",paddingBottom:"max(10px, env(safe-area-inset-bottom))",zIndex:100}}>
-        {nav.map(function(n){return(
-          <button key={n.id} className="kb-nav-item" onClick={function(){setPg(n.id)}} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:1,background:"none",border:"none",padding:"3px 4px",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",color:pg===n.id?"#2563EB":"#94a3b8"}}>
-            <span style={{fontSize:16,opacity:pg===n.id?1:0.5}}>{n.em}</span>
+        {nav.map(function(n){var chatUnread=n.id==="chat"&&d.chat&&d.chat.length>lastReadChat&&pg!=="chat"?d.chat.length-lastReadChat:0;return(
+          <button key={n.id} className="kb-nav-item" onClick={function(){setPg(n.id)}} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:1,background:"none",border:"none",padding:"3px 4px",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",color:pg===n.id?"#2563EB":"#94a3b8",position:"relative"}}>
+            <span style={{fontSize:16,opacity:pg===n.id?1:0.5,position:"relative"}}>{n.em}{chatUnread>0&&<span style={{position:"absolute",top:-4,right:-8,width:14,height:14,borderRadius:"50%",background:"#dc2626",color:"#fff",fontSize:8,fontWeight:700,display:"flex",alignItems:"center",justifyContent:"center"}}>{chatUnread>9?"9+":chatUnread}</span>}</span>
             <span style={{fontSize:8,fontWeight:pg===n.id?700:500}}>{n.l}</span>
           </button>
         )})}
@@ -331,13 +375,10 @@ function Login({login,users,up}){
   return(
     <div style={{maxWidth:480,margin:"0 auto",minHeight:"100vh",background:"#0a0f1a",fontFamily:"'DM Sans',sans-serif",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:24}}>
       <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet"/>
-      <div style={{fontSize:42,fontWeight:700,color:"#fff",fontFamily:"'Playfair Display',serif",letterSpacing:1.5}}>FGCLC</div>
-      <p style={{color:"#64748b",fontSize:13,marginTop:6,marginBottom:36}}>English Church</p>
+      <img src={LOGO_SRC} alt="FGCLC" className="kb-pop" style={{width:120,height:120,marginBottom:4,objectFit:"contain"}}/>
+      <p style={{color:"#64748b",fontSize:13,marginTop:2,marginBottom:32}}>English Church</p>
 
       {step==="phone"&&<>
-        <div style={{width:48,height:48,borderRadius:14,background:"rgba(37,99,235,0.15)",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:16}}>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#93c5fd" strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-        </div>
         <p style={{color:"#e2e8f0",fontSize:16,fontWeight:600,marginBottom:4}}>Enter your phone number</p>
         <p style={{color:"#64748b",fontSize:12,marginBottom:20}}>We'll send you a verification code</p>
         <div style={{position:"relative",width:"100%",maxWidth:300}}>
@@ -618,6 +659,8 @@ function MHome({d,go,wk,user,onOpenMsg}){
       <p style={{color:"#d1fae5",fontSize:12,margin:"6px 0 0"}}>{weekLabel(wk)}</p>
       <p style={{color:"#e2e8f0",fontSize:11,margin:"2px 0 0"}}><strong>{wd?.theme}</strong></p>
     </div>
+
+    <VerseOfDay />
     {myTeams.length>0&&<><h3 style={S.sec}>My Teams</h3><div style={{display:"flex",gap:6,flexWrap:"wrap",marginBottom:10}}>{myTeams.map(t=>(<span key={t.id} style={{padding:"4px 11px",borderRadius:14,fontSize:10,fontWeight:600,color:"#fff",background:t.color}}>{t.icon} {t.name}</span>))}</div></>}
 
     {/* THIS WEEK - from published plan with live completion status */}
@@ -741,16 +784,38 @@ function Tms({d,up,isPastor}){
   const [showDirectory,setShowDirectory]=useState(false);
   const [newPersonName,setNewPersonName]=useState("");
   const [newPersonRole,setNewPersonRole]=useState("");
+  const [newPersonPhone,setNewPersonPhone]=useState("");
+  const [inviteSent,setInviteSent]=useState("");
 
   const teams=d.customTeams||TEAMS;
   const td=d.teamData||{};
   const allNames=[...new Set([...ALL_MEMBERS.map(m=>m.name),...(d.users||[]).map(u=>u.name)])];
   const colors=["#2563EB","#7C3AED","#EA580C","#DC2626","#059669","#d97706","#0891b2","#be185d"];
-  const icons=["🎵","📷","📱","🤝","🙏","👥","🎤","\u26EA","📚","🌟"];
+  const icons=["\uD83C\uDFB5","\uD83D\uDCF7","\uD83D\uDCF1","\uD83E\uDD1D","\uD83D\uDE4F","\uD83D\uDC65","\uD83C\uDFA4","\u26EA","\uD83D\uDCDA","\uD83C\uDF1F"];
 
-  // Add person to church directory
-  const addPerson=()=>{if(!newPersonName.trim())return;const exists=allNames.includes(newPersonName.trim());if(exists)return;const users=[...(d.users||[]),{name:newPersonName.trim(),role:newPersonRole.trim()||"Member",phone:"",joined:new Date().toLocaleDateString()}];up("users",users);setNewPersonName("");setNewPersonRole("")};
-  const removePersonFromDirectory=(name)=>{up("users",(d.users||[]).filter(u=>u.name!==name))};
+  // Add person to church directory with phone
+  const addPerson=function(){
+    if(!newPersonName.trim())return;
+    var exists=allNames.includes(newPersonName.trim());
+    if(exists)return;
+    var newUser={name:newPersonName.trim(),role:newPersonRole.trim()||"Member",phone:newPersonPhone.trim(),joined:new Date().toLocaleDateString()};
+    var users=(d.users||[]).concat([newUser]);
+    up("users",users);
+    // Generate invite message
+    if(newPersonPhone.trim()){
+      var inviteMsg="Hi "+newPersonName.trim()+"! You are invited to join FGCLC English Church app. Open www.fgclc.co.in on your phone and sign in with this number: +91"+newPersonPhone.trim()+". Use OTP code: 1234. God bless! - Pastor, FGCLC";
+      if(navigator.clipboard)navigator.clipboard.writeText(inviteMsg);
+      setInviteSent(newPersonName.trim());
+      setTimeout(function(){setInviteSent("")},3000);
+    }
+    setNewPersonName("");setNewPersonRole("");setNewPersonPhone("");
+  };
+  const removePersonFromDirectory=function(name){up("users",(d.users||[]).filter(function(u){return u.name!==name}))};
+  const sendInvite=function(person){
+    var inviteMsg="Hi "+person.name+"! You are invited to join FGCLC English Church app. Open www.fgclc.co.in and sign in with: +91"+(person.phone||"")+". Use OTP: 1234. God bless! - Pastor, FGCLC";
+    var encoded=encodeURIComponent(inviteMsg);
+    window.open("https://wa.me/"+(person.phone?"91"+person.phone:"")+"?text="+encoded,"_blank");
+  };
 
   const getTeamData=(teamId)=>td[teamId]||{checklist:DEFAULT_TEAM_CHECKLISTS[teamId]||[],sops:[],inventory:[]};
   const updateTeamData=(teamId,field,val)=>{const cur=getTeamData(teamId);const updated={...td,[teamId]:{...cur,[field]:val}};up("teamData",updated)};
@@ -792,24 +857,36 @@ function Tms({d,up,isPastor}){
     {/* ADD PERSON / DIRECTORY */}
     {showDirectory&&isPastor&&<div style={{background:"#fff",borderRadius:14,border:"2px solid #059669",padding:16,marginBottom:14}}>
       <h3 style={{fontSize:14,fontWeight:700,color:"#0f172a",margin:"0 0 10px"}}>Church Directory</h3>
-      <p style={{fontSize:11,color:"#64748b",margin:"0 0 10px"}}>Add new people here. They'll appear in team assignment, attendance, activities, and Big Bro/Sis.</p>
-      <div style={{display:"flex",gap:6,marginBottom:10}}>
-        <input value={newPersonName} onChange={e=>setNewPersonName(e.target.value)} placeholder="Full name" style={{...S.inp,fontSize:12,flex:2}} onKeyDown={e=>e.key==="Enter"&&addPerson()}/>
-        <input value={newPersonRole} onChange={e=>setNewPersonRole(e.target.value)} placeholder="Role (optional)" style={{...S.inp,fontSize:12,flex:2}}/>
-        <button onClick={addPerson} style={{...S.abtn,width:34,height:34,background:"#059669"}}>{Ic.plus}</button>
+      <p style={{fontSize:11,color:"#64748b",margin:"0 0 10px"}}>Add members with their phone number. Send them an invitation to join via WhatsApp.</p>
+      <div style={{display:"flex",flexDirection:"column",gap:6,marginBottom:10}}>
+        <div style={{display:"flex",gap:6}}>
+          <input value={newPersonName} onChange={function(e){setNewPersonName(e.target.value)}} placeholder="Full name" style={{...S.inp,fontSize:12,flex:1}}/>
+          <input value={newPersonRole} onChange={function(e){setNewPersonRole(e.target.value)}} placeholder="Role" style={{...S.inp,fontSize:12,flex:1}}/>
+        </div>
+        <div style={{display:"flex",gap:6}}>
+          <div style={{position:"relative",flex:1}}>
+            <span style={{position:"absolute",left:10,top:"50%",transform:"translateY(-50%)",color:"#94a3b8",fontSize:11}}>+91</span>
+            <input value={newPersonPhone} onChange={function(e){setNewPersonPhone(e.target.value.replace(/[^0-9]/g,"").slice(0,10))}} placeholder="Phone number" style={{...S.inp,fontSize:12,paddingLeft:36,width:"100%"}}/>
+          </div>
+          <button onClick={addPerson} className="kb-btn" style={{...S.abtn,width:"auto",paddingLeft:14,paddingRight:14,background:"#059669",fontSize:11,fontWeight:700,fontFamily:"'DM Sans',sans-serif",color:"#fff",gap:4,whiteSpace:"nowrap"}}>Add & Invite</button>
+        </div>
       </div>
+      {inviteSent&&<div className="kb-fade" style={{padding:"8px 12px",background:"#f0fdf4",border:"1px solid #bbf7d0",borderRadius:8,marginBottom:10,fontSize:11,color:"#059669",fontWeight:600}}>{"Invitation copied for "+inviteSent+"! Paste in WhatsApp."}</div>}
+
       <h4 style={{fontSize:11,fontWeight:700,color:"#334155",margin:"0 0 6px"}}>All Members ({allNames.length})</h4>
-      <div style={{maxHeight:200,overflowY:"auto"}}>
-        {allNames.map(name=>{
-          const isOriginal=ALL_MEMBERS.find(m=>m.name===name);
-          const userObj=(d.users||[]).find(u=>u.name===name);
-          return(<div key={name} style={{display:"flex",alignItems:"center",gap:8,padding:"5px 8px",borderRadius:8,marginBottom:2,background:"#f8fafc"}}>
+      <div style={{maxHeight:250,overflowY:"auto"}}>
+        {allNames.map(function(name){
+          var isOriginal=ALL_MEMBERS.find(function(m){return m.name===name});
+          var userObj=(d.users||[]).find(function(u){return u.name===name});
+          var ph=userObj?userObj.phone:"";
+          return(<div key={name} style={{display:"flex",alignItems:"center",gap:8,padding:"6px 8px",borderRadius:8,marginBottom:2,background:"#f8fafc"}}>
             <div style={{width:24,height:24,borderRadius:"50%",background:"#64748b",display:"flex",alignItems:"center",justifyContent:"center",color:"#fff",fontSize:11,fontWeight:700}}>{name[0]}</div>
             <div style={{flex:1}}>
               <div style={{fontSize:11,fontWeight:600,color:"#0f172a"}}>{name}</div>
-              <div style={{fontSize:9,color:"#94a3b8"}}>{isOriginal?isOriginal.role:userObj?.role||"Member"}{isOriginal?" \u00b7 Original":""}</div>
+              <div style={{fontSize:9,color:"#94a3b8"}}>{isOriginal?isOriginal.role:userObj?userObj.role:"Member"}{ph?" \u00b7 +91"+ph:""}</div>
             </div>
-            {!isOriginal&&<button onClick={()=>removePersonFromDirectory(name)} style={S.rm}>{Ic.x}</button>}
+            {userObj&&userObj.phone&&<button onClick={function(){sendInvite(userObj)}} style={{fontSize:9,color:"#059669",background:"#f0fdf4",border:"1px solid #bbf7d0",borderRadius:6,padding:"3px 8px",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",fontWeight:600}}>Invite</button>}
+            {!isOriginal&&<button onClick={function(){removePersonFromDirectory(name)}} style={S.rm}>{Ic.x}</button>}
           </div>);
         })}
       </div>
@@ -1745,6 +1822,287 @@ function MsgPage({d,up}){
       </div>))}
     </div>}
   </div>);
+}
+
+// === VERSE OF THE DAY ===
+function VerseOfDay(){
+  var v=getTodayVerse();
+  var words=v.text.split(" ");
+  return(
+    <div className="kb-fade" style={{background:"linear-gradient(135deg,#1e1b4b,#312e81,#3730a3)",borderRadius:16,padding:20,marginBottom:14,position:"relative",overflow:"hidden"}}>
+      <div style={{position:"absolute",top:-20,right:-20,fontSize:80,opacity:0.06,fontFamily:"'Playfair Display',serif"}}>{"\u201C"}</div>
+      <div style={{fontSize:10,color:"#a5b4fc",fontWeight:700,textTransform:"uppercase",letterSpacing:1,marginBottom:10}}>Verse of the Day</div>
+      <p style={{margin:0,fontSize:15,color:"#e0e7ff",lineHeight:1.7,fontFamily:"'Playfair Display',serif",fontStyle:"italic"}}>
+        {"\u201C"}{words.map(function(word,i){
+          return <span key={i} className="kb-fade" style={{animationDelay:(i*60)+"ms",display:"inline"}}>{word}{" "}</span>;
+        })}{"\u201D"}
+      </p>
+      <div className="kb-fade" style={{animationDelay:(words.length*60+200)+"ms",marginTop:12,display:"flex",alignItems:"center",gap:8}}>
+        <div style={{height:1,flex:1,background:"rgba(165,180,252,0.2)"}}></div>
+        <span style={{fontSize:12,color:"#a5b4fc",fontWeight:600}}>{v.ref}</span>
+        <div style={{height:1,flex:1,background:"rgba(165,180,252,0.2)"}}></div>
+      </div>
+    </div>
+  );
+}
+
+// === CHAT ===
+function ChatPage({d,up,user}){
+  var chatMsgs=d.chat||[];
+  var inputVal=useState("");
+  var replyTo=useState(null);
+  var isRecording=useState(false);
+  var recorder=useState(null);
+  var recTimer=useState(0);
+  var typingState=useState({});
+  var typingTimeout=useState(null);
+
+  // Auto-cleanup: remove voice messages older than 30 days
+  useEffect(function(){
+    var thirtyDaysAgo=Date.now()-(30*24*60*60*1000);
+    var needsClean=chatMsgs.some(function(m){return m.type==="voice"&&m.id<thirtyDaysAgo});
+    if(needsClean){
+      var cleaned=chatMsgs.map(function(m){
+        if(m.type==="voice"&&m.id<thirtyDaysAgo){
+          return Object.assign({},m,{voiceData:null,text:"[Voice message expired]",expired:true});
+        }
+        return m;
+      });
+      up("chat",cleaned);
+    }
+  },[]);
+
+  // Typing indicator - save to shared state
+  function setTyping(){
+    var ts=Object.assign({},d.typingState||{});
+    ts[user.name]={time:Date.now()};
+    sv("fgclc-typing",ts);
+    // Clear after 3 seconds
+    if(typingTimeout[0])clearTimeout(typingTimeout[0]);
+    typingTimeout[1](setTimeout(function(){
+      var ts2=Object.assign({},d.typingState||{});
+      delete ts2[user.name];
+      sv("fgclc-typing",ts2);
+    },3000));
+  }
+
+  // Poll typing state every 2 seconds
+  useEffect(function(){
+    var interval=setInterval(function(){
+      ld("fgclc-typing",{}).then(function(ts){typingState[1](ts)});
+    },2000);
+    return function(){clearInterval(interval)};
+  },[]);
+
+  // Get who's typing (exclude self)
+  var typingNames=[];
+  var now=Date.now();
+  var ts=typingState[0]||{};
+  Object.keys(ts).forEach(function(name){
+    if(name!==user.name&&ts[name]&&(now-ts[name].time)<5000){
+      typingNames.push(name);
+    }
+  });
+
+  function sendMsg(){
+    var txt=inputVal[0].trim();
+    if(!txt)return;
+    var msg={
+      id:Date.now(),
+      text:txt,
+      type:"text",
+      sender:user.name,
+      role:user.role,
+      time:new Date().toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit"}),
+      date:new Date().toLocaleDateString("en-IN",{day:"numeric",month:"short"}),
+      replyTo:replyTo[0]
+    };
+    up("chat",chatMsgs.concat([msg]));
+    inputVal[1]("");
+    replyTo[1](null);
+  }
+
+  // Voice recording
+  function startRecording(){
+    if(!navigator.mediaDevices){alert("Microphone not supported on this device");return}
+    navigator.mediaDevices.getUserMedia({audio:true}).then(function(stream){
+      var mr=new MediaRecorder(stream,{mimeType:"audio/webm"});
+      var chunks=[];
+      mr.ondataavailable=function(e){chunks.push(e.data)};
+      mr.onstop=function(){
+        stream.getTracks().forEach(function(t){t.stop()});
+        var blob=new Blob(chunks,{type:"audio/webm"});
+        // Convert to base64
+        var reader=new FileReader();
+        reader.onloadend=function(){
+          var base64=reader.result;
+          var msg={
+            id:Date.now(),
+            text:"Voice message",
+            type:"voice",
+            voiceData:base64,
+            duration:recTimer[0],
+            sender:user.name,
+            role:user.role,
+            time:new Date().toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit"}),
+            date:new Date().toLocaleDateString("en-IN",{day:"numeric",month:"short"}),
+            replyTo:replyTo[0]
+          };
+          up("chat",chatMsgs.concat([msg]));
+          replyTo[1](null);
+          recTimer[1](0);
+        };
+        reader.readAsDataURL(blob);
+      };
+      mr.start();
+      recorder[1](mr);
+      isRecording[1](true);
+      recTimer[1](0);
+      // Timer
+      var ti=setInterval(function(){recTimer[1](function(p){return p+1})},1000);
+      mr._timerInterval=ti;
+    }).catch(function(err){alert("Microphone access denied")});
+  }
+
+  function stopRecording(){
+    if(recorder[0]&&recorder[0].state==="recording"){
+      clearInterval(recorder[0]._timerInterval);
+      recorder[0].stop();
+      isRecording[1](false);
+      recorder[1](null);
+    }
+  }
+
+  function cancelRecording(){
+    if(recorder[0]&&recorder[0].state==="recording"){
+      clearInterval(recorder[0]._timerInterval);
+      recorder[0].stream.getTracks().forEach(function(t){t.stop()});
+      isRecording[1](false);
+      recorder[1](null);
+      recTimer[1](0);
+    }
+  }
+
+  function deleteMsg(id){
+    up("chat",chatMsgs.filter(function(m){return m.id!==id}));
+  }
+
+  function fmtDur(s){var m=Math.floor(s/60);var sec=s%60;return m+":"+(sec<10?"0":"")+sec}
+
+  useEffect(function(){
+    var el=document.getElementById("kb-chat-bottom");
+    if(el)el.scrollIntoView({behavior:"smooth"});
+  },[chatMsgs.length]);
+
+  var grouped={};
+  chatMsgs.forEach(function(m){
+    var key=m.date||"Today";
+    if(!grouped[key])grouped[key]=[];
+    grouped[key].push(m);
+  });
+  var dateKeys=Object.keys(grouped);
+
+  var chatColors=["#2563EB","#7C3AED","#EA580C","#DC2626","#059669","#d97706","#0891b2","#be185d"];
+  function getColor(name){
+    var sum=0;
+    for(var ci=0;ci<name.length;ci++)sum+=name.charCodeAt(ci);
+    return chatColors[sum%chatColors.length];
+  }
+
+  return(
+    <div style={{display:"flex",flexDirection:"column",height:"calc(100vh - 130px)",fontFamily:"'DM Sans',sans-serif"}}>
+      <div style={{padding:"16px 20px 8px"}}>
+        <h2 style={{fontSize:20,fontWeight:700,color:"#0f172a",margin:0,fontFamily:"'Playfair Display',serif"}}>FGCLC Chat</h2>
+        <p style={{fontSize:11,color:"#64748b",margin:"2px 0 0"}}>{chatMsgs.length} messages</p>
+      </div>
+
+      <div style={{flex:1,overflowY:"auto",padding:"8px 16px"}}>
+        {chatMsgs.length===0&&<div style={{textAlign:"center",padding:40}}>
+          <span style={{fontSize:40}}>{"\uD83D\uDCAC"}</span>
+          <p style={{fontSize:13,color:"#94a3b8",marginTop:8}}>No messages yet. Start the conversation!</p>
+        </div>}
+
+        {dateKeys.map(function(dateKey){return(
+          <div key={dateKey}>
+            <div style={{textAlign:"center",margin:"12px 0 8px"}}>
+              <span style={{fontSize:10,color:"#94a3b8",background:"#f1f5f9",padding:"3px 10px",borderRadius:10}}>{dateKey}</span>
+            </div>
+            {grouped[dateKey].map(function(m){
+              var isMe=m.sender===user.name;
+              var isPastor=m.role==="pastor";
+              var col=getColor(m.sender);
+              return(
+                <div key={m.id} className="kb-fade" style={{display:"flex",justifyContent:isMe?"flex-end":"flex-start",marginBottom:6}}>
+                  <div style={{maxWidth:"80%"}}>
+                    {m.replyTo&&<div style={{fontSize:10,color:"#64748b",background:"#f1f5f9",padding:"4px 8px",borderRadius:"8px 8px 0 0",borderLeft:"2px solid #94a3b8",marginBottom:-2}}>
+                      {"Replying to: "}{chatMsgs.find(function(x){return x.id===m.replyTo})?.text?.slice(0,40)||"..."}
+                    </div>}
+                    <div style={{padding:"10px 14px",borderRadius:isMe?"14px 14px 4px 14px":"14px 14px 14px 4px",background:isMe?"#2563EB":isPastor?"#065f46":"#fff",color:isMe?"#fff":isPastor?"#fff":"#334155",border:isMe?"none":isPastor?"none":"1px solid #e2e8f0"}}>
+                      {!isMe&&<div style={{fontSize:10,fontWeight:700,color:isMe?"#93c5fd":isPastor?"#a7f3d0":col,marginBottom:2}}>{m.sender}{isPastor?" (Pastor)":""}</div>}
+
+                      {m.type==="voice"&&!m.expired&&m.voiceData?
+                        <div style={{display:"flex",alignItems:"center",gap:8}}>
+                          <span style={{fontSize:16}}>{"\uD83C\uDFA4"}</span>
+                          <audio controls src={m.voiceData} style={{height:32,maxWidth:200}} preload="none"></audio>
+                          <span style={{fontSize:10,opacity:0.7}}>{m.duration?fmtDur(m.duration):""}</span>
+                        </div>
+                      :m.type==="voice"&&m.expired?
+                        <div style={{fontSize:12,fontStyle:"italic",opacity:0.6}}>{"\uD83C\uDFA4"} Voice message expired (30 days)</div>
+                      :
+                        <div style={{fontSize:13,lineHeight:1.5}}>{m.text}</div>
+                      }
+
+                      <div style={{fontSize:9,color:isMe?"#93c5fd":isPastor?"#a7f3d0":"#94a3b8",marginTop:3,textAlign:"right"}}>{m.time}</div>
+                    </div>
+                    <div style={{display:"flex",gap:6,justifyContent:isMe?"flex-end":"flex-start",marginTop:2}}>
+                      <button onClick={function(){replyTo[1](m.id)}} style={{fontSize:9,color:"#64748b",background:"none",border:"none",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Reply</button>
+                      {(isMe||user.role==="pastor")&&<button onClick={function(){deleteMsg(m.id)}} style={{fontSize:9,color:"#dc2626",background:"none",border:"none",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Delete</button>}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )})}
+
+        {/* TYPING INDICATOR */}
+        {typingNames.length>0&&<div className="kb-fade" style={{display:"flex",alignItems:"center",gap:8,padding:"6px 12px",marginBottom:6}}>
+          <div style={{display:"flex",gap:3}}>
+            <div style={{width:6,height:6,borderRadius:"50%",background:"#94a3b8",animation:"popIn 0.6s ease infinite alternate"}}></div>
+            <div style={{width:6,height:6,borderRadius:"50%",background:"#94a3b8",animation:"popIn 0.6s ease 0.2s infinite alternate"}}></div>
+            <div style={{width:6,height:6,borderRadius:"50%",background:"#94a3b8",animation:"popIn 0.6s ease 0.4s infinite alternate"}}></div>
+          </div>
+          <span style={{fontSize:11,color:"#94a3b8",fontStyle:"italic"}}>{typingNames.join(", ")}{typingNames.length===1?" is":" are"} typing...</span>
+        </div>}
+
+        <div id="kb-chat-bottom"></div>
+      </div>
+
+      {replyTo[0]&&<div style={{padding:"6px 16px",background:"#f1f5f9",borderTop:"1px solid #e2e8f0",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+        <div style={{fontSize:11,color:"#64748b"}}>{"Replying to: "}{chatMsgs.find(function(x){return x.id===replyTo[0]})?.text?.slice(0,50)||"..."}</div>
+        <button onClick={function(){replyTo[1](null)}} style={{background:"none",border:"none",color:"#94a3b8",cursor:"pointer",fontSize:16}}>{"x"}</button>
+      </div>}
+
+      {/* RECORDING BAR */}
+      {isRecording[0]&&<div style={{padding:"10px 16px",borderTop:"1px solid #dc2626",background:"#fef2f2",display:"flex",alignItems:"center",gap:10}}>
+        <div style={{width:10,height:10,borderRadius:"50%",background:"#dc2626",animation:"popIn 1s ease infinite alternate"}}></div>
+        <span style={{fontSize:13,color:"#dc2626",fontWeight:700,flex:1}}>Recording... {fmtDur(recTimer[0])}</span>
+        <button onClick={cancelRecording} style={{padding:"6px 12px",background:"#fff",border:"1px solid #e2e8f0",borderRadius:8,fontSize:11,color:"#64748b",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Cancel</button>
+        <button onClick={stopRecording} style={{padding:"6px 14px",background:"#dc2626",border:"none",borderRadius:8,fontSize:11,color:"#fff",fontWeight:700,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Send</button>
+      </div>}
+
+      {/* INPUT BAR */}
+      {!isRecording[0]&&<div style={{padding:"10px 16px",borderTop:"1px solid #e2e8f0",background:"#fff",display:"flex",gap:8,alignItems:"center"}}>
+        <button onClick={startRecording} style={{width:36,height:36,borderRadius:"50%",background:"#f1f5f9",border:"1px solid #e2e8f0",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,color:"#64748b"}}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+        </button>
+        <input value={inputVal[0]} onChange={function(e){inputVal[1](e.target.value);setTyping()}} onKeyDown={function(e){if(e.key==="Enter")sendMsg()}} placeholder="Type a message..." style={{flex:1,padding:"10px 14px",border:"1px solid #e2e8f0",borderRadius:20,fontSize:13,fontFamily:"'DM Sans',sans-serif",outline:"none",background:"#f8fafc"}}/>
+        <button onClick={sendMsg} style={{width:40,height:40,borderRadius:"50%",background:inputVal[0].trim()?"#2563EB":"#cbd5e1",border:"none",color:"#fff",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,flexShrink:0}}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+        </button>
+      </div>}
+    </div>
+  );
 }
 
 window.App = App;
