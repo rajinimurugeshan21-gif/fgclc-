@@ -2404,16 +2404,16 @@ function ChatPage({d,up,user}){
 }
 
 
-// === MUSIC (YouTube Audio Player) ===
+
+// === MUSIC ===
 function MusicPage({d,up}){
   var savedSongs=useState(d.savedSongs||[]);
   var tab=useState("browse");
-  var nowPlaying=useState(null);
+  var playingId=useState("");
   var searchQ=useState("");
   var searchResults=useState([]);
   var searching=useState(false);
 
-  // Worship songs with YouTube video IDs
   var worshipSongs=[
     {title:"Goodness of God",artist:"Bethel Music",ytId:"CqybaIesbuA"},
     {title:"Way Maker",artist:"Sinach",ytId:"n4MNbiLCbiQ"},
@@ -2435,13 +2435,12 @@ function MusicPage({d,up}){
     {title:"O Come to the Altar",artist:"Elevation Worship",ytId:"rSGa3P0ghbo"},
     {title:"How Great Is Our God",artist:"Chris Tomlin",ytId:"KBD18rsVJHk"},
     {title:"Amazing Grace (My Chains Are Gone)",artist:"Chris Tomlin",ytId:"Jbe7OruLk8I"},
-    {title:"Blessed Be Your Name",artist:"Matt Redman",ytId:"mf0LCSc_GJw"},
     {title:"No Longer Slaves",artist:"Bethel Music",ytId:"XGpHnOCaLvM"},
+    {title:"Forever",artist:"Kari Jobe",ytId:"IWaU8S7nE2s"},
     {title:"Here I Am to Worship",artist:"Tim Hughes",ytId:"u3FweY11Auo"},
-    {title:"Forever",artist:"Kari Jobe",ytId:"IWaU8S7nE2s"}
+    {title:"Blessed Be Your Name",artist:"Matt Redman",ytId:"mf0LCSc_GJw"}
   ];
 
-  // Search YouTube via AI proxy
   function searchYT(){
     if(!searchQ[0].trim())return;
     searching[1](true);
@@ -2449,29 +2448,17 @@ function MusicPage({d,up}){
     fetch(SUPA_URL+"/functions/v1/ai-proxy",{
       method:"POST",
       headers:{"Content-Type":"application/json","Authorization":"Bearer "+SUPA_KEY},
-      body:JSON.stringify({
-        action:"youtube_search",
-        query:searchQ[0].trim()+" worship christian",
-        maxResults:10
-      })
+      body:JSON.stringify({action:"youtube_search",query:searchQ[0].trim()+" worship christian",maxResults:10})
     }).then(function(r){return r.json()}).then(function(data){
-      if(data.results&&Array.isArray(data.results)){
-        searchResults[1](data.results.filter(function(r){return r.ytId}));
-      }
+      if(data.results&&Array.isArray(data.results)){searchResults[1](data.results.filter(function(r){return r.ytId}))}
       searching[1](false);
-    }).catch(function(e){
-      console.error("YT search error:",e);
-      searching[1](false);
-    });
+    }).catch(function(e){searching[1](false)});
   }
 
-  // Filter browse list
   var filtered=worshipSongs;
   if(searchQ[0].trim()&&tab[0]==="browse"){
     var q=searchQ[0].toLowerCase();
-    filtered=worshipSongs.filter(function(s){
-      return s.title.toLowerCase().indexOf(q)>=0||s.artist.toLowerCase().indexOf(q)>=0;
-    });
+    filtered=worshipSongs.filter(function(s){return s.title.toLowerCase().indexOf(q)>=0||s.artist.toLowerCase().indexOf(q)>=0});
   }
 
   function saveSong(song){
@@ -2486,52 +2473,60 @@ function MusicPage({d,up}){
 
   var tabSt=function(active){return{flex:1,padding:"8px 4px",background:active?"#dc2626":"transparent",border:"none",borderRadius:8,fontSize:11,fontWeight:700,color:active?"#fff":"#64748b",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}};
 
-  function AudioPlayer(props){
+  function SongItem(props){
     var s=props.song;
-    var isPlaying=nowPlaying[0]&&nowPlaying[0].ytId===s.ytId;
+    var isPlaying=playingId[0]===s.ytId;
     var isSaved=savedSongs[0].find(function(x){return x.ytId===s.ytId});
+    var iframeRef="yt-frame-"+s.ytId;
+
+    // Create iframe via DOM when playing
+    useEffect(function(){
+      if(!isPlaying)return;
+      var el=document.getElementById(iframeRef);
+      if(!el)return;
+      el.innerHTML="";
+      var f=document.createElement("iframe");
+      f.setAttribute("src","https://www.youtube.com/embed/"+s.ytId+"?autoplay=1");
+      f.setAttribute("width","100%");
+      f.setAttribute("height","152");
+      f.setAttribute("frameborder","0");
+      f.setAttribute("allow","accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share");
+      f.setAttribute("allowfullscreen","true");
+      f.setAttribute("referrerpolicy","strict-origin-when-cross-origin");
+      f.style.borderRadius="8px";
+      f.style.border="none";
+      el.appendChild(f);
+      return function(){if(el)el.innerHTML=""};
+    },[isPlaying]);
+
     return(
-      <div className="kb-card" style={{background:"#fff",borderRadius:12,border:isPlaying?"2px solid #dc2626":"1px solid #e2e8f0",marginBottom:6,overflow:"hidden"}}>
-        <div style={{display:"flex",alignItems:"center",gap:10,padding:"10px 12px"}}>
-          <button onClick={function(){nowPlaying[1](isPlaying?null:s)}} style={{width:38,height:38,borderRadius:"50%",background:isPlaying?"#dc2626":"#f1f5f9",border:"none",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,color:isPlaying?"#fff":"#dc2626"}}>
+      <div style={{background:"#fff",borderRadius:12,border:isPlaying?"2px solid #dc2626":"1px solid #e2e8f0",marginBottom:6,overflow:"hidden"}}>
+        <div style={{display:"flex",alignItems:"center",gap:10,padding:"10px 12px",cursor:"pointer"}} onClick={function(){playingId[1](isPlaying?"":s.ytId)}}>
+          <div style={{width:38,height:38,borderRadius:"50%",background:isPlaying?"#dc2626":"#f1f5f9",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,color:isPlaying?"#fff":"#dc2626"}}>
             {isPlaying?<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
             :<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>}
-          </button>
+          </div>
           <div style={{flex:1,minWidth:0}}>
             <div style={{fontSize:13,fontWeight:700,color:"#0f172a",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{s.title}</div>
             <div style={{fontSize:11,color:"#64748b"}}>{s.artist}</div>
           </div>
-          {props.canSave&&!isSaved&&<button onClick={function(){saveSong(s)}} style={{padding:"4px 10px",background:"#f0fdf4",border:"1px solid #bbf7d0",borderRadius:6,fontSize:10,fontWeight:600,color:"#059669",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",whiteSpace:"nowrap"}}>+ Save</button>}
+          {props.canSave&&!isSaved&&<button onClick={function(e){e.stopPropagation();saveSong(s)}} style={{padding:"4px 10px",background:"#f0fdf4",border:"1px solid #bbf7d0",borderRadius:6,fontSize:10,fontWeight:600,color:"#059669",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",whiteSpace:"nowrap"}}>+ Save</button>}
           {isSaved&&!props.canRemove&&<span style={{fontSize:9,color:"#dc2626",fontWeight:600}}>Saved</span>}
-          {props.canRemove&&<button onClick={function(){removeSong(s.ytId)}} style={S.rm}>{Ic.x}</button>}
+          {props.canRemove&&<button onClick={function(e){e.stopPropagation();removeSong(s.ytId)}} style={S.rm}>{Ic.x}</button>}
         </div>
+        {isPlaying&&<div id={iframeRef} style={{padding:"0 12px 12px",minHeight:152}}></div>}
       </div>
     );
   }
 
   return(<div style={S.pg}>
-    <h2 style={{...S.ti,display:"flex",alignItems:"center",gap:8}}>
-      <span style={{color:"#dc2626"}}>{"\uD83C\uDFB5"}</span> Music
-    </h2>
+    <h2 style={{...S.ti,display:"flex",alignItems:"center",gap:8}}><span style={{color:"#dc2626"}}>{"\uD83C\uDFB5"}</span> Music</h2>
 
     <div style={{display:"flex",gap:4,marginBottom:12,background:"#f1f5f9",borderRadius:10,padding:3}}>
       <button onClick={function(){tab[1]("browse")}} style={tabSt(tab[0]==="browse")}>Browse</button>
       <button onClick={function(){tab[1]("search")}} style={tabSt(tab[0]==="search")}>Search</button>
       <button onClick={function(){tab[1]("saved")}} style={tabSt(tab[0]==="saved")}>Saved ({savedSongs[0].length})</button>
     </div>
-
-    {/* NOW PLAYING - YouTube audio player (hidden video, visible controls) */}
-    {nowPlaying[0]&&<div style={{background:"linear-gradient(135deg,#1a1a2e,#16213e)",borderRadius:14,padding:14,marginBottom:12}}>
-      <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}>
-        <div style={{width:10,height:10,borderRadius:"50%",background:"#dc2626",animation:"popIn 1s ease infinite alternate"}}></div>
-        <div style={{flex:1}}>
-          <div style={{fontSize:13,fontWeight:700,color:"#fff"}}>{nowPlaying[0].title}</div>
-          <div style={{fontSize:11,color:"#94a3b8"}}>{nowPlaying[0].artist}</div>
-        </div>
-        <button onClick={function(){nowPlaying[1](null)}} style={{background:"rgba(255,255,255,0.1)",border:"none",borderRadius:8,padding:"4px 10px",color:"#fff",cursor:"pointer",fontSize:10,fontFamily:"'DM Sans',sans-serif"}}>Stop</button>
-      </div>
-      <YTAudioPlayer videoId={nowPlaying[0].ytId}/>
-    </div>}
 
     {tab[0]==="browse"&&<div>
       <div style={{position:"relative",marginBottom:12}}>
@@ -2544,23 +2539,22 @@ function MusicPage({d,up}){
         )})}
       </div>
       <p style={{fontSize:10,color:"#94a3b8",marginBottom:8}}>{filtered.length} songs</p>
-      {filtered.map(function(s){return <AudioPlayer key={s.ytId} song={s} canSave={true}/>})}
+      {filtered.map(function(s){return <SongItem key={s.ytId} song={s} canSave={true}/>})}
     </div>}
 
     {tab[0]==="search"&&<div>
       <div style={{display:"flex",gap:6,marginBottom:12}}>
         <div style={{position:"relative",flex:1}}>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2" style={{position:"absolute",left:12,top:"50%",transform:"translateY(-50%)"}}><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input value={searchQ[0]} onChange={function(e){searchQ[1](e.target.value)}} onKeyDown={function(e){if(e.key==="Enter")searchYT()}} placeholder="Search any worship song..." style={{...S.inp,paddingLeft:34,width:"100%"}}/>
+          <input value={searchQ[0]} onChange={function(e){searchQ[1](e.target.value)}} onKeyDown={function(e){if(e.key==="Enter")searchYT()}} placeholder="Search any song..." style={{...S.inp,paddingLeft:34,width:"100%"}}/>
         </div>
         <button onClick={searchYT} disabled={searching[0]} style={{padding:"0 16px",background:searching[0]?"#cbd5e1":"#dc2626",color:"#fff",border:"none",borderRadius:10,fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>{searching[0]?"...":"Search"}</button>
       </div>
-      <p style={{fontSize:10,color:"#94a3b8",marginBottom:8}}>AI-powered search finds any worship song on YouTube</p>
-      {searching[0]&&<p style={{fontSize:12,color:"#94a3b8",textAlign:"center",padding:20}}>Searching...</p>}
-      {searchResults[0].map(function(s){return <AudioPlayer key={s.ytId} song={s} canSave={true}/>})}
+      {searching[0]&&<p style={{fontSize:12,color:"#94a3b8",textAlign:"center",padding:20}}>Searching YouTube...</p>}
+      {searchResults[0].map(function(s){return <SongItem key={s.ytId} song={s} canSave={true}/>})}
       {searchResults[0].length===0&&!searching[0]&&<div style={{display:"flex",gap:4,flexWrap:"wrap"}}>
-        {["Tamil worship songs","Hindi praise","Hillsong best","Elevation Worship live","Telugu Christian","Malayalam worship"].map(function(q){return(
-          <button key={q} onClick={function(){searchQ[1](q);searchYT()}} style={{padding:"6px 12px",background:"#fff",border:"1px solid #e2e8f0",borderRadius:8,fontSize:11,color:"#64748b",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>{q}</button>
+        {["Tamil worship","Hindi praise","Hillsong best","Elevation Worship","Telugu Christian","Malayalam worship"].map(function(q){return(
+          <button key={q} onClick={function(){searchQ[1](q)}} style={{padding:"6px 12px",background:"#fff",border:"1px solid #e2e8f0",borderRadius:8,fontSize:11,color:"#64748b",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>{q}</button>
         )})}
       </div>}
     </div>}
@@ -2570,31 +2564,9 @@ function MusicPage({d,up}){
         <span style={{fontSize:40}}>{"\uD83C\uDFB5"}</span>
         <p style={{fontSize:13,color:"#94a3b8",marginTop:8}}>No saved songs yet.</p>
       </div>}
-      {savedSongs[0].map(function(s){return <AudioPlayer key={s.ytId} song={s} canRemove={true}/>})}
+      {savedSongs[0].map(function(s){return <SongItem key={s.ytId} song={s} canRemove={true}/>})}
     </div>}
   </div>);
-}
-
-// YouTube Audio Player - hidden video, visible controls
-function YTAudioPlayer(props){
-  var containerId="yt-audio-"+props.videoId;
-  useEffect(function(){
-    var container=document.getElementById(containerId);
-    if(!container)return;
-    container.innerHTML="";
-    var iframe=document.createElement("iframe");
-    iframe.src="https://www.youtube.com/embed/"+props.videoId+"?autoplay=1&enablejsapi=1";
-    iframe.width="100%";
-    iframe.height="60";
-    iframe.frameBorder="0";
-    iframe.allow="autoplay; encrypted-media";
-    iframe.style.borderRadius="8px";
-    iframe.style.opacity="1";
-    container.appendChild(iframe);
-    return function(){container.innerHTML=""};
-  },[props.videoId]);
-
-  return <div id={containerId} style={{borderRadius:8,overflow:"hidden"}}/>;
 }
 
 window.App = App;
